@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=
+SOURCEFILES_QUOTED_IF_SPACED=src/i2c.c src/location_tracking.c src/lsm330tr.c src/main.c src/pid.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=
-POSSIBLE_DEPFILES=
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/src/i2c.o ${OBJECTDIR}/src/location_tracking.o ${OBJECTDIR}/src/lsm330tr.o ${OBJECTDIR}/src/main.o ${OBJECTDIR}/src/pid.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/src/i2c.o.d ${OBJECTDIR}/src/location_tracking.o.d ${OBJECTDIR}/src/lsm330tr.o.d ${OBJECTDIR}/src/main.o.d ${OBJECTDIR}/src/pid.o.d
 
 # Object Files
-OBJECTFILES=
+OBJECTFILES=${OBJECTDIR}/src/i2c.o ${OBJECTDIR}/src/location_tracking.o ${OBJECTDIR}/src/lsm330tr.o ${OBJECTDIR}/src/main.o ${OBJECTDIR}/src/pid.o
 
 # Source Files
-SOURCEFILES=
+SOURCEFILES=src/i2c.c src/location_tracking.c src/lsm330tr.c src/main.c src/pid.c
 
 
 CFLAGS=
@@ -94,7 +94,67 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
+${OBJECTDIR}/src/i2c.o: src/i2c.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/i2c.o.d 
+	@${RM} ${OBJECTDIR}/src/i2c.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/i2c.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -D_SUPPRESS_PLIB_WARNING -D_DISABLE_OPENADC10_CONFIGPORT_WARNING -MMD -MF "${OBJECTDIR}/src/i2c.o.d" -o ${OBJECTDIR}/src/i2c.o src/i2c.c   
+	
+${OBJECTDIR}/src/location_tracking.o: src/location_tracking.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/location_tracking.o.d 
+	@${RM} ${OBJECTDIR}/src/location_tracking.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/location_tracking.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -D_SUPPRESS_PLIB_WARNING -D_DISABLE_OPENADC10_CONFIGPORT_WARNING -MMD -MF "${OBJECTDIR}/src/location_tracking.o.d" -o ${OBJECTDIR}/src/location_tracking.o src/location_tracking.c   
+	
+${OBJECTDIR}/src/lsm330tr.o: src/lsm330tr.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/lsm330tr.o.d 
+	@${RM} ${OBJECTDIR}/src/lsm330tr.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/lsm330tr.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -D_SUPPRESS_PLIB_WARNING -D_DISABLE_OPENADC10_CONFIGPORT_WARNING -MMD -MF "${OBJECTDIR}/src/lsm330tr.o.d" -o ${OBJECTDIR}/src/lsm330tr.o src/lsm330tr.c   
+	
+${OBJECTDIR}/src/main.o: src/main.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/main.o.d 
+	@${RM} ${OBJECTDIR}/src/main.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -D_SUPPRESS_PLIB_WARNING -D_DISABLE_OPENADC10_CONFIGPORT_WARNING -MMD -MF "${OBJECTDIR}/src/main.o.d" -o ${OBJECTDIR}/src/main.o src/main.c   
+	
+${OBJECTDIR}/src/pid.o: src/pid.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/pid.o.d 
+	@${RM} ${OBJECTDIR}/src/pid.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/pid.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -D_SUPPRESS_PLIB_WARNING -D_DISABLE_OPENADC10_CONFIGPORT_WARNING -MMD -MF "${OBJECTDIR}/src/pid.o.d" -o ${OBJECTDIR}/src/pid.o src/pid.c   
+	
 else
+${OBJECTDIR}/src/i2c.o: src/i2c.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/i2c.o.d 
+	@${RM} ${OBJECTDIR}/src/i2c.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/i2c.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -D_SUPPRESS_PLIB_WARNING -D_DISABLE_OPENADC10_CONFIGPORT_WARNING -MMD -MF "${OBJECTDIR}/src/i2c.o.d" -o ${OBJECTDIR}/src/i2c.o src/i2c.c   
+	
+${OBJECTDIR}/src/location_tracking.o: src/location_tracking.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/location_tracking.o.d 
+	@${RM} ${OBJECTDIR}/src/location_tracking.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/location_tracking.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -D_SUPPRESS_PLIB_WARNING -D_DISABLE_OPENADC10_CONFIGPORT_WARNING -MMD -MF "${OBJECTDIR}/src/location_tracking.o.d" -o ${OBJECTDIR}/src/location_tracking.o src/location_tracking.c   
+	
+${OBJECTDIR}/src/lsm330tr.o: src/lsm330tr.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/lsm330tr.o.d 
+	@${RM} ${OBJECTDIR}/src/lsm330tr.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/lsm330tr.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -D_SUPPRESS_PLIB_WARNING -D_DISABLE_OPENADC10_CONFIGPORT_WARNING -MMD -MF "${OBJECTDIR}/src/lsm330tr.o.d" -o ${OBJECTDIR}/src/lsm330tr.o src/lsm330tr.c   
+	
+${OBJECTDIR}/src/main.o: src/main.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/main.o.d 
+	@${RM} ${OBJECTDIR}/src/main.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -D_SUPPRESS_PLIB_WARNING -D_DISABLE_OPENADC10_CONFIGPORT_WARNING -MMD -MF "${OBJECTDIR}/src/main.o.d" -o ${OBJECTDIR}/src/main.o src/main.c   
+	
+${OBJECTDIR}/src/pid.o: src/pid.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/pid.o.d 
+	@${RM} ${OBJECTDIR}/src/pid.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/pid.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -D_SUPPRESS_PLIB_WARNING -D_DISABLE_OPENADC10_CONFIGPORT_WARNING -MMD -MF "${OBJECTDIR}/src/pid.o.d" -o ${OBJECTDIR}/src/pid.o src/pid.c   
+	
 endif
 
 # ------------------------------------------------------------------------------------
