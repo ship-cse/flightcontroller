@@ -365,6 +365,7 @@ typedef union {
 
 } lsm_reg_status_t;
 
+//TODO - either justify why these are global or remove them - prefer that you remove them - we can talk about this if needed
 lsm_reg_ctrl4_a_t accel_ctrl4;
 lsm_reg_ctrl5_a_t accel_ctrl5;
 lsm_reg_ctrl6_a_t accel_ctrl6;
@@ -380,7 +381,9 @@ lsm_reg_ctrl4_g_t gyro_ctrl4;
 lsm_reg_ctrl5_g_t gyro_ctrl5;
 lsm_reg_fifo_ctrl_t gyro_fifo_ctrl;
 
+//TODO PIC32 does not have an FPU, FP ops are very expensive - do you need double? convert to float or fixed-point
 double accel_sensitivity, gyro_sensitivity;
+
 
 /*
  * ATTITUDE CORRECTION - negates the values passed into it to align with desired
@@ -413,6 +416,8 @@ int check_who_ami( )
     if (byte != LSM330_WHOAMI_VALG) return -1;
 }
 
+//TODO there should be an enum with the types so that you don't need to depend on an integer
+//TODO change this to enum accel_sensitivity level
 /*
  * SET ACCEL SENSITIVITY - sets the appropriate value in the accel_sensitivity 
  *                      variable to be applied to the raw sensor data.
@@ -445,6 +450,8 @@ int set_accel_sensitivity(int x)
     return 0;
 }
 
+//TODO there should be an enum for these as well
+//TODO don't call this x
 /*
  * SET GYRO SENSITIVIYT - sets the appropriate value in the gyro_sensitivity
  *                  variable to be applied to the raw sensor data
@@ -471,6 +478,8 @@ int set_gyro_sensitivity(int x)
     return 0;
 }
 
+//TODO describe "desired specs."  
+//TODO instead of global variables create a strcut that holds desired configuration data and pass that in here
 /*
  * CONFIGURE ACCEL - sets the configuration registers to the desired specifications
  * @return 0 if configured successfully, -1 if an error has occurred.
@@ -480,12 +489,14 @@ int configure_accel(void)
     int rc;
 
     // @see lsm_reg_ctrl4_a_t for details
+//TODO explain these in words - for example explain why iea mode does and why you are enabling it
     accel_ctrl4.byte = 0;
     accel_ctrl4.iea = 1;
     rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL4A, accel_ctrl4.byte);
     if (rc < 0) return -1;
    
     // @see lsm_reg_ctrl5_a_t for details
+//TODO explain these - explain why you are enabling them
     accel_ctrl5.byte = 0;
     accel_ctrl5.xen = 1;
     accel_ctrl5.yen = 1;
@@ -496,6 +507,7 @@ int configure_accel(void)
     if(rc < 0) return -1;
     
     // @see lsm_reg_ctrl6_a_t for details
+//TODO explain these too - esp. why the 200Hz setting and the 8G
     accel_ctrl6.byte = 0;
     accel_ctrl6.bw = LSM33_ACC_BW_200HZ;
     accel_ctrl6.fscale = LSM330_ACC_SETG_8G;
@@ -503,6 +515,7 @@ int configure_accel(void)
     if(rc < 0) return -1;
     
     // @see lsm_reg_ctrl7_a_t for details
+//TODO what is the add_inc?
     accel_ctrl7.byte = 0;
     accel_ctrl7.add_inc = 1;
     rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL7A, accel_ctrl7.byte);
@@ -516,22 +529,27 @@ int configure_accel(void)
     if(rc < 0) return -1;
     
     // set offset for x axis accelerometer reading
+//TODO offset is a #define?  how was it determined?
     rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFX, OFFSETX_A);
     if(rc < 0) return -1;
     
     // set offset for y axis accelerometer reading
+//TODO offset is a #define?  how was it determined?
     rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFY, OFFSETY_A);
     if(rc < 0) return -1;
     
     // set offset for z axis acceleromter reading
+//TODO offset is a #define?  how was it determined?
     rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFZ, OFFSETZ_A);
     if(rc < 0) return -1;
 
     // set the sensitivity value for the accelerometer
+//TODO fscale?  where did this come from?  its global????
     rc = set_accel_sensitivity(accel_ctrl6.fscale);
     if(rc < 0) return -1;
 }
 
+//TODO same set of comments - create a configuration struct and pass it in here
 /*
  * CONFIGURE GYRO sets the configuration registers to the desired settings
  * @return 0 if the gyro is successfully configured, -1 if an error occurred.
@@ -612,6 +630,7 @@ int soft_reset( )
     return 0;
 }
 
+//TODO the configuration struct can be referenced as the default value here or else pass it in
 /*
  * CONFIGURE LSM330TR - callable function by main to call for a new configuration
  * @return 0 if the device is configured successfully, -1 if a failure occurs.
@@ -680,6 +699,8 @@ int configure_lsm330tr_test()
     return 0;
 }
 
+
+//TODO uses floats - probably should be using fixed point
 /*
  * READ ACCEL - performs the register reads on the accelerometer, combines the 
  *              high and low values and multiplies the result by the sensitivity
@@ -708,6 +729,7 @@ int read_accel( float *accel_x, float *accel_y, float *accel_z)
     rc = lsm330_read_multiple_reg(LSM330_DEV_ACCEL, LSM330_REG_OUT_MULTIPLE, buff);
     if(rc < 0) return -1;
     
+//TODO should this really be multiplication?  
     ival = ((int16_t) buff[1]) << 8 | (uint16_t) buff[0];
     *accel_x = (float) ival * accel_sensitivity;
     
@@ -766,6 +788,7 @@ int read_gyro( float *pitch, float *roll, float *yaw)
     return 0;
 }
 
+//TODO why is this using an output parameter instead of just returning a number?
 /*
  * GET ACCEL SCALE - passes the accelerometer setting to location_tracking.c
  * @param *scale - pointer to the scale variable in location_tracking.c
