@@ -62,6 +62,7 @@ PRIVATE int timer_counter = 0, E1ON, E2ON = 0, E3ON = 0, E4ON = 0,
         real_pitch = 0, real_roll = 0, real_yaw = 0, location_x = 0, 
         location_y = 0, location_z = 0;
 
+//TODO shouldn't there be four different timer/counters, one for each motor's PWM?  
 /*
  * __ISR() Timer1Handler() - performs the pulse width modulation functionality for
  *                      the four motors
@@ -118,6 +119,7 @@ void __ISR(_TIMER_1_VECTOR, IPL2AUTO) Timer1Handler(void)
     timer_counter++;
 }
 
+//TODO you have a bug here - you are presuming that the T2 interrupt won't re-occur prior to the completion of the I2C logic.
 /* 
  * __ISR() Timer2Handler(void) - performs the i2c bus functionality to read the sensors
  *                  as well as call the tracking functions with the updated data.
@@ -159,18 +161,21 @@ int init_hardware()
     rc = configure_lsm330tr();
     if(rc < 0) return -1;
     
+    //TODO is this mean to be commented out?  If so, get rid of dead code before checkin
     get_scale();
 //    OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_256, T1_TICK);
 //    ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_2);
     OpenTimer2(T2_ON | T2_SOURCE_INT | T2_PS_1_256, T2_TICK);
     ConfigIntTimer2(T2_INT_ON | T2_INT_PRIOR_3);
 
+//TODO why 630?  This is a magic number that should be commented / #define'd
 //    PR1 = 6;
     PR2 = 630;
    
     return 0;
 }
 
+//TODO how fast does main do this?  is it slower or faster than the timer code?  if its the same - why have the timer?
 /*
  * MAIN - continually runs the PID controllers to ensure the proper
  *      engine speed for the four motors
@@ -201,6 +206,7 @@ int main(int argc, char** argv)
         
     while(1) 
     { 
+//TODO some of these are global variables, some of these are local variables - some of them are shadows - get rid of them and use a struct!
         pid_control_function(&real_pitch, &real_roll, &real_yaw, &set_pitch,
                 &set_roll, &set_yaw, &location_x, &location_y, &location_z,
                 &set_x, &set_y, &set_z, &e1_pulse_time, &e2_pulse_time, 
