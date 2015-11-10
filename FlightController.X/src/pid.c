@@ -7,6 +7,8 @@
 
 #include "config.h"
 
+//TODO comment what these are for - the RAD  I get, but the rest?
+//TODO You are doing everything floating point - its going to kill your performance 
 #define OFFSET (10000.0)
 #define RAD (M_PI / 180.0)
 #define DT (1.0/500.0)
@@ -14,9 +16,13 @@
 #define MAX (116 - HOVER)
 #define MIN (59 - HOVER)
 
+//TODO why are these global?  This is not acceptable.  You CAN create a struct to hold them, but then pass the struct to the functions
 float diff_x, diff_y, diff_z, sum_diff, diff_pitch, diff_roll, diff_yaw, p_out, e1_total,
         i_out, d_out, e1_last, e1_out, kp = 1.0, kd = 0, ki = 0, e2_total, e2_last, e3_total,
         e3_last, e4_total, e4_last, offset, e2_out, e3_out, e4_out;
+
+
+//TODO The cost of making a function call increases with each variable - wrap this up into a struct, pass a pointer to the struct
 
 /*
  * E1 PID - controls the engine speed for the front left engine.
@@ -37,12 +43,13 @@ int e1_pid(int real_pitch, int real_roll, int real_yaw, int location_x,
         int location_y, int location_z, int set_pitch, int set_roll,
         int set_yaw, int set_x, int set_y, int set_z)
 {
-    diff_x = (location_x - set_x) * offset;
+    diff_x = (location_x - set_x) * offset;             //TODO Ok, I get this
     diff_y = (set_y - location_y) * offset;
     diff_z = set_z - location_z;
-    diff_pitch = set_pitch - real_pitch;
+    diff_pitch = set_pitch - real_pitch;                //TODO I even get this
     diff_roll = set_roll - real_roll;
     diff_yaw = real_yaw - set_yaw;
+    //TODO This I don't get - X,Y,Z, pitch,roll, and yaw are 6 different values - why isn't this a 6-dimensional vector?
     sum_diff = diff_x + diff_y + diff_z + diff_pitch + diff_roll + diff_yaw;
     p_out = kp * sum_diff;
     e1_total += sum_diff;
@@ -179,6 +186,7 @@ int e4_pid(int real_pitch, int real_roll, int real_yaw, int location_x,
     return e4_out + HOVER;
 }
 
+//TODO - see above comment about structs... this is really fragile code here.
 /*
  * PID CONTROL FUNCTION - callable by main to run the 4 pid functions with a single call
  * @param *real_pitch - pointer to the current pitch of the craft.
