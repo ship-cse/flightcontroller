@@ -14,6 +14,7 @@
 extern "C" {
 #endif
     
+//TODO remove extraneous .h references
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -28,6 +29,7 @@ extern "C" {
 #include "lsm330tr.h"   
 #include "location_tracking.h"
 #include "pid.h"
+
 
 #define SYS_FREQ (80000000L)
 #define PB_DIV 8
