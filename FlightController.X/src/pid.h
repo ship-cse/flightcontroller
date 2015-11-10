@@ -5,6 +5,8 @@
  * Revision history: 
  */
 
+//TODO see my other comments about include gaurds
+
 // This is a guard condition so that contents of this file are not included
 // more than once.  
 #ifndef XC_HEADER_TEMPLATE_H
@@ -12,6 +14,9 @@
 
 #include "config.h" // include processor files - each processor file is guarded.  
 
+//TODO define the struct that will hold the values here
+
+//TODO change this function prototype to match using the new struct that you will create here
 void pid_control_function(int *real_pitch, int *real_roll, int *real_yaw,
         int *set_pitch, int *set_roll, int *set_yaw, int *location_x, int *location_y,
         int *location_z, int *set_x, int *set_y, int *set_z, int *e1, int *e2, int *e3,
