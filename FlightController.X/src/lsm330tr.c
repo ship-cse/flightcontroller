@@ -376,37 +376,31 @@ typedef union {
 
 } lsm_reg_status_t;
 
-typedef union
+typedef struct
 {
-    struct {
-        int8_t offsetz:8;
-        int8_t offsety:8;
-        int8_t offsetx:8;
-        uint8_t fifo_ctrl: 8;
-        uint8_t ctrl7: 8;
-        uint8_t ctrl6: 8;
-        uint8_t ctrl5: 8;
-        uint8_t ctrl4: 8;
-    };
+    int8_t offsetz:8;
+    int8_t offsety:8;
+    int8_t offsetx:8;
+    uint8_t fifo_ctrl: 8;
+    uint8_t ctrl7: 8;
+    uint8_t ctrl6: 8;
+    uint8_t ctrl5: 8;
+    uint8_t ctrl4: 8;
 } accel_config_struct;
 
-typedef union
+typedef struct
 {
-    struct {
-        uint8_t fifo_ctrl: 8;
-        uint8_t ctrl5: 8;
-        uint8_t ctrl4: 8;
-        uint8_t ctrl3: 8;
-        uint8_t ctrl2: 8;
-        uint8_t ctrl1: 8;
-    };
+     uint8_t fifo_ctrl: 8;
+     uint8_t ctrl5: 8;
+     uint8_t ctrl4: 8;
+     uint8_t ctrl3: 8;
+     uint8_t ctrl2: 8;
+     uint8_t ctrl1: 8;
 } gyro_config_struct;
 
 // converted to float.
 PRIVATE float accel_sensitivity, gyro_sensitivity;
 PRIVATE uint8_t accel_scale;
-
-
 
 /*
  * CHECK WHO AMI - verifies that the i2c communication is working with the sensor
@@ -428,12 +422,6 @@ int check_who_ami( )
     if (byte != LSM330_WHOAMI_VALG) return -1;
 }
 
-/*
- * SET ACCEL SENSITIVITY - sets the appropriate value in the accel_sensitivity 
- *                      variable to be applied to the raw sensor data.
- * @param x - the 3 digit integer of the accelerometer scale setting.
- * @return 0 if the setting was set correctly, -1 if nothing registered.
- */
 enum accel_sensitivity_level
 {
     G2 = LSM330_ACC_SETG_2G,
@@ -443,7 +431,19 @@ enum accel_sensitivity_level
     G16 = LSM330_ACC_SETG_16G,
 }; 
 
+enum
+{
+    DPS250 = LSM330_GYRO_SETDPS_250DPS,
+    DPS500 = LSM330_GYRO_SETDPS_500DPS,
+    DPS2000 = LSM330_GYRO_SETDPS_2000DPS,
+} gyro_sensitivity_level;
 
+/*
+ * SET ACCEL SENSITIVITY - sets the appropriate value in the accel_sensitivity 
+ *                      variable to be applied to the raw sensor data.
+ * @param x - the 3 digit integer of the accelerometer scale setting.
+ * @return 0 if the setting was set correctly, -1 if nothing registered.
+ */
 set_accel_sensitivity(uint8_t sensitivity)
 {
     switch(sensitivity)
@@ -480,13 +480,6 @@ set_accel_sensitivity(uint8_t sensitivity)
  * @param x - the 2 digit integer representation of the current scale setting
  * @return 0 if sensitivity is set correctly, -1 if nothing registered
  */
-enum
-{
-    DPS250 = LSM330_GYRO_SETDPS_250DPS,
-    DPS500 = LSM330_GYRO_SETDPS_500DPS,
-    DPS2000 = LSM330_GYRO_SETDPS_2000DPS,
-} gyro_sensitivity_level;
-
 set_gyro_sensitivity(uint8_t sensitivity)
 {
     switch(sensitivity)
@@ -510,30 +503,30 @@ set_gyro_sensitivity(uint8_t sensitivity)
  * CONFIGURE ACCEL - sets the configuration registers to the desired specifications
  * @return 0 if configured successfully, -1 if an error has occurred.
  */
-int configure_accel(accel_config_struct accel_config)
+int configure_accel(accel_config_struct *accel_config)
 {
-    if (lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL4A, accel_config.ctrl4) < 0) return -1;
-    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL5A, accel_config.ctrl5) < 0) return -1;
-    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL6A, accel_config.ctrl6) < 0) return -1;
-    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL7A, accel_config.ctrl7) < 0) return -1;
-    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_FIFO_CTRL, accel_config.fifo_ctrl) < 0) return -1;
-    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFX, accel_config.offsetx) < 0) return -1;
-    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFY, accel_config.offsety) < 0) return -1;
-    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFZ, accel_config.offsetz) < 0) return -1;
+    if (lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL4A, accel_config->ctrl4) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL5A, accel_config->ctrl5) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL6A, accel_config->ctrl6) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL7A, accel_config->ctrl7) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_FIFO_CTRL, accel_config->fifo_ctrl) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFX, accel_config->offsetx) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFY, accel_config->offsety) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFZ, accel_config->offsetz) < 0) return -1;
 }
 
 /*
  * CONFIGURE GYRO sets the configuration registers to the desired settings
  * @return 0 if the gyro is successfully configured, -1 if an error occurred.
  */
-int configure_gyro(gyro_config_struct gyro_config)
+int configure_gyro(gyro_config_struct *gyro_config)
 {
-    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL1G, gyro_config.ctrl1) < 0) return -1;    
-    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL2G, gyro_config.ctrl2) < 0) return -1;    
-    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL3G, gyro_config.ctrl3) < 0) return -1;    
-    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL4G, gyro_config.ctrl4) < 0) return -1;    
-    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL5G, gyro_config.ctrl5) < 0) return -1;    
-    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_GYRO_FIFO_CTRL, gyro_config.fifo_ctrl) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL1G, gyro_config->ctrl1) < 0) return -1;    
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL2G, gyro_config->ctrl2) < 0) return -1;    
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL3G, gyro_config->ctrl3) < 0) return -1;    
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL4G, gyro_config->ctrl4) < 0) return -1;    
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL5G, gyro_config->ctrl5) < 0) return -1;    
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_GYRO_FIFO_CTRL, gyro_config->fifo_ctrl) < 0) return -1;
 }
 
 /*
@@ -697,21 +690,24 @@ int configure_lsm330tr(int test)
     gyro_config.fifo_ctrl = gyro_fifo_ctrl.byte;
     set_gyro_sensitivity(gyro_ctrl4.fs);
     
-    rc = configure_accel(accel_config);
+    rc = configure_accel(&accel_config);
     if(rc < 0) return -1;
     
-    rc = configure_gyro(gyro_config);
+    rc = configure_gyro(&gyro_config);
     if(rc < 0) return -1;
     
     return 0;
 }
 
-
+/*
+ * AXIS CORRECTION - fixes the output to match desired axes configuration
+ * @param value - the value to be flipped
+ * @return the correct axis reading
+ */
 float axis_correction(float value)
 {
     return value * -1;
 }
-
 
 /*
  * READ ACCEL - performs the register reads on the accelerometer, combines the 
