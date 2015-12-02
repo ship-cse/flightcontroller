@@ -12,8 +12,6 @@
 extern "C" {
 #endif
 
-#include <stdint.h>
-
 int lsm330_read_reg(uint8_t dev, uint8_t reg, uint8_t *data);
 int lsm330_write_reg(uint8_t dev, uint8_t reg, uint8_t data);
 int lsm330_read_multiple_reg(uint8_t dev, uint8_t reg, uint8_t *data);

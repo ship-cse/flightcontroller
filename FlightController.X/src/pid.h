@@ -5,29 +5,46 @@
  * Revision history: 
  */
 
-//TODO see my other comments about include gaurds
-
-// This is a guard condition so that contents of this file are not included
-// more than once.  
-#ifndef XC_HEADER_TEMPLATE_H
-#define	XC_HEADER_TEMPLATE_H
-
-#include "config.h" // include processor files - each processor file is guarded.  
-
-//TODO define the struct that will hold the values here
-
-//TODO change this function prototype to match using the new struct that you will create here
-void pid_control_function(int *real_pitch, int *real_roll, int *real_yaw,
-        int *set_pitch, int *set_roll, int *set_yaw, int *location_x, int *location_y,
-        int *location_z, int *set_x, int *set_y, int *set_z, int *e1, int *e2, int *e3,
-        int *e4);
+#ifndef PID_H
+#define	PID_H
 
 #ifdef	__cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-    // TODO If C++ is being used, regular C code needs function names to have C 
-    // linkage so the functions can be used by the c code. 
+/*
+ * engine_data - contains a struct allowing a data set for each engine
+ * e_data - struct containing the individual data for each engine
+ * @param total - the accumulated difference for each engine from the pid loop
+ * @param last - the last difference for each engine from the pid loop
+ * @param speed - the current speed setting for each engine as determined by the pid loop
+ */
+typedef struct
+{
+    struct e_data
+    {
+        int total:32;
+        int last:32;
+        int speed:32;
+    } e1, e2, e3, e4;
+} engine_data;
+
+/*
+ * pid_data - struct containing all of the necessary values to operate the pid loops
+ * @param kp - the peripheral gain constant.
+ * @param ki - the integral gain constant.
+ * @param kd - the derivative gain constant.
+ * @param offset - the offset variable which is based off of the yaw
+ */
+typedef struct
+{
+    float kp;
+    float ki;
+    float kd;
+    float offset;
+} pid_data;
+
+void pid_control_function(location_data location, engine_data *constant);
 
 #ifdef	__cplusplus
 }
