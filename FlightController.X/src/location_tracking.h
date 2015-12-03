@@ -21,9 +21,9 @@ typedef struct
 {
     struct data
     {
-        int pitch:32;
-        int roll:32;
-        int yaw:32;
+        float pitch;
+        float roll;
+        float yaw;
         int x:32;
         int y:32;
         int z:32;        

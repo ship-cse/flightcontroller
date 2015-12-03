@@ -76,7 +76,8 @@ enum timer_state
 //#define CALIBRATE
 
 PRIVATE int calibrate, u_enable = FALSE;
-    
+PRIVATE engine_data engine = {{0,0,2500,2500,0.0,1,1,-1},{0,0,2500,2500,0.0,1,-1,1},{0,0,2500,2500,0.0,-1,-1,-1},{0,0,2500,2500,0.0,-1,1,1}};
+        static int  E1ON = FALSE, E2ON = FALSE, E3ON = FALSE, E4ON = FALSE, timer = 0;
 /*
  * __ISR() Timer1Handler() - performs the pulse width modulation functionality for
  *                      the four motors
@@ -86,15 +87,29 @@ PRIVATE int calibrate, u_enable = FALSE;
  *  if u_enable is false it is calibrate mode and will only turn on and off the PWM pins
  *  if u_enable is true it allows the sensor to be read as well as location tracking and PID control for each engine
  */
-void __ISR(_TIMER_1_VECTOR, IPL7AUTO) Timer1Handler(void)
+void __ISR(_TIMER_1_VECTOR, IPL7SRS) Timer1Handler(void)
 {
-    TMR1 = 0x00;
     mT1ClearIntFlag();
-    static int off_counter = 0, E1ON = FALSE, E2ON = FALSE, E3ON = FALSE, E4ON = FALSE, timer = 0;
-    static enum timer_state t1_state = on, t1_next_state = off;
-    
 
-   
+    int counter = ReadTimer2();
+    
+    if(counter < 5000)
+    {
+        counter += 5;
+        if(E1ON && engine.e1.speed < counter)
+            PULSEE1OFF();
+        if(E2ON && engine.e2.speed < counter)
+            PULSEE2OFF();
+        if(E3ON && engine.e3.speed < counter)
+            PULSEE3OFF();
+        if(E4ON && engine.e4.speed < counter)
+            PULSEE4OFF();
+    }
+    else
+    {
+        PULSEON();
+        WriteTimer2(0);
+    }   
 }
 
 /*
@@ -114,10 +129,11 @@ int init_hardware()
     rc = configure_lsm330tr(0);
     if(rc < 0) return -1;
 
-    OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_256, T1_TICK);
-    ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_7);
-
-    PR1 = SET_100HZ;            // timer 1 interrupt timing: will interrupt every 1ms
+//    OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_256, T1_TICK);
+//    ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_7);
+//    OpenTimer2(T2_ON | T2_PS_1_32, T2_TICK);
+    
+    PR1 = 5;            // timer 1 interrupt timing: will interrupt every 1ms
     
 #ifdef CALIBRATE            // if defined will calibrate the speed controllers to 
     calibrate = SET_HIGH;   // desired range of operation
@@ -137,33 +153,60 @@ int init_hardware()
     return 0;
 }
         location_data location = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
-        int output[4][37];
+        float output[4][37];
         // matlab results for pid with values in pitch and roll
-        int matlab[4][37] = {{0,-67725,-67950,67274,-67950,-450,-135900,89399,89699,
-                89999,67724,67949,-67275,67949,449,135899,-89400,-89700,-90000,-67725,
-                -67950,202724,67950,-135000,0,0,0,0,67725,67950,-202724,-67950,135000,
-                0,0,0,0},{0,-67725,-67950,202724,67950,-135000,0,0,0,0,67725,67950,
-                -202724,-67950,135000,0,0,0,0,-67725,-67950,67274,-67950,-450,-135900,
-                89399,89699,89999,67724,67949,-67275,67949,449,135899,-89400,-89700,-90000},
-                {0,67725,67950,-67274,67950,450,135900,-89399,-89699,-89999,-67724,
-                -67949,67275,-67949,-449,-135899,89400,89700,90000,67725,67950,-202724,
-                -67950,135000,0,0,0,0,-67725,-67950,202724,67950,-135000,0,0,0,0},
-                {0,67725,67950,-202724,-67950,135000,0,0,0,0,-67725,-67950,202724,
-                67950,-135000,0,0,0,0,67725,67950,-67274,67950,450,135900,-89399,
-                -89699,-89999,-67724,-67949,67275,-67949,-449,-135899,89400,89700,90000}};
+        float matlab[4][37] = {{0,-1182.02470715206,-1185.95264044684,1174.16836932359,
+                -1185.95405416354,-7.85775154515879,-2371.90810832707,1560.31743977909,
+                1565.55279921654,1570.78878697253,1182.01716732969,1185.94510062447,
+                -1174.17590914596,1185.94651434117,7.85021172279018,2371.90056850470,
+                -1560.32497960146,-1565.56033903891,-1570.79632679490,-1182.02470715206,
+                -1185.95264044684,3538.21778362771,1185.95122673015,-2356.19449019235,
+                0,0,0,
+                0,1182.02470715206,1185.95264044684,-3538.21778362771,
+                -1185.95122673015,2356.19449019235,0,0,
+                0,0},{0,-1182.02470715206,-1185.95264044684,
+                3538.21778362771,1185.95122673015,-2356.19449019235,0,
+                0,0,0,1182.02470715206,
+                1185.95264044684,-3538.21778362771,-1185.95122673015,2356.19449019235,
+                0,0,0,
+                0,-1182.02470715206,-1185.95264044684,1174.16836932359,
+                -1185.95405416354,-7.85775154515879,-2371.90810832707,1560.31743977909,
+                1565.55279921654,1570.78878697253,1182.01716732969,1185.94510062447,
+                -1174.17590914596,1185.94651434117,7.85021172279018,2371.90056850470,
+                -1560.32497960146,-1565.56033903891,-1570.79632679490},{0,1182.02470715206,
+                1185.95264044684,-1174.16836932359,1185.95405416354,7.85775154515879,
+                2371.90810832707,-1560.31743977909,-1565.55279921654,-1570.78878697253,
+                -1182.01716732969,-1185.94510062447,1174.17590914596,-1185.94651434117,
+                -7.85021172279018,-2371.90056850470,1560.32497960146,1565.56033903891,
+                1570.79632679490,1182.02470715206,1185.95264044684,-3538.21778362771,
+                -1185.95122673015,2356.19449019235,0,0,
+                0,0,-1182.02470715206,-1185.95264044684,
+                3538.21778362771,1185.95122673015,-2356.19449019235,0,
+                0,0,0},{0,
+                1182.02470715206,1185.95264044684,-3538.21778362771,-1185.95122673015,
+                2356.19449019235,0,0,0,
+                0,-1182.02470715206,-1185.95264044684,3538.21778362771,
+                1185.95122673015,-2356.19449019235,0,0,
+                0,0,1182.02470715206,1185.95264044684,
+                -1174.16836932359,1185.95405416354,7.85775154515879,2371.90810832707,
+                -1560.31743977909,-1565.55279921654,-1570.78878697253,-1182.01716732969,
+                -1185.94510062447,1174.17590914596,-1185.94651434117,-7.85021172279018,
+                -2371.90056850470,1560.32497960146,1565.56033903891,1570.79632679490}};
    
-        int pitch[37] = {0,45,90,0,0,45,90,60,30,0,-45,-90,0,0,-45,-90,-60,-30,0,
-                45,90,0,0,45,90,60,30,0,-45,-90,0,0,-45,-90,-60,-30,0};
-        int roll[37] = {0,0,0,45,90,45,90,60,30,0,0,0,-45,-90,-45,-90,-60,-30,0,0,
-                0,-45,-90,-45,-90,-60,-30,0,0,0,45,90,45,90,60,30,0};
+        float pitch[37] = {0,M_PI/4,M_PI/2,0,0,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,-M_PI/4,-M_PI/2,0,0,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,
+                M_PI/4,M_PI/2,0,0,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,-M_PI/4,-M_PI/2,0,0,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0};
+        float roll[37] = {0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,0,0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,
+                0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0};
         int count = 0;
-        int e1_difference = 0, e2_difference=0, e3_difference=0, e4_difference=0,i;
+        float e1_difference = 0, e2_difference=0, e3_difference=0, e4_difference=0;
+        int i;
 /*
  * MAIN -initializes the hardware and then loops to keep the program running.
  *      all functionality is interrupt driven.
  */
 int main(int argc, char** argv)
 {   
+    // main is currently set to test the pid loop
 #ifdef TEST_SENSOR
     int rc = 0;
     rc += configure_lsm330tr(1);
@@ -182,34 +225,63 @@ int main(int argc, char** argv)
 #else
 
     if(init_hardware() < 0) return(EXIT_SUCCESS);
-    volatile engine_data engine = {{0,0,20,20,1,1,-1},{0,0,20,20,1,-1,1},{0,0,20,20,-1,-1,-1},{0,0,20,20,-1,1,1}};
-
     static sensor_data lsm330;
-
+    
+    WriteCoreTimer(0);
     while(count < 37)
     {
-        WriteCoreTimer(0);
+
 //        read_accel(&lsm330);
-//        location.actual.pitch = atan2f(lsm330.accel_x, lsm330.accel_z) * DEG * OFFSET;
-//        location.actual.roll = atan2f(lsm330.accel_y, lsm330.accel_z) * DEG * OFFSET;
-        location.actual.pitch = (int)pitch[count];//*OFFSET;
-        location.actual.roll = (int)roll[count];//*OFFSET;
+//        location.actual.pitch = atan2f(lsm330.accel_x, lsm330.accel_z);
+//        location.actual.roll = atan2f(lsm330.accel_y, lsm330.accel_z);
+        location.actual.pitch = pitch[count];//*OFFSET;
+        location.actual.roll = roll[count];//*OFFSET;
         pid_control_function(&location, &engine);
-        output[0][count] = engine.e1.speed;
-        output[1][count] = engine.e2.speed;
-        output[2][count] = engine.e3.speed;
-        output[3][count] = engine.e4.speed;
-        while(ReadCoreTimer() < 8000000){}
+        output[0][count] = (engine.e1.pid_out<.00000001 && engine.e1.pid_out > -.00000001) ? 0.0 : engine.e1.pid_out;
+        output[1][count] = (engine.e2.pid_out<.00000001 && engine.e2.pid_out > -.00000001) ? 0.0 : engine.e2.pid_out;
+        output[2][count] = (engine.e3.pid_out<.00000001 && engine.e3.pid_out > -.00000001) ? 0.0 : engine.e3.pid_out;
+        output[3][count] = (engine.e4.pid_out<.00000001 && engine.e4.pid_out > -.00000001) ? 0.0 : engine.e4.pid_out;
+//        while(ReadCoreTimer() < 400000){}
         count++;
     }
-    
+    count = ReadCoreTimer();
+//    
     for(i = 0;i<37;i++)
     {
-        e1_difference += output[0][i] - matlab[0][i];
-        e2_difference += output[1][i] - matlab[1][i];
-        e3_difference += output[2][i] - matlab[2][i];
-        e4_difference += output[3][i] - matlab[3][i];
+        float temp;
+        temp = fabs(matlab[0][i] - output[0][i]);///fabs(matlab[0][i]) * 100.0;
+        if(temp != 0)
+        {
+            temp /= fabs(matlab[0][i]);
+            temp *= 100.0;
+        }
+        e1_difference += temp;
+        temp = fabs(matlab[1][i] - output[1][i]);///fabs(matlab[0][i]) * 100.0;
+        if(temp != 0)
+        {
+            temp /= fabs(matlab[1][i]);
+            temp *= 100.0;
+        }
+        e2_difference += temp;
+        temp = fabs(matlab[2][i] - output[2][i]);///fabs(matlab[0][i]) * 100.0;
+        if(temp != 0)
+        {
+            temp /= fabs(matlab[2][i]);
+            temp *= 100.0;
+        }
+        e3_difference += temp;
+        temp = fabs(matlab[3][i] - output[3][i]);///fabs(matlab[0][i]) * 100.0;
+        if(temp != 0)
+        {
+            temp /= fabs(matlab[3][i]);
+            temp *= 100.0;
+        }
+        e4_difference += temp;
     }
+    e1_difference /= 37.0;
+    e2_difference /= 37.0;
+    e3_difference /= 37.0;
+    e4_difference /= 37.0;
     _nop();
 #endif
     return (EXIT_SUCCESS);

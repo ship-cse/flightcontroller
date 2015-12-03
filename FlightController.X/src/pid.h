@@ -27,10 +27,11 @@ typedef struct
 {
     struct e_data
     {
-        int total;
-        int last;
+        float total;
+        float last;
         int speed;
         int last_speed;
+        float pid_out;
         int pitch_sign;
         int roll_sign;
         int yaw_sign;
@@ -51,7 +52,7 @@ typedef struct
     float kd;
 } pid_data;
 
-void pid_control_function(location_data *location, volatile engine_data *constant);
+void pid_control_function(location_data *location, engine_data *constant);
 
 #ifdef	__cplusplus
 }
