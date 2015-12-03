@@ -18,14 +18,22 @@ extern "C" {
  * @param total - the accumulated difference for each engine from the pid loop
  * @param last - the last difference for each engine from the pid loop
  * @param speed - the current speed setting for each engine as determined by the pid loop
+ * @param last_speed - the previous speed setting
+ * @param pitch_sign - the sign value for the difference in pitch
+ * @param roll_sign - the sign value for the difference in roll
+ * @param yaw_sign - the sign value for the difference in yaw
  */
 typedef struct
 {
     struct e_data
     {
-        int total:32;
-        int last:32;
-        int speed:32;
+        int total;
+        int last;
+        int speed;
+        int last_speed;
+        int pitch_sign;
+        int roll_sign;
+        int yaw_sign;
     } e1, e2, e3, e4;
 } engine_data;
 
@@ -41,10 +49,9 @@ typedef struct
     float kp;
     float ki;
     float kd;
-    float offset;
 } pid_data;
 
-void pid_control_function(location_data location, engine_data *constant);
+void pid_control_function(location_data *location, volatile engine_data *constant);
 
 #ifdef	__cplusplus
 }
