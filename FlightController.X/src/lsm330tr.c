@@ -741,7 +741,7 @@ int read_accel(sensor_data *lsm330)
     lsm330->accel_x = ival * accel_sensitivity;
     
     ival = (((int16_t) buff[3]) << 8 | (uint16_t) buff[2]);
-    lsm330->accel_y = axis_correction(ival * accel_sensitivity);
+    lsm330->accel_y = ival * accel_sensitivity;
     
     ival = ((int16_t) buff[5]) << 8 | (uint16_t) buff[4];
     lsm330->accel_z = (ival * accel_sensitivity);
