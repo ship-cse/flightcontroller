@@ -70,6 +70,7 @@ enum timer_state
 #define SET_100HZ (315)
 #define SET_HIGH (292)
 #define SET_LOW (0)
+#define DEG (180.0 / M_PI)  // conversion from radians to degrees
 
 //#define TEST_SENSOR
 //#define CALIBRATE
@@ -91,73 +92,9 @@ void __ISR(_TIMER_1_VECTOR, IPL7AUTO) Timer1Handler(void)
     mT1ClearIntFlag();
     static int off_counter = 0, E1ON = FALSE, E2ON = FALSE, E3ON = FALSE, E4ON = FALSE, timer = 0;
     static enum timer_state t1_state = on, t1_next_state = off;
-    static engine_data engine = {{0,0,20},{0,0,20},{0,0,20},{0,0,20}};
-    static location_data location = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
-    static sensor_data lsm330;
     
-    switch(u_enable)
-    {
-        case TRUE:
-            switch(t1_state)
-            {
-                case update:
-                    PULSEON();
-                    if (read_accel(&lsm330) < 0) return;
-                    if (read_gyro(&lsm330) < 0) return;
-                    t1_next_state = off;
-                    break;
-                case off:
-                    pid_control_function(location, &engine);
-                    while(E1ON || E2ON || E3ON || E4ON)
-                    {
-                        timer = TMR1;
-                        if(engine.e1.speed < timer)
-                            PULSEE1OFF();
-                        if(engine.e2.speed < timer)
-                            PULSEE2OFF();
-                        if(engine.e3.speed < timer)
-                            PULSEE3OFF();
-                        if(engine.e4.speed < timer)
-                            PULSEE4OFF();
-                    }
-                    if(off_counter == 4)
-                    {
-                        t1_next_state = update;
-                        off_counter = 0;
-                    }
-                    else
-                    {
-                        t1_next_state = on;
-                        off_counter++;
-                    }
-                    break;
-                case on:
-                    PULSEON();
-                    if(off_counter == 1)
-                        find_orientation_and_velocity(&location, lsm330);
-                    t1_next_state = off;
-                    break;
-            }
-            break;
-        case FALSE:
-            switch(t1_state)
-            {
-                case off:
-                    do{
-                        timer = TMR1;
-                    }
-                    while(timer < calibrate);
-                    PULSEOFF();
-                    t1_next_state = on;
-                    break;
-                case on:
-                    PULSEON();
-                    t1_next_state = off;
-                    break;
-            }
-            break;
-    }
-    t1_state = t1_next_state;
+
+   
 }
 
 /*
@@ -199,7 +136,28 @@ int init_hardware()
     u_enable = TRUE;           // enables reading the sensor, tracking location and PID controls
     return 0;
 }
-
+        location_data location = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
+        int output[4][37];
+        // matlab results for pid with values in pitch and roll
+        int matlab[4][37] = {{0,-67725,-67950,67274,-67950,-450,-135900,89399,89699,
+                89999,67724,67949,-67275,67949,449,135899,-89400,-89700,-90000,-67725,
+                -67950,202724,67950,-135000,0,0,0,0,67725,67950,-202724,-67950,135000,
+                0,0,0,0},{0,-67725,-67950,202724,67950,-135000,0,0,0,0,67725,67950,
+                -202724,-67950,135000,0,0,0,0,-67725,-67950,67274,-67950,-450,-135900,
+                89399,89699,89999,67724,67949,-67275,67949,449,135899,-89400,-89700,-90000},
+                {0,67725,67950,-67274,67950,450,135900,-89399,-89699,-89999,-67724,
+                -67949,67275,-67949,-449,-135899,89400,89700,90000,67725,67950,-202724,
+                -67950,135000,0,0,0,0,-67725,-67950,202724,67950,-135000,0,0,0,0},
+                {0,67725,67950,-202724,-67950,135000,0,0,0,0,-67725,-67950,202724,
+                67950,-135000,0,0,0,0,67725,67950,-67274,67950,450,135900,-89399,
+                -89699,-89999,-67724,-67949,67275,-67949,-449,-135899,89400,89700,90000}};
+   
+        int pitch[37] = {0,45,90,0,0,45,90,60,30,0,-45,-90,0,0,-45,-90,-60,-30,0,
+                45,90,0,0,45,90,60,30,0,-45,-90,0,0,-45,-90,-60,-30,0};
+        int roll[37] = {0,0,0,45,90,45,90,60,30,0,0,0,-45,-90,-45,-90,-60,-30,0,0,
+                0,-45,-90,-45,-90,-60,-30,0,0,0,45,90,45,90,60,30,0};
+        int count = 0;
+        int e1_difference = 0, e2_difference=0, e3_difference=0, e4_difference=0,i;
 /*
  * MAIN -initializes the hardware and then loops to keep the program running.
  *      all functionality is interrupt driven.
@@ -224,10 +182,35 @@ int main(int argc, char** argv)
 #else
 
     if(init_hardware() < 0) return(EXIT_SUCCESS);
+    volatile engine_data engine = {{0,0,20,20,1,1,-1},{0,0,20,20,1,-1,1},{0,0,20,20,-1,-1,-1},{0,0,20,20,-1,1,1}};
 
-    while(1)
-    {}
+    static sensor_data lsm330;
+
+    while(count < 37)
+    {
+        WriteCoreTimer(0);
+//        read_accel(&lsm330);
+//        location.actual.pitch = atan2f(lsm330.accel_x, lsm330.accel_z) * DEG * OFFSET;
+//        location.actual.roll = atan2f(lsm330.accel_y, lsm330.accel_z) * DEG * OFFSET;
+        location.actual.pitch = (int)pitch[count];//*OFFSET;
+        location.actual.roll = (int)roll[count];//*OFFSET;
+        pid_control_function(&location, &engine);
+        output[0][count] = engine.e1.speed;
+        output[1][count] = engine.e2.speed;
+        output[2][count] = engine.e3.speed;
+        output[3][count] = engine.e4.speed;
+        while(ReadCoreTimer() < 8000000){}
+        count++;
+    }
     
+    for(i = 0;i<37;i++)
+    {
+        e1_difference += output[0][i] - matlab[0][i];
+        e2_difference += output[1][i] - matlab[1][i];
+        e3_difference += output[2][i] - matlab[2][i];
+        e4_difference += output[3][i] - matlab[3][i];
+    }
+    _nop();
 #endif
     return (EXIT_SUCCESS);
 }
