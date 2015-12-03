@@ -7,214 +7,57 @@
 
 #include "config.h"
 
-#define OFFSET (10000.0)
-#define RAD (M_PI / 180.0)
-#define DT (1.0/500.0)
-#define HOVER (65)
-#define MAX (116 - HOVER)
-#define MIN (59 - HOVER)
-
-float diff_x, diff_y, diff_z, sum_diff, diff_pitch, diff_roll, diff_yaw, p_out, e1_total,
-        i_out, d_out, e1_last, e1_out, kp = 1.0, kd = 0, ki = 0, e2_total, e2_last, e3_total,
-        e3_last, e4_total, e4_last, offset, e2_out, e3_out, e4_out;
+#define MAX (290)       // max output value for functions
+#define MIN (22)        // min output value for functions
+#define HOVER (140)      // speed at which craft will hover (approx.))
+#define PID_DT (2.0/1000.0) // the frequency at which the pid loops are executed
+#define MAX_STEP (20)   // the maximum allowable increase in speed
 
 /*
- * E1 PID - controls the engine speed for the front left engine.
- * @param real_pitch - the current pitch of the craft.
- * @param real_roll - the current roll of the craft.
- * @param real_yaw - the current yaw of the craft.
- * @param location_x - the current x location of the craft.
- * @param location_y - the current y location of the craft.
- * @param location_z - the current z location of the craft.
- * @param set_pitch - the desired pitch of the craft.
- * @param set_roll - the desired roll of the craft.
- * @param set_yaw - the desired yaw of the craft.
- * @param set_x - the desired x location of the craft.
- * @param set_y - the desired y location of the craft.
- * @param set_z - the desired z location of the craft.
+ * PID - controls the engine speed for the front left engine.
+ * @param location - struct with all of the location data. (user and actual)
+ * @param engine - pointer to struct with all of the pid necessary engine values
+ * @param p_data - struct containing the pid parameters.
  */
-int e1_pid(int real_pitch, int real_roll, int real_yaw, int location_x,
-        int location_y, int location_z, int set_pitch, int set_roll,
-        int set_yaw, int set_x, int set_y, int set_z)
+void pid(location_data *location, volatile struct e_data *engine, pid_data *p_data)
 {
-    diff_x = (location_x - set_x) * offset;
-    diff_y = (set_y - location_y) * offset;
-    diff_z = set_z - location_z;
-    diff_pitch = set_pitch - real_pitch;
-    diff_roll = set_roll - real_roll;
-    diff_yaw = real_yaw - set_yaw;
-    sum_diff = diff_x + diff_y + diff_z + diff_pitch + diff_roll + diff_yaw;
-    p_out = kp * sum_diff;
-    e1_total += sum_diff;
-    i_out = e1_total * ki;
-    d_out = kd * (e1_last * sum_diff) / DT;
-    e1_last = sum_diff;
-    e1_out = p_out + i_out + d_out;
-    if(e1_out > MAX)
-        return MAX + HOVER;
-    if(e1_out < MIN)
-        return MIN + HOVER;
+    float error, pitch_error, roll_error, yaw_error, p, i, d;
     
-    return e1_out + HOVER;
+    pitch_error = (location->user.pitch - location->actual.pitch) * engine->pitch_sign;
+    roll_error = (location->user.roll - location->actual.roll) * engine->roll_sign;
+    yaw_error = (location->actual.yaw - location->user.yaw) * engine->yaw_sign;
+    error = (pitch_error + roll_error + yaw_error);
+    p = p_data->kp * error;
+    engine->total += error * PID_DT;
+    i = engine->total * p_data->ki;
+    d = p_data->kd * (error - engine->last) / PID_DT;
+    engine->last = error;
+    engine->speed = (p + i + d);
 }
 
-/*
- * E2 PID - controls the engine speed for the front right engine.
- * @param real_pitch - the current pitch of the craft.
- * @param real_roll - the current roll of the craft.
- * @param real_yaw - the current yaw of the craft.
- * @param location_x - the current x location of the craft.
- * @param location_y - the current y location of the craft.
- * @param location_z - the current z location of the craft.
- * @param set_pitch - the desired pitch of the craft.
- * @param set_roll - the desired roll of the craft.
- * @param set_yaw - the desired yaw of the craft.
- * @param set_x - the desired x location of the craft.
- * @param set_y - the desired y location of the craft.
- * @param set_z - the desired z location of the craft.
+/* translation - manipulates the engine speed data to be within the desired range
+ * @param *engine - pointer to the struct of the engine being modified.
  */
-int e2_pid(int real_pitch, int real_roll, int real_yaw, int location_x,
-        int location_y, int location_z, int set_pitch, int set_roll,
-        int set_yaw, int set_x, int set_y, int set_z)
+void translation(struct e_data *engine)
 {
-    diff_x = (location_x - set_x) * offset;
-    diff_y = (location_y - set_y) * offset;
-    diff_z = set_z - location_z;
-    diff_pitch = set_pitch - real_pitch;
-    diff_roll = real_roll - set_roll;
-    diff_yaw = set_yaw - real_yaw;
-    sum_diff = diff_x + diff_y + diff_z + diff_pitch + diff_roll + diff_yaw;
-    p_out = kp * sum_diff;
-    e2_total += sum_diff;
-    i_out = e2_total * ki;
-    d_out = kd * (e2_last * sum_diff) / DT;
-    e2_last = sum_diff;
-    e2_out = p_out + i_out + d_out;
-    if(e2_out > MAX)
-        return MAX + HOVER;
-    if(e2_out < MIN)
-        return MIN + HOVER;
-    
-    return e2_out + HOVER;
-}
-
-/*
- * E3 PID - controls the engine speed for the back right engine.
- * @param real_pitch - the current pitch of the craft.
- * @param real_roll - the current roll of the craft.
- * @param real_yaw - the current yaw of the craft.
- * @param location_x - the current x location of the craft.
- * @param location_y - the current y location of the craft.
- * @param location_z - the current z location of the craft.
- * @param set_pitch - the desired pitch of the craft.
- * @param set_roll - the desired roll of the craft.
- * @param set_yaw - the desired yaw of the craft.
- * @param set_x - the desired x location of the craft.
- * @param set_y - the desired y location of the craft.
- * @param set_z - the desired z location of the craft.
- */
-int e3_pid(int real_pitch, int real_roll, int real_yaw, int location_x,
-        int location_y, int location_z, int set_pitch, int set_roll,
-        int set_yaw, int set_x, int set_y, int set_z)
-{
-    diff_x = (set_x - location_x) * offset;
-    diff_y = (location_y - set_y) * offset;
-    diff_z = set_z - location_z;
-    diff_pitch = real_pitch - set_pitch;
-    diff_roll = real_roll - set_roll;
-    diff_yaw = real_yaw - set_yaw;
-    sum_diff = diff_x + diff_y + diff_z + diff_pitch + diff_roll + diff_yaw;
-    p_out = kp * sum_diff;
-    e3_total += sum_diff;
-    i_out = e3_total * ki;
-    d_out = kd * (e3_last * sum_diff) / DT;
-    e3_last = sum_diff;
-    e3_out = p_out + i_out + d_out;
-    if(e3_out > MAX)
-        return MAX + HOVER;
-    if(e3_out < MIN)
-        return MIN + HOVER;
-    
-    return e3_out + HOVER;
-}
-
-/*
- * E4 PID - controls the engine speed for the back left engine.
- * @param real_pitch - the current pitch of the craft.
- * @param real_roll - the current roll of the craft.
- * @param real_yaw - the current yaw of the craft.
- * @param location_x - the current x location of the craft.
- * @param location_y - the current y location of the craft.
- * @param location_z - the current z location of the craft.
- * @param set_pitch - the desired pitch of the craft.
- * @param set_roll - the desired roll of the craft.
- * @param set_yaw - the desired yaw of the craft.
- * @param set_x - the desired x location of the craft.
- * @param set_y - the desired y location of the craft.
- * @param set_z - the desired z location of the craft.
- */
-int e4_pid(int real_pitch, int real_roll, int real_yaw, int location_x,
-        int location_y, int location_z, int set_pitch, int set_roll,
-        int set_yaw, int set_x, int set_y, int set_z)
-{
-    diff_x = (set_x - location_x) * offset;
-    diff_y = (location_y - set_y) * offset;
-    diff_z = set_z - location_z;
-    diff_pitch = real_pitch - set_pitch;
-    diff_roll = set_roll - real_roll;
-    diff_yaw = set_yaw - real_yaw;
-    sum_diff = diff_x + diff_y + diff_z + diff_pitch + diff_roll + diff_yaw;
-    p_out = kp * sum_diff;
-    e4_total += sum_diff;
-    i_out = e4_total * ki;
-    d_out = kd * (e4_last * sum_diff) / DT;
-    e4_last = sum_diff;
-    e4_out = p_out + i_out + d_out;
-    e4_out /= 1000;
-    if(e4_out > MAX)
-        return MAX + HOVER;
-    if(e4_out < MIN)
-        return MIN + HOVER;
-    
-    return e4_out + HOVER;
+    int temp = engine->last_speed + MAX_STEP;
+    engine->speed /= OFFSET;
+    engine->speed = (engine->speed > temp) ? temp : engine->speed;
+    engine->speed = (engine->speed > MAX) ? MAX : engine->speed;
+    engine->speed = (engine->speed < MIN) ? MIN : engine->speed;
 }
 
 /*
  * PID CONTROL FUNCTION - callable by main to run the 4 pid functions with a single call
- * @param *real_pitch - pointer to the current pitch of the craft.
- * @param *real_roll - pointer to the current roll of the craft.
- * @param *real_yaw - pointer to the current yaw of the craft.
- * @param *location_x - pointer to the current x location of the craft.
- * @param *location_y - pointer to the current y location of the craft.
- * @param *location_z - pointer to the current z location of the craft.
- * @param *set_pitch - pointer to the desired pitch of the craft.
- * @param *set_roll - pointer to the desired roll of the craft.
- * @param *set_yaw - pointer to the desired yaw of the craft.
- * @param *set_x - pointer to the desired x location of the craft.
- * @param *set_y - pointer to the desired y location of the craft.
- * @param *set_z - pointer to the desired z location of the craft.
- * @param *e1 - pointer to the e1_pulse_time variable in main.
- * @param *e2 - pointer to the e2_pulse_time variable in main.
- * @param *e3 - pointer to the e3_pulse_time variable in main.
- * @param *e4 - pointer to the e4_pulse_time variable in main.
+ * @param location - struct with all of the location data. (user and actual)
+ * @param engine - struct with all of the pid necessary engine values
  */
-void pid_control_function(int *real_pitch, int *real_roll, int *real_yaw,
-        int *set_pitch, int *set_roll, int *set_yaw, int *location_x, int *location_y,
-        int *location_z, int *set_x, int *set_y, int *set_z, int *e1, int *e2, int *e3,
-        int *e4)
+void pid_control_function(location_data *location, volatile engine_data *engine)
 {
-    int temp = *real_yaw;
-    offset = cos((temp / OFFSET) * RAD);
-    
-    *e1 = e1_pid(*real_pitch, *real_roll, *real_yaw, *location_x, *location_y, 
-            *location_z, *set_pitch, *set_roll, *set_yaw, *set_x, *set_y, *set_z);
-    
-    *e2 = e2_pid(*real_pitch, *real_roll, *real_yaw, *location_x, *location_y, 
-            *location_z, *set_pitch, *set_roll, *set_yaw, *set_x, *set_y, *set_z);
-    
-    *e3 = e3_pid(*real_pitch, *real_roll, *real_yaw, *location_x, *location_y, 
-            *location_z, *set_pitch, *set_roll, *set_yaw, *set_x, *set_y, *set_z);
-    
-    *e4 = e4_pid(*real_pitch, *real_roll, *real_yaw, *location_x, *location_y, 
-            *location_z, *set_pitch, *set_roll, *set_yaw, *set_x, *set_y, *set_z);
+    pid_data p_data = {5.0, 0.3, 3.0};
+
+    pid(location, &engine->e1, &p_data);
+    pid(location, &engine->e2, &p_data);
+    pid(location, &engine->e3, &p_data);
+    pid(location, &engine->e4, &p_data);
 }

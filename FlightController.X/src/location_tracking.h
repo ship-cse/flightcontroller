@@ -12,14 +12,25 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-    
-void find_orientation_and_velocity(float *, float *, float *, int *, int *,
-        int *, float *, float *, float *);
-int get_location_x(int, int, int);
-int get_location_y(int, int, int);
-int get_location_z(int, int);
 
-void get_scale();
+/*
+ * location_data - contains a struct with two values, the user values and the actual values
+ * data - struct containing the pitch, roll, yaw, x, y, and z values for location
+ */
+typedef struct
+{
+    struct data
+    {
+        int pitch:32;
+        int roll:32;
+        int yaw:32;
+        int x:32;
+        int y:32;
+        int z:32;        
+    } user, actual;
+} location_data;
+
+void find_orientation_and_velocity(location_data *attitude, sensor_data lsm330);
 
 #ifdef	__cplusplus
 }

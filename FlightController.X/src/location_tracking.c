@@ -1,168 +1,176 @@
 /* 
  * File:   location_tracking.c
  * Author: Kevin Dederer
- * Comments: main logic file for the location, velocity and attitude tracking
+ * Comments: main logic file for the location, velocity and location->actual tracking
  *              functions.
  * Revision history: 
  */
 
+//    rotation_matrix[0][1] = cos(y) * sin(r) * sin(p) - sin(y) * cos(r); \
+//    rotation_matrix[0][2] = cos(y) * sin(p) * cos(r) + sin(y) * sin(r); \
+//    rotation_matrix[1][1] = sin(y) * sin(p) * sin(r) + cos(y) * cos(r); \
+//    rotation_matrix[1][2] = sin(y) * sin(p) * cos(r) - cos(y) * sin(r); \
+
 #include "config.h"
+      
+#define GRAVITY (9.8)       // decimal force of gravity in m/s^2
+#define DEG (180.0 / M_PI)  // conversion from radians to degrees
 
-#define RAD (M_PI / 180.0)
-#define GRAVITY (9.8)
-#define OFFSET (10000.0)
-#define DEG (180.0 / M_PI)
-#define DT (1.0/500.0)
-
-#define ZYX_MATRIX(y, p, r) { \
+/*
+ * ZYX_MATRIX - rotation matrix for location tracking, includes only those values
+ *              needed to track the location
+ */
+#define ZYX_MATRIX(y, p, r, rotation_matrix) { \
     rotation_matrix[0][0] = cos(y) * cos(p); \
-    rotation_matrix[0][1] = cos(y) * sin(r) * sin(p) - sin(y) * cos(r); \
-    rotation_matrix[0][2] = cos(y) * sin(p) * cos(r) + sin(y) * sin(r); \
     rotation_matrix[1][0] = sin(y) * cos(p); \
-    rotation_matrix[1][1] = sin(y) * sin(p) * sin(r) + cos(y) * cos(r); \
-    rotation_matrix[1][2] = sin(y) * sin(p) * cos(r) - cos(y) * sin(r); \
     rotation_matrix[2][0] = 0.0 - sin(p); \
     rotation_matrix[2][1] = cos(p) * sin(r); \
     rotation_matrix[2][2] = cos(p) * cos(r); } \
 
-            
-PRIVATE int velocity_x = 0 , velocity_y = 0, velocity_z = 0, scale;
-PRIVATE float rotation_matrix[3][3] = {0};
-PRIVATE int x_location = 0, y_location = 0, z_location = 0;
 
 /*
- * COMPLEMENTARY FILTER - The function combines a large part of the gyro readings
+ * GET SCALE - determines the accelerometer sensitivity setting to be used in 
+ *              the complementary filter
+ * @output - the integer value of the accelerometer's scale setting
+ */
+int set_scale()
+{        
+    return get_accel_scale();
+}
+
+/* COMPLEMENTARY FILTER - The function combines a large part of the gyro readings
  *                  with a small portion of the given angle from the accelerometer
- *                  readings to allow better accuracy
+ *                  readings to allow better accuracy. Scale is static so that it
+ *                  will only update once because the accelerometer setting will not 
+ *                  change during operation
  * @param a_x - acceleration on the x axis
  * @param a_y - acceleration on the y axis
  * @param a_z - acceleration on the z axis
- * @param *real_pitch - pointer to the calculated pitch value
- * @param *real_roll - pointer to the calculated roll value
- * @param *real_yaw - pointer to the calculated yaw value
+ * @param *location - pointer to a struct containing integer values for the pitch, roll, and yaw data
  */
 void complementary_filter(float a_x, float a_y, float a_z,
-        int *real_pitch, int *real_roll, int *real_yaw)
+        location_data *location)
 {
-    int p = *real_pitch, r = *real_roll, y = *real_yaw;
+    static int scale = -1;
+    if(scale == -1)
+        scale = set_scale();
 
-    float force_magnitude_approx = abs(a_x) + abs(a_y) + abs(a_z);
-    a_z = (a_z > 1.0) ? 1.0 : a_z;
-    a_z = (a_z < -1.0) ? -1.0 : a_z;
+    float force_magnitude_approx = fabs(a_x) + fabs(a_y) + fabs(a_z);
+    a_z = (a_z > 1) ? 1 : a_z;
+    a_z = (a_z < -1) ? -1 : a_z;
     if(force_magnitude_approx > .5 && force_magnitude_approx < (scale))
     {
-        float pitch_acc = atan2f(a_x, a_z) * DEG * OFFSET;
-        *real_pitch = 0.95 * p + 0.05 * pitch_acc;
+        int pitch_acc = atan2f(a_x, a_z) * DEG * OFFSET;
+        location->actual.pitch *= 0.95 + 0.05 * pitch_acc;
 
-        float roll_acc = 0.0 - atan2f(a_y, a_z) * DEG * OFFSET;
-        *real_roll = 0.95 * r + 0.05 * roll_acc;
+        int roll_acc = 0.0 - atan2f(a_y, a_z) * DEG * OFFSET;
+        location->actual.roll *= 0.95  + 0.05 * roll_acc;
     }
 }
 
 /*
  * FIND LOCATION X - tracks the x location of the drone
- * @param real_pitch - the current pitch of the drone.
- * @param real_roll - the current roll of the drone.
- * @param real_yaw - the current yaw of the drone.
+ * @param pitch - the current pitch of the drone.
+ * @param roll - the current roll of the drone.
+ * @param yaw - the current yaw of the drone.
+ * @param v_x - the velocity in the x direction.
+ * @param v_y - the velocity in the y direction.
+ * @param v_z - the velocity in the z direction.
  * @return the x location of the drone in 10ths of millimeters
  */
-int find_location_x(int real_pitch, int real_roll, int real_yaw)
+int find_location_x(float pitch, float roll, float yaw, float v_x, float v_y, float v_z)
 {
-    float yaw = real_yaw / OFFSET, pitch = real_pitch / OFFSET, 
-            roll = real_roll / OFFSET;
-    float v_x = velocity_x / OFFSET, v_y = velocity_y / OFFSET,
-            v_z = velocity_z / OFFSET;
+    float value_x = v_x * cos(yaw) * cos(pitch);
+    float value_y = v_y  * sin(yaw) * cos(roll);
+    float value_z = v_z * (cos(yaw) * sin(pitch) * -1 +
+        sin(yaw) * sin(roll));
     
-    int value_x = v_x * cos(yaw * RAD) * cos(pitch * RAD);
-    int value_y = v_y  * sin(yaw * RAD) * cos(roll * RAD);
-    int value_z = v_z * (cos(yaw * RAD) * (sin(pitch * RAD) * -1 +
-        sin(yaw * RAD) * sin(roll * RAD)));
-    
-    return value_x + value_y + value_z;
+    return (OFFSET * (value_x + value_y + value_z));
 }
 
 /*
  * FIND LOCATION Y - tracks the y location of the drone
- * @param real_pitch - the current pitch of the drone.
- * @param real_roll - the current roll of the drone.
- * @param real_yaw - the current yaw of the drone.
+ * @param pitch - the current pitch of the drone.
+ * @param roll - the current roll of the drone.
+ * @param yaw - the current yaw of the drone.
+ * @param v_x - the velocity in the x direction.
+ * @param v_y - the velocity in the y direction.
+ * @param v_z - the velocity in the z direction.
  * @return the y location of the drone in 10ths of millimeters
  */
-int find_location_y(int real_pitch, int real_roll, int real_yaw)
+int find_location_y(float pitch, float roll, float yaw, float v_x, float v_y, float v_z)
 {
-    float yaw = real_yaw / OFFSET, pitch = real_pitch / OFFSET, 
-            roll = real_roll / OFFSET;
-    float v_x = velocity_x / OFFSET, v_y = velocity_y / OFFSET,
-            v_z = velocity_z / OFFSET;
-
-    int value_y = v_y * cos(yaw * RAD) * cos(roll * RAD);
-    int value_x = v_x * sin(yaw * RAD) * cos(pitch * RAD) * -1;
-    int value_z = v_z * ((cos(yaw * RAD) * sin(roll * RAD)) + 
-        (sin(yaw * RAD) * sin(pitch * RAD)));
+    float value_y = v_y * cos(yaw) * cos(roll);
+    float value_x = v_x * sin(yaw) * cos(pitch) * -1;
+    float value_z = v_z * (cos(yaw) * sin(roll) + 
+        sin(yaw) * sin(pitch));
     
-    return value_y + value_x + value_z;
+    return (OFFSET * (value_y + value_x + value_z));
 }
 
 /*
  * FIND LOCATION Z - tracks the z location of the drone
- * @param real_pitch - the current pitch of the drone.
- * @param real_roll - the current roll of the drone.
+ * @param pitch - the current pitch of the drone.
+ * @param roll - the current roll of the drone.
+ * @param v_x - the velocity in the x direction.
+ * @param v_y - the velocity in the y direction.
+ * @param v_z - the velocity in the z direction.
  * @return the z location of the drone in 10ths of millimeters
  */
-int find_location_z(int real_pitch, int real_roll)
+int find_location_z(float pitch, float roll, float v_x, float v_y, float v_z)
 {
-    float pitch = real_pitch / OFFSET, roll = real_roll / OFFSET;
-    float v_x = velocity_x / OFFSET, v_y = velocity_y / OFFSET,
-            v_z = velocity_z / OFFSET;
+    float value_z =  v_z * cos(pitch) * cos(roll);
+    float value_x = v_x * sin(pitch);
+    float value_y = v_y * sin(roll) * -1;
     
-    int value_z =  v_z * cos(pitch * RAD) * cos(roll * RAD);
-    int value_x = v_x * sin(pitch * RAD);
-    int value_y = v_y * sin(roll * RAD) * -1;
-    
-    return value_z + value_x + value_y;
+    return (OFFSET * (value_z + value_x + value_y));
 }
 
 /*
  * FIND PITCH - calculates the updated pitch using a rotation matrix
- * @param *real_pitch - a pointer to the current pitch value
- * @return none
+ * @param *pitch - a pointer to the current pitch value
+ * @param rotation_matrix - the matrix containing the necessary rotation information.
+ * @return the integer pitch value
  * @see ZYX_MATRIX(y, p, r)
  */
-find_pitch(int *real_pitch)
+int find_pitch(int pitch, float rotation_matrix[3][3])
 {
-    *real_pitch += (atan2f((0.0-rotation_matrix[2][0]), 
+    pitch += (atan2f((0.0-rotation_matrix[2][0]), 
             sqrt(pow(rotation_matrix[2][1],2) + pow(rotation_matrix[2][2],2))) * 
-            OFFSET * DEG * DT);
-    *real_pitch = (*real_pitch <= 1800000) ? *real_pitch : *real_pitch - 3600000;
-    *real_pitch = (*real_pitch > -1800000) ? *real_pitch : *real_pitch + 3600000;
+            OFFSET * DEG);
+    pitch = (pitch <= 1800000) ? pitch : 1800000 - pitch;
+    return (pitch > -1800000) ? pitch : 1800000 + pitch;
+    
 }
 
 /*
  * FIND ROLL - calculates the updated roll using a rotation matrix
- * @param *real_roll - a pointer to the current roll value
- * @return none
+ * @param *roll - a pointer to the current roll value
+ * @param rotation_matrix - the matrix containing the necessary rotation information.
+ * @return the integer roll value
  * @see ZYX_MATRIX(y, p, r)
  */
-find_roll(int *real_roll)
+int find_roll(int roll, float rotation_matrix[3][3])
 {
-    *real_roll += (atan2f(rotation_matrix[2][1], rotation_matrix[2][2]) * DEG * 
-            OFFSET * DT);
-    *real_roll = (*real_roll <= 1800000) ? *real_roll : *real_roll - 3600000;
-    *real_roll = (*real_roll > -1800000) ? *real_roll : *real_roll + 3600000;
+    roll += (atan2f(rotation_matrix[2][1], rotation_matrix[2][2]) * DEG * 
+            OFFSET);
+    roll = (roll <= 1800000) ? roll : roll - 3600000;
+    return (roll > -1800000) ? roll : roll + 3600000;
 }
     
 /*
  * FIND YAW - calculates the updated yaw using a rotation matrix
- * @param *real_yaw - a pointer to the current yaw value
- * @return none
+ * @param *yaw - a pointer to the current yaw value
+ * @param rotation_matrix - the matrix containing the necessary rotation information.
+ * @return the integer yaw value
  * @see ZYX_MATRIX(y, p, r)
  */
-find_yaw(int *real_yaw)
+int find_yaw(int yaw, float rotation_matrix[3][3])
 {
-    *real_yaw += (atan2f(rotation_matrix[1][0], rotation_matrix[0][0]) * DEG * 
-            OFFSET * DT);
-    *real_yaw = (*real_yaw <= 1800000) ? *real_yaw : *real_yaw - 3600000;
-    *real_yaw = (*real_yaw > -1800000) ? *real_yaw : *real_yaw + 3600000;
+    yaw += (atan2f(rotation_matrix[1][0], rotation_matrix[0][0]) * DEG * 
+            OFFSET);
+    yaw = (yaw <= 1800000) ? yaw : yaw - 3600000;
+    return (yaw > -1800000) ? yaw : yaw + 3600000;
 }
 
 /*
@@ -171,20 +179,30 @@ find_yaw(int *real_yaw)
  *                  so if the pitch is < +- 1 degree it resets the velocity to 0.
  *                  it also compensates for the acceleration of gravity if pitched
  * @param accel_x - the acceleration in the x direction
- * @param real_pitch - the current pitch of the drone
+ * @param pitch - the current pitch of the drone
+ * @param velocity_x - the integer velocity value for the x direction
+ * @return - the updated integer value for the velocity in the x direction
  */
-void find_velocity_x(float accel_x, int real_pitch)
+int find_velocity_x(float accel_x, float pitch, int velocity_x)
 {
-    float temp = pow(sin(real_pitch * RAD / OFFSET),2);
+    float temp = fabs(sin(pitch));
     
-    if(real_pitch < -10000)
+    if(pitch < -0.01745)
+    {
         accel_x += temp;
-    else if (real_pitch > 10000)
+    }
+    else if (pitch > 0.01745)
+    {
         accel_x -= temp;
+    }
     else
+    {
         velocity_x = 0;
+    }
     
-    velocity_x += accel_x * GRAVITY * OFFSET * DT;
+    velocity_x += accel_x * GRAVITY * OFFSET;
+    
+    return velocity_x;
 }
 
 /*
@@ -193,20 +211,30 @@ void find_velocity_x(float accel_x, int real_pitch)
  *                  so if the roll is < +- 1 degree it resets the velocity to 0.
  *                  it also compensates for the acceleration of gravity if rolled
  * @param accel_y - the acceleration in the y direction
- * @param real_roll - the current roll of the drone
+ * @param roll - the current roll of the drone
+ * @param velocity_y - the integer value for the velocity in the y direction.
+ * @return - the updated integer value for the velocity in the y direction.
  */
-void find_velocity_y(float accel_y, int real_roll)
+int find_velocity_y(float accel_y, float roll, int velocity_y)
 {
-    float temp = pow(sin(real_roll * RAD / OFFSET),2);
-
-    if(real_roll < -10000)
-        accel_y += temp;
-    else if(real_roll > 10000)
-        accel_y -= temp;
-    else
-        velocity_y = 0;
+    float temp = fabs(sin(roll));
     
-    velocity_y += accel_y * GRAVITY * OFFSET * DT;
+    if(roll < -0.01745)
+    {
+        accel_y += temp;
+    }
+    else if(roll > 0.01745)
+    {
+        accel_y -= temp;
+    }
+    else
+    {
+        velocity_y = 0;
+    }
+    
+    accel_y = (fabs(accel_y) < .05) ? 0 : accel_y;
+    
+    return velocity_y + accel_y * GRAVITY * OFFSET;
 }
 
 /*
@@ -215,59 +243,65 @@ void find_velocity_y(float accel_y, int real_roll)
  *                  roll of the craft. If it is level and registering approximately
  *                  1 g it will reset the velocity to 0.
  * @param accel_z - the acceleration in the z direction
- * @param real_pitch - the current pitch of the drone
- * @param real_roll - the current roll of the drone
+ * @param pitch - the current pitch of the drone
+ * @param roll - the current roll of the drone
+ * @param velocity_z - the integer value of the velocity in the z direction.
+ * @return - the updated integer value for the velocity in the z direction.
  */
-void find_velocity_z(float accel_z, int real_pitch, int real_roll)
+int find_velocity_z(float accel_z, float pitch, float roll, int velocity_z)
 {
-    if(abs(real_pitch) < 10000 && abs(real_roll) < 10000 && abs(accel_z) < 1.2 &&
-            abs(accel_z) > 0.9)
+    if(fabs(pitch) < 0.01745 && fabs(roll) < 0.01745 && fabs(accel_z) < 1.1000 &&
+            fabs(accel_z) > .9000)
         velocity_z = 0;
     
-    accel_z -= pow(cos(real_pitch * RAD / OFFSET), 2) * pow(cos(real_roll * RAD / OFFSET),2);
+    accel_z -= cos(fabs(pitch)) * cos(fabs(roll));
 
-    velocity_z += accel_z * GRAVITY * OFFSET * DT;    
-}
-
-/*
- * GET SCALE - determines the accelerometer sensitivity setting to be used in 
- *              the complementary filter
- */
-void get_scale()
-{
-    get_accel_scale(&scale);
+    accel_z = (fabs(accel_z) < .05) ? 0 : accel_z;
+    
+    return velocity_z + accel_z * GRAVITY  * OFFSET;    
 }
 
 /*
  * FIND ORIENTATION AND VELOCITY - the main logic function for the location tracking
  *                  file. This method is called by the main method and calls all of the
- *                  other methods accept for the find_location_* methods.
- * @param *pitch - pointer to the current gyroscope reading for pitch
- * @param *roll - pointer to the current gyroscope reading for roll
- * @param *yaw - pointer to the current gyroscope reading for yaw
- * @param *real_pitch - pointer to the current value for pitch
- * @param *real_roll - pointer to the current value for roll
- * @param *real_yaw - pointer to the current value for yaw
- * @param *accel_x - pointer to the current accelerometer reading for the x axis
- * @param *accel_y - pointer to the current accelerometer reading for the y axis
- * @param *accel_z - pointer to the current accelerometer reading for the z axis
+ *                  other methods. Data is manipulated as needed to be passed to those
+ *                  methods in order to cut out duplicate equations in each method.
+ * @param *location - pointer to the struct containing the integer values for
+ *                  the x, y, z location and the pitch, roll and yaw
+ * @param lsm330 - struct containing the float values read from the sensor
+ *                  (accel_x, accel_y, accel_z, pitch, roll, and yaw)
  */
-void find_orientation_and_velocity(float *pitch, float *roll, float *yaw,
-        int *real_pitch, int *real_roll, int *real_yaw, float *accel_x,
-        float *accel_y, float *accel_z)
+void find_orientation_and_velocity(location_data *location, sensor_data lsm330)
 {
-    float p = *pitch, r = *roll, y = *yaw;
+    static int velocity_x, velocity_y, velocity_z;
+    float p = lsm330.pitch, r = lsm330.roll, y = lsm330.yaw, a_x = lsm330.accel_x,
+            a_y = lsm330.accel_y, a_z = lsm330.accel_z;
+    float rotation_matrix[3][3];
     
-    ZYX_MATRIX(y * RAD,p * RAD,r * RAD);
+    a_x = (fabs(a_x) < .05) ? 0 : a_x * DT;
+    a_y = (fabs(a_y) < .05) ? 0 : a_y * DT;
+    a_z = (fabs(a_z) < .05) ? 0 : a_z * DT;
+    p = (fabs(p) < .1) ? 0 : p * RAD * DT;
+    r = (fabs(r) < .1) ? 0 : r * RAD * DT;
+    y = (fabs(y) < .05) ? 0 : y * RAD * DT;
     
-    find_roll(real_roll);
-    find_yaw(real_yaw);
-    find_pitch(real_pitch);
+    ZYX_MATRIX(y, p, r, rotation_matrix);
+
+    location->actual.roll = find_roll(location->actual.roll, rotation_matrix);
+    location->actual.yaw = find_yaw(location->actual.yaw, rotation_matrix);
+    location->actual.pitch = find_pitch(location->actual.pitch, rotation_matrix);
     
-    complementary_filter(*accel_x, *accel_y, *accel_z, real_pitch, real_roll,
-    real_yaw);
+    complementary_filter(lsm330.accel_x, lsm330.accel_y, lsm330.accel_z, location);
     
-    find_velocity_x(*accel_x, *real_pitch);
-    find_velocity_y(*accel_y, *real_roll);
-    find_velocity_z(*accel_z, *real_pitch, *real_roll);
+    float r_p = (float)(location->actual.pitch * RAD / OFFSET);
+    float r_r = (float)(location->actual.roll * RAD / OFFSET);
+    float r_y = (float)(location->actual.yaw * RAD / OFFSET);
+    
+    float v_x = find_velocity_x(a_x, r_p, velocity_x) / OFFSET;
+    float v_y = find_velocity_y(a_y, r_r, velocity_y) / OFFSET;
+    float v_z = find_velocity_z(a_z, r_p, r_r, velocity_z) / OFFSET;
+        
+    location->actual.x = find_location_x(r_p, r_r, r_y, v_x, v_y, v_z);
+    location->actual.y = find_location_y(r_p, r_r, r_y, v_x, v_y, v_z);
+    location->actual.z = find_location_z(r_p, r_r, v_x, v_y, v_z);    
 }

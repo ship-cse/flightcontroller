@@ -11,6 +11,7 @@
 #define I2C_DELAY (32)
 
 int i2c_wait_timeout = 0;
+
 #define I2C_WAIT_USDELAY(x,y) \
 { i2c_wait_timeout = 0; \
   unsigned int __end = ReadCoreTimer() + (GetInstructionClock() / 4000000L) * y; \

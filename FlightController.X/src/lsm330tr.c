@@ -144,6 +144,17 @@
 #define LSM330_FIFO_STREAM_TO_FIFO (0b011)
 #define LSM330_FIFO_BYPASS_TO_STREAM (0b100)
 
+
+/*
+ * ATTITUDE CORRECTION - negates the values passed into it to align with desired
+ *                  coordinate system.
+ * @param value - the value to be negated.
+ * @return the negated value; 
+ */
+#define ATTITUDE_CORRECTION(value) \
+{ value = value * -1; \
+} \
+
 // accelerometer control register 4 structure
 typedef union {
     
@@ -365,33 +376,31 @@ typedef union {
 
 } lsm_reg_status_t;
 
-lsm_reg_ctrl4_a_t accel_ctrl4;
-lsm_reg_ctrl5_a_t accel_ctrl5;
-lsm_reg_ctrl6_a_t accel_ctrl6;
-lsm_reg_ctrl7_a_t accel_ctrl7;
-lsm_reg_fifo_ctrl_t accel_fifo_ctrl;
-lsm_reg_fifo_src_a_t accel_fifo_src;
-lsm_reg_status_t accel_status;
-
-lsm_reg_ctrl1_g_t gyro_ctrl1;
-lsm_reg_ctrl2_g_t gyro_ctrl2;
-lsm_reg_ctrl3_g_t gyro_ctrl3;
-lsm_reg_ctrl4_g_t gyro_ctrl4;
-lsm_reg_ctrl5_g_t gyro_ctrl5;
-lsm_reg_fifo_ctrl_t gyro_fifo_ctrl;
-
-double accel_sensitivity, gyro_sensitivity;
-
-/*
- * ATTITUDE CORRECTION - negates the values passed into it to align with desired
- *                  coordinate system.
- * @param value - the value to be negated.
- * @return the negated value; 
- */
-float attitude_correction(float value)
+typedef struct
 {
-    return value * -1.0;
-}
+    int8_t offsetz:8;
+    int8_t offsety:8;
+    int8_t offsetx:8;
+    uint8_t fifo_ctrl: 8;
+    uint8_t ctrl7: 8;
+    uint8_t ctrl6: 8;
+    uint8_t ctrl5: 8;
+    uint8_t ctrl4: 8;
+} accel_config_struct;
+
+typedef struct
+{
+     uint8_t fifo_ctrl: 8;
+     uint8_t ctrl5: 8;
+     uint8_t ctrl4: 8;
+     uint8_t ctrl3: 8;
+     uint8_t ctrl2: 8;
+     uint8_t ctrl1: 8;
+} gyro_config_struct;
+
+// converted to float.
+PRIVATE float accel_sensitivity, gyro_sensitivity;
+PRIVATE uint8_t accel_scale;
 
 /*
  * CHECK WHO AMI - verifies that the i2c communication is working with the sensor
@@ -413,36 +422,56 @@ int check_who_ami( )
     if (byte != LSM330_WHOAMI_VALG) return -1;
 }
 
+enum accel_sensitivity_level
+{
+    G2 = LSM330_ACC_SETG_2G,
+    G4 = LSM330_ACC_SETG_4G, 
+    G6 = LSM330_ACC_SETG_6G, 
+    G8 = LSM330_ACC_SETG_8G, 
+    G16 = LSM330_ACC_SETG_16G,
+}; 
+
+enum
+{
+    DPS250 = LSM330_GYRO_SETDPS_250DPS,
+    DPS500 = LSM330_GYRO_SETDPS_500DPS,
+    DPS2000 = LSM330_GYRO_SETDPS_2000DPS,
+} gyro_sensitivity_level;
+
 /*
  * SET ACCEL SENSITIVITY - sets the appropriate value in the accel_sensitivity 
  *                      variable to be applied to the raw sensor data.
  * @param x - the 3 digit integer of the accelerometer scale setting.
  * @return 0 if the setting was set correctly, -1 if nothing registered.
  */
-int set_accel_sensitivity(int x)
+set_accel_sensitivity(uint8_t sensitivity)
 {
-    switch(x)
+    switch(sensitivity)
     {
-        case 0:
+        case G2:
             accel_sensitivity = LSM330_ACCEL_SCALE_2G;
+            accel_scale = 2;
             break;
-        case 1:
+        case G4:
             accel_sensitivity = LSM330_ACCEL_SCALE_4G;
+            accel_scale = 4;
             break;
-        case 2:
+        case G6:
             accel_sensitivity = LSM330_ACCEL_SCALE_6G;
+            accel_scale = 6;
             break;
-        case 3:
+        case G8:
             accel_sensitivity = LSM330_ACCEL_SCALE_8G;
+            accel_scale = 8;
             break;
-        case -4:
+        case G16:
             accel_sensitivity = LSM330_ACCEL_SCALE_16G;
+            accel_scale = 16;
             break;
         default:
-            return - 1;
+            accel_sensitivity = LSM330_ACCEL_SCALE_2G;
             break;
     }
-    return 0;
 }
 
 /*
@@ -451,153 +480,62 @@ int set_accel_sensitivity(int x)
  * @param x - the 2 digit integer representation of the current scale setting
  * @return 0 if sensitivity is set correctly, -1 if nothing registered
  */
-int set_gyro_sensitivity(int x)
+set_gyro_sensitivity(uint8_t sensitivity)
 {
-    switch(x)
+    switch(sensitivity)
     {
-        case 0:
+        case DPS250:
             gyro_sensitivity = LSM330_GYRO_SCALE_250DPS;
             break;
-        case 1:
+        case DPS500:
             gyro_sensitivity = LSM330_GYRO_SCALE_500DPS;
             break;
-        case 3:
+        case DPS2000:
             gyro_sensitivity = LSM330_GYRO_SCALE_2000DPS;
             break;
         default:
-            return -1;
+            gyro_sensitivity = LSM330_GYRO_SCALE_250DPS;
             break;
     }
-    return 0;
 }
 
 /*
  * CONFIGURE ACCEL - sets the configuration registers to the desired specifications
  * @return 0 if configured successfully, -1 if an error has occurred.
  */
-int configure_accel(void)
+int configure_accel(accel_config_struct *accel_config)
 {
-    int rc;
-
-    // @see lsm_reg_ctrl4_a_t for details
-    accel_ctrl4.byte = 0;
-    accel_ctrl4.iea = 1;
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL4A, accel_ctrl4.byte);
-    if (rc < 0) return -1;
-   
-    // @see lsm_reg_ctrl5_a_t for details
-    accel_ctrl5.byte = 0;
-    accel_ctrl5.xen = 1;
-    accel_ctrl5.yen = 1;
-    accel_ctrl5.zen = 1;
-    accel_ctrl5.bdu = 1;
-    accel_ctrl5.odr = LSM330_ACC_ODR_800HZ;
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL5A, accel_ctrl5.byte);
-    if(rc < 0) return -1;
-    
-    // @see lsm_reg_ctrl6_a_t for details
-    accel_ctrl6.byte = 0;
-    accel_ctrl6.bw = LSM33_ACC_BW_200HZ;
-    accel_ctrl6.fscale = LSM330_ACC_SETG_8G;
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL6A, accel_ctrl6.byte);
-    if(rc < 0) return -1;
-    
-    // @see lsm_reg_ctrl7_a_t for details
-    accel_ctrl7.byte = 0;
-    accel_ctrl7.add_inc = 1;
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL7A, accel_ctrl7.byte);
-    if(rc < 0) return -1;
-    
-    // @see lsm_reg_fifo_ctrl_t for details
-    accel_fifo_ctrl.byte = 0;
-    accel_fifo_ctrl.fmode = LSM330_FIFO_STREAM;
-    accel_fifo_ctrl.wtmp = 0b11111;
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_FIFO_CTRL, accel_fifo_ctrl.byte);
-    if(rc < 0) return -1;
-    
-    // set offset for x axis accelerometer reading
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFX, OFFSETX_A);
-    if(rc < 0) return -1;
-    
-    // set offset for y axis accelerometer reading
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFY, OFFSETY_A);
-    if(rc < 0) return -1;
-    
-    // set offset for z axis acceleromter reading
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFZ, OFFSETZ_A);
-    if(rc < 0) return -1;
-
-    // set the sensitivity value for the accelerometer
-    rc = set_accel_sensitivity(accel_ctrl6.fscale);
-    if(rc < 0) return -1;
+    if (lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL4A, accel_config->ctrl4) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL5A, accel_config->ctrl5) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL6A, accel_config->ctrl6) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL7A, accel_config->ctrl7) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_FIFO_CTRL, accel_config->fifo_ctrl) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFX, accel_config->offsetx) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFY, accel_config->offsety) < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_ACC_OFFZ, accel_config->offsetz) < 0) return -1;
 }
 
 /*
  * CONFIGURE GYRO sets the configuration registers to the desired settings
  * @return 0 if the gyro is successfully configured, -1 if an error occurred.
  */
-int configure_gyro(void)
+int configure_gyro(gyro_config_struct *gyro_config)
 {
-    int rc;
-    
-    // @see lsm330_reg_ctrl1_g_t for specifications
-    gyro_ctrl1.byte = 0;
-    gyro_ctrl1.xen = 1;
-    gyro_ctrl1.yen = 1;
-    gyro_ctrl1.zen = 1;
-    gyro_ctrl1.pd = 1;
-    gyro_ctrl1.dr = LSM330_GYRO_DR_760HZ;
-    gyro_ctrl1.bw = LSM330_GYRO_BW_LVL4;
-    rc = lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL1G, gyro_ctrl1.byte);
-    if(rc < 0) return -1;    
-
-    // @see lsm330_reg_ctrl2_g_t for specifications
-    gyro_ctrl2.byte = 0;
-    gyro_ctrl2.hpcf = LSM330_GYRO_HPF_LVL10;
-    gyro_ctrl2.hpm = LSM330_GYRO_HPF_NORMAL_RESET;
-    gyro_ctrl2.lvlen = 1;
-    rc = lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL2G, gyro_ctrl2.byte);
-    if(rc < 0) return -1;    
-    
-    // @see lsm330_reg_ctrl3_g_t for specifications    
-    gyro_ctrl3.byte = 0;
-    gyro_ctrl3.pp_od = 1;
-    rc = lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL3G, gyro_ctrl3.byte);
-    if(rc < 0) return -1;    
-
-    // @see lsm330_reg_ctrl4_g_t for specifications
-    gyro_ctrl4.byte = 0;
-    gyro_ctrl4.bdu = 1;
-    gyro_ctrl4.fs = LSM330_GYRO_SETDPS_250DPS;
-    rc = lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL4G, gyro_ctrl4.byte);
-    if(rc < 0) return -1;    
-    
-    // @see lsm330_reg_ctrl5_g_t for specifications
-    gyro_ctrl5.byte = 0;
-    gyro_ctrl5.int1_sel = 0b11;
-    gyro_ctrl5.out_sel = 0b01;
-    gyro_ctrl5.hpen = 0;
-    rc = lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL5G, gyro_ctrl5.byte);
-    if(rc < 0) return -1;    
-
-    // @see lsm330_reg_fifo_ctrl_t for specifications
-    gyro_fifo_ctrl.byte = 0;
-    gyro_fifo_ctrl.fmode = LSM330_FIFO_FIFO;
-    gyro_fifo_ctrl.wtmp = 0b11111;
-    rc = lsm330_write_reg(LSM330_DEV_GYRO, LSM330_GYRO_FIFO_CTRL, gyro_fifo_ctrl.byte);
-    if(rc < 0) return -1;
-
-    // set the sensitivity value for the gyroscope
-    rc = set_gyro_sensitivity(gyro_ctrl4.fs);
-    if(rc < 0) return -1;
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL1G, gyro_config->ctrl1) < 0) return -1;    
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL2G, gyro_config->ctrl2) < 0) return -1;    
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL3G, gyro_config->ctrl3) < 0) return -1;    
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL4G, gyro_config->ctrl4) < 0) return -1;    
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL5G, gyro_config->ctrl5) < 0) return -1;    
+    if(lsm330_write_reg(LSM330_DEV_GYRO, LSM330_GYRO_FIFO_CTRL, gyro_config->fifo_ctrl) < 0) return -1;
 }
 
 /*
  * SOFT RESET - reset the device to ensure a consistent starting point 
  * @return 0 if operating correctly, -1 if an error occurs
  */
-int soft_reset( )
+int soft_reset()
 {
+    lsm_reg_ctrl4_a_t accel_ctrl4;
     accel_ctrl4.byte = 0;
     accel_ctrl4.strt = 1;
     
@@ -616,8 +554,23 @@ int soft_reset( )
  * CONFIGURE LSM330TR - callable function by main to call for a new configuration
  * @return 0 if the device is configured successfully, -1 if a failure occurs.
  */
-int configure_lsm330tr()
+int configure_lsm330tr(int test)
 {
+    lsm_reg_ctrl4_a_t accel_ctrl4;
+    lsm_reg_ctrl5_a_t accel_ctrl5;
+    lsm_reg_ctrl6_a_t accel_ctrl6;
+    lsm_reg_ctrl7_a_t accel_ctrl7;
+    lsm_reg_fifo_ctrl_t accel_fifo_ctrl;
+    accel_config_struct accel_config;
+
+    lsm_reg_ctrl1_g_t gyro_ctrl1;
+    lsm_reg_ctrl2_g_t gyro_ctrl2;
+    lsm_reg_ctrl3_g_t gyro_ctrl3;
+    lsm_reg_ctrl4_g_t gyro_ctrl4;
+    lsm_reg_ctrl5_g_t gyro_ctrl5;
+    lsm_reg_fifo_ctrl_t gyro_fifo_ctrl;
+    gyro_config_struct gyro_config;
+   
     int rc = 0;
     
     rc = check_who_ami();
@@ -626,70 +579,146 @@ int configure_lsm330tr()
     rc = soft_reset();
     if(rc < 0) return -1;
     
-    rc = configure_accel();
+    if(!test) // set normal configuration
+    {
+        // @see lsm_reg_ctrl4_a_t for details
+        accel_ctrl4.byte = 0;
+        accel_ctrl4.iea = 1;    // interrupt level high since pulled down
+        
+        // @see lsm_reg_ctrl5_a_t for details
+        accel_ctrl5.byte = 0;
+        accel_ctrl5.xen = 1;    // enable x accelerometer readings
+        accel_ctrl5.yen = 1;    // enable y accelerometer readings
+        accel_ctrl5.zen = 1;    // enable z accelerometer readings
+        accel_ctrl5.bdu = 1;    // wait to update until low and high registers are read
+        accel_ctrl5.odr = LSM330_ACC_ODR_800HZ;  // closest output data rate to 500hz
+        
+        // @see lsm_reg_ctrl6_a_t for details
+        accel_ctrl6.byte = 0;
+        accel_ctrl6.bw = LSM33_ACC_BW_200HZ;        // set bandwith filter frequency - best results
+        accel_ctrl6.fscale = LSM330_ACC_SETG_8G;    // set the sensitivity, 8G was efficient
+        
+        // @see lsm_reg_ctrl7_a_t for details
+        accel_ctrl7.byte = 0;
+        accel_ctrl7.add_inc = 1;    // enable auto-increment. allows multiple reads without 
+                                    // resending read commands
+        
+        // @see lsm_reg_fifo_ctrl_t for details
+        accel_fifo_ctrl.byte = 0;
+        accel_fifo_ctrl.fmode = LSM330_FIFO_STREAM; // sets fifo mode if enabled
+        accel_fifo_ctrl.wtmp = 0b11111;             // sets watermark level if enabled
+                
+        // @see lsm330_reg_ctrl1_g_t for specifications
+        gyro_ctrl1.byte = 0;
+        gyro_ctrl1.xen = 1;     // enable roll readings
+        gyro_ctrl1.yen = 1;     // enable pitch readings
+        gyro_ctrl1.zen = 1;     // enable yaw readings
+        gyro_ctrl1.pd = 1;      // power down mode disabled - normal/sleep mode selected
+        gyro_ctrl1.dr = LSM330_GYRO_DR_760HZ;   // closest data rate to 500hz
+        gyro_ctrl1.bw = LSM330_GYRO_BW_LVL4;    // bandwith filter level -- best results
+
+        // @see lsm330_reg_ctrl2_g_t for specifications
+        gyro_ctrl2.byte = 0;
+        gyro_ctrl2.hpcf = LSM330_GYRO_HPF_LVL10;    // high pass filter level -- best results
+        gyro_ctrl2.hpm = LSM330_GYRO_HPF_NORMAL_RESET;  // high pass filter mode
+        gyro_ctrl2.lvlen = 1;   // level determinate for interrupt
+        
+        // @see lsm330_reg_ctrl3_g_t for specifications    
+        gyro_ctrl3.byte = 0;
+        gyro_ctrl3.pp_od = 1;   // push pull or open drain set to open drain
+
+        // @see lsm330_reg_ctrl4_g_t for specifications
+        gyro_ctrl4.byte = 0;
+        gyro_ctrl4.bdu = 1;     // won't update register until high and low are read
+        gyro_ctrl4.fs = LSM330_GYRO_SETDPS_500DPS;      // least glitchy of the settings
+        
+        // @see lsm330_reg_ctrl5_g_t for specifications
+        gyro_ctrl5.byte = 0;
+        gyro_ctrl5.int1_sel = 0b11;     // data stream settings
+        gyro_ctrl5.out_sel = 0b01;      // data stream settings
+        gyro_ctrl5.hpen = 0;            // high pass filter disabled
+
+        // @see lsm330_reg_fifo_ctrl_t for specifications
+        gyro_fifo_ctrl.byte = 0;
+        gyro_fifo_ctrl.fmode = LSM330_FIFO_FIFO;    // fifo mode if enabled
+        gyro_fifo_ctrl.wtmp = 0b11111;              // watermark level if enabled
+
+    
+    }
+    else    // set test configuration
+    {
+        gyro_ctrl1.byte = 0xFF;
+        rc = lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL1G, gyro_ctrl1.byte);
+        if(rc < 0) return -1;
+        gyro_ctrl4.byte = 0;
+        gyro_ctrl4.bdu = 1;
+        gyro_ctrl4.fs = LSM330_GYRO_SETDPS_250DPS;
+        rc = lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL4G, gyro_ctrl4.byte);
+        if(rc < 0) return -1; 
+
+        accel_ctrl5.byte = 0x8F;
+        rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL5A, accel_ctrl5.byte);
+        if(rc < 0) return -1;
+        accel_ctrl6.byte = 0;
+        accel_ctrl6.bw = LSM33_ACC_BW_200HZ;
+        accel_ctrl6.fscale = LSM330_ACC_SETG_8G;
+        rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL6A, accel_ctrl6.byte);
+        if(rc < 0) return -1;
+        accel_ctrl7.byte = 0;
+        accel_ctrl7.add_inc = 1;
+        rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL7A, accel_ctrl7.byte);
+        if(rc < 0) return -1;
+    }
+       
+    
+    accel_config.ctrl4 = accel_ctrl4.byte;
+    accel_config.ctrl5 = accel_ctrl5.byte;
+    accel_config.ctrl6 = accel_ctrl6.byte;
+    accel_config.ctrl7 = accel_ctrl7.byte;
+    accel_config.fifo_ctrl = accel_fifo_ctrl.byte;
+    accel_config.offsetx = OFFSETX_A;       // set offset for x axis accelerometer reading - determined by reading from level surface
+    accel_config.offsety = OFFSETY_A;       // set offset for y axis accelerometer reading - determined by reading from level surface
+    accel_config.offsetz = OFFSETZ_A;       // set offset for z axis accelerometer reading - determined by reading from level surface
+    set_accel_sensitivity(accel_ctrl6.fscale);   
+   
+
+    gyro_config.ctrl1 = gyro_ctrl1.byte;
+    gyro_config.ctrl2 = gyro_ctrl2.byte;
+    gyro_config.ctrl3 = gyro_ctrl3.byte;
+    gyro_config.ctrl4 = gyro_ctrl4.byte;
+    gyro_config.ctrl5 = gyro_ctrl5.byte;
+    gyro_config.fifo_ctrl = gyro_fifo_ctrl.byte;
+    set_gyro_sensitivity(gyro_ctrl4.fs);
+    
+    rc = configure_accel(&accel_config);
     if(rc < 0) return -1;
     
-    rc = configure_gyro();
+    rc = configure_gyro(&gyro_config);
     if(rc < 0) return -1;
     
     return 0;
 }
 
 /*
- * CONFIGURE LSM330TR TEST - configures the sensor to be validated
- * @return 0 if the device is configured successfully, -1 if a failure occurs.
+ * AXIS CORRECTION - fixes the output to match desired axes configuration
+ * @param value - the value to be flipped
+ * @return the correct axis reading
  */
-int configure_lsm330tr_test()
+float axis_correction(float value)
 {
-    int rc = 0;
-    
-    rc = check_who_ami();
-    if (rc < 0) return;
-    
-    rc = soft_reset();
-    if(rc < 0) return -1;
-
-    gyro_ctrl1.byte = 0xFF;
-    rc = lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL1G, gyro_ctrl1.byte);
-    if(rc < 0) return -1;
-    gyro_ctrl4.byte = 0;
-    gyro_ctrl4.bdu = 1;
-    gyro_ctrl4.fs = LSM330_GYRO_SETDPS_250DPS;
-    rc = lsm330_write_reg(LSM330_DEV_GYRO, LSM330_REG_CTRL4G, gyro_ctrl4.byte);
-    if(rc < 0) return -1; 
-    
-    accel_ctrl5.byte = 0x8F;
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL5A, accel_ctrl5.byte);
-    if(rc < 0) return -1;
-    accel_ctrl6.byte = 0;
-    accel_ctrl6.bw = LSM33_ACC_BW_200HZ;
-    accel_ctrl6.fscale = LSM330_ACC_SETG_8G;
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL6A, accel_ctrl6.byte);
-    if(rc < 0) return -1;
-    accel_ctrl7.byte = 0;
-    accel_ctrl7.add_inc = 1;
-    rc = lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL7A, accel_ctrl7.byte);
-    if(rc < 0) return -1;
-    
-    rc = set_accel_sensitivity(accel_ctrl6.fscale);
-    if(rc < 0) return -1;
-    
-    rc = set_gyro_sensitivity(gyro_ctrl4.fs);
-    if(rc < 0) return -1;
-    
-    return 0;
+    return value * -1;
 }
 
 /*
  * READ ACCEL - performs the register reads on the accelerometer, combines the 
  *              high and low values and multiplies the result by the sensitivity
- * @param *accel_x - pointer to the accel_x address in main
- * @param *accel_y - pointer to the accel_y address in main
- * @param *accel_z - pointer to the accel_z address in main
+ * @param *lsm330 - pointer to the struct containing the variables for acceleration
+ *                  on all 3 axes.
  * @return 0 if all reads were successfully completed, -1 if a failure occurs.
  */
-int read_accel( float *accel_x, float *accel_y, float *accel_z)
+int read_accel(sensor_data *lsm330)
 {
+    lsm_reg_status_t accel_status;
     int rc;
     uint8_t buff[6] = {0};
     int16_t ival;    
@@ -708,29 +737,26 @@ int read_accel( float *accel_x, float *accel_y, float *accel_z)
     rc = lsm330_read_multiple_reg(LSM330_DEV_ACCEL, LSM330_REG_OUT_MULTIPLE, buff);
     if(rc < 0) return -1;
     
-    ival = ((int16_t) buff[1]) << 8 | (uint16_t) buff[0];
-    *accel_x = (float) ival * accel_sensitivity;
+    ival = (((int16_t) buff[1]) << 8 | (uint16_t) buff[0]);
+    lsm330->accel_x = ival * accel_sensitivity;
     
-    ival = ((int16_t) buff[3]) << 8 | (uint16_t) buff[2];
-    *accel_y = (float) ival * accel_sensitivity;
+    ival = (((int16_t) buff[3]) << 8 | (uint16_t) buff[2]);
+    lsm330->accel_y = ival * accel_sensitivity;
     
     ival = ((int16_t) buff[5]) << 8 | (uint16_t) buff[4];
-    *accel_z = (float) ival * accel_sensitivity;
+    lsm330->accel_z = (ival * accel_sensitivity);
     
-    *accel_y = attitude_correction(*accel_y);
-
     return 0;
 }
 
 /*
  * READ GYRO - performs the register reads for gyroscope output, combines the
  *              high and low values and multiplies it by the sensitivity. 
- * @param *pitch - pointer to the pitch address in main
- * @param *roll - pointer to the roll address in main
- * @param *yaw - pointer to the yaw address in main
+ * @param *lsm330 - pointer to the struct containing the variables for the gyroscope
+ *                  on all 3 axes.
  * @return 0 if all reads were successfully completed, -1 if a failure occurs.
  */
-int read_gyro( float *pitch, float *roll, float *yaw)
+int read_gyro(sensor_data *lsm330)
 {
     int rc;
     uint8_t buff[6] = {0};
@@ -752,47 +778,23 @@ int read_gyro( float *pitch, float *roll, float *yaw)
     rc = lsm330_read_multiple_reg(LSM330_DEV_GYRO, LSM330_REG_OUT_MULTIPLE, buff);
     if(rc < 0) return -1;
     
-    ival = (((int16_t) buff[1]) << 8 | (uint16_t) buff[0]);
-    *roll = (float) ival * gyro_sensitivity;
+    ival = (((int16_t) buff[1]) << 8 | (uint16_t) buff[0]);// * gyro_sensitivity);
+    lsm330->roll = axis_correction(ival * gyro_sensitivity);
     
-    ival = (((int16_t) buff[3]) << 8 | (uint16_t) buff[2]);
-    *pitch = (float) ival * gyro_sensitivity;
+    ival = (((int16_t) buff[3]) << 8 | (uint16_t) buff[2]);// * gyro_sensitivity;
+    lsm330->pitch = (ival * gyro_sensitivity);
     
-    ival = (((int16_t) buff[5]) << 8 | (uint16_t) buff[4]);
-    *yaw = (float) ival * gyro_sensitivity;
-    
-    *pitch = attitude_correction(*pitch);
+    ival = (((int16_t) buff[5]) << 8 | (uint16_t) buff[4]);// * gyro_sensitivity;
+    lsm330->yaw = (ival * gyro_sensitivity);
     
     return 0;
 }
 
 /*
  * GET ACCEL SCALE - passes the accelerometer setting to location_tracking.c
- * @param *scale - pointer to the scale variable in location_tracking.c
+ * @return the current accelerometer scale setting
  */
-void get_accel_scale(int *scale)
+int get_accel_scale()
 {
-    int x = accel_ctrl6.fscale;
-    
-    switch(x)
-    {
-        case 0:
-            *scale = 2;
-            break;
-        case 1:
-            *scale = 4;
-            break;
-        case 2:
-            *scale = 6;
-            break;
-        case 3:
-            *scale = 8;
-            break;
-        case -4:
-            *scale = 16;
-            break;
-        default:
-            *scale = 2;
-            break;
-    }
+    return accel_scale;
 }
