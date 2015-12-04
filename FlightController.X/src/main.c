@@ -152,61 +152,19 @@ int init_hardware()
     u_enable = TRUE;           // enables reading the sensor, tracking location and PID controls
     return 0;
 }
-        location_data location = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
-        float output[4][37];
-        // matlab results for pid with values in pitch and roll
-        float matlab[4][37] = {{0,-1182.02470715206,-1185.95264044684,1174.16836932359,
-                -1185.95405416354,-7.85775154515879,-2371.90810832707,1560.31743977909,
-                1565.55279921654,1570.78878697253,1182.01716732969,1185.94510062447,
-                -1174.17590914596,1185.94651434117,7.85021172279018,2371.90056850470,
-                -1560.32497960146,-1565.56033903891,-1570.79632679490,-1182.02470715206,
-                -1185.95264044684,3538.21778362771,1185.95122673015,-2356.19449019235,
-                0,0,0,
-                0,1182.02470715206,1185.95264044684,-3538.21778362771,
-                -1185.95122673015,2356.19449019235,0,0,
-                0,0},{0,-1182.02470715206,-1185.95264044684,
-                3538.21778362771,1185.95122673015,-2356.19449019235,0,
-                0,0,0,1182.02470715206,
-                1185.95264044684,-3538.21778362771,-1185.95122673015,2356.19449019235,
-                0,0,0,
-                0,-1182.02470715206,-1185.95264044684,1174.16836932359,
-                -1185.95405416354,-7.85775154515879,-2371.90810832707,1560.31743977909,
-                1565.55279921654,1570.78878697253,1182.01716732969,1185.94510062447,
-                -1174.17590914596,1185.94651434117,7.85021172279018,2371.90056850470,
-                -1560.32497960146,-1565.56033903891,-1570.79632679490},{0,1182.02470715206,
-                1185.95264044684,-1174.16836932359,1185.95405416354,7.85775154515879,
-                2371.90810832707,-1560.31743977909,-1565.55279921654,-1570.78878697253,
-                -1182.01716732969,-1185.94510062447,1174.17590914596,-1185.94651434117,
-                -7.85021172279018,-2371.90056850470,1560.32497960146,1565.56033903891,
-                1570.79632679490,1182.02470715206,1185.95264044684,-3538.21778362771,
-                -1185.95122673015,2356.19449019235,0,0,
-                0,0,-1182.02470715206,-1185.95264044684,
-                3538.21778362771,1185.95122673015,-2356.19449019235,0,
-                0,0,0},{0,
-                1182.02470715206,1185.95264044684,-3538.21778362771,-1185.95122673015,
-                2356.19449019235,0,0,0,
-                0,-1182.02470715206,-1185.95264044684,3538.21778362771,
-                1185.95122673015,-2356.19449019235,0,0,
-                0,0,1182.02470715206,1185.95264044684,
-                -1174.16836932359,1185.95405416354,7.85775154515879,2371.90810832707,
-                -1560.31743977909,-1565.55279921654,-1570.78878697253,-1182.01716732969,
-                -1185.94510062447,1174.17590914596,-1185.94651434117,-7.85021172279018,
-                -2371.90056850470,1560.32497960146,1565.56033903891,1570.79632679490}};
-   
-        float pitch[37] = {0,M_PI/4,M_PI/2,0,0,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,-M_PI/4,-M_PI/2,0,0,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,
-                M_PI/4,M_PI/2,0,0,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,-M_PI/4,-M_PI/2,0,0,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0};
-        float roll[37] = {0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,0,0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,
-                0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0};
-        int count = 0;
-        float e1_difference = 0, e2_difference=0, e3_difference=0, e4_difference=0;
-        int i;
+
+void get_attitude(struct data *actual, sensor_data *lsm330)
+{
+    actual->pitch = atan2f(lsm330->accel_x, lsm330->accel_z);
+    actual->roll = atan2f(lsm330->accel_y, lsm330->accel_z);
+}
+        
 /*
  * MAIN -initializes the hardware and then loops to keep the program running.
  *      all functionality is interrupt driven.
  */
 int main(int argc, char** argv)
 {   
-    // main is currently set to test the pid loop
 #ifdef TEST_SENSOR
     int rc = 0;
     rc += configure_lsm330tr(1);
@@ -226,63 +184,17 @@ int main(int argc, char** argv)
 
     if(init_hardware() < 0) return(EXIT_SUCCESS);
     static sensor_data lsm330;
+    location_data location = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
     
-    WriteCoreTimer(0);
-    while(count < 37)
+    while(1)
     {
+        WriteCoreTimer(0);
 
-//        read_accel(&lsm330);
-//        location.actual.pitch = atan2f(lsm330.accel_x, lsm330.accel_z);
-//        location.actual.roll = atan2f(lsm330.accel_y, lsm330.accel_z);
-        location.actual.pitch = pitch[count];//*OFFSET;
-        location.actual.roll = roll[count];//*OFFSET;
+        read_accel(&lsm330);
+        get_attitude(&location.actual, &lsm330);
         pid_control_function(&location, &engine);
-        output[0][count] = (engine.e1.pid_out<.00000001 && engine.e1.pid_out > -.00000001) ? 0.0 : engine.e1.pid_out;
-        output[1][count] = (engine.e2.pid_out<.00000001 && engine.e2.pid_out > -.00000001) ? 0.0 : engine.e2.pid_out;
-        output[2][count] = (engine.e3.pid_out<.00000001 && engine.e3.pid_out > -.00000001) ? 0.0 : engine.e3.pid_out;
-        output[3][count] = (engine.e4.pid_out<.00000001 && engine.e4.pid_out > -.00000001) ? 0.0 : engine.e4.pid_out;
-//        while(ReadCoreTimer() < 400000){}
-        count++;
+        while(ReadCoreTimer() < 400000){}
     }
-    count = ReadCoreTimer();
-//    
-    for(i = 0;i<37;i++)
-    {
-        float temp;
-        temp = fabs(matlab[0][i] - output[0][i]);///fabs(matlab[0][i]) * 100.0;
-        if(temp != 0)
-        {
-            temp /= fabs(matlab[0][i]);
-            temp *= 100.0;
-        }
-        e1_difference += temp;
-        temp = fabs(matlab[1][i] - output[1][i]);///fabs(matlab[0][i]) * 100.0;
-        if(temp != 0)
-        {
-            temp /= fabs(matlab[1][i]);
-            temp *= 100.0;
-        }
-        e2_difference += temp;
-        temp = fabs(matlab[2][i] - output[2][i]);///fabs(matlab[0][i]) * 100.0;
-        if(temp != 0)
-        {
-            temp /= fabs(matlab[2][i]);
-            temp *= 100.0;
-        }
-        e3_difference += temp;
-        temp = fabs(matlab[3][i] - output[3][i]);///fabs(matlab[0][i]) * 100.0;
-        if(temp != 0)
-        {
-            temp /= fabs(matlab[3][i]);
-            temp *= 100.0;
-        }
-        e4_difference += temp;
-    }
-    e1_difference /= 37.0;
-    e2_difference /= 37.0;
-    e3_difference /= 37.0;
-    e4_difference /= 37.0;
-    _nop();
 #endif
     return (EXIT_SUCCESS);
 }

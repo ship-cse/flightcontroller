@@ -26,15 +26,10 @@ typedef struct
     float accel_x;
     float accel_y;
     float accel_z;
-    float pitch;
-    float roll;
-    float yaw;
 } sensor_data;
     
 int read_accel(sensor_data *lsm330);
-int read_gyro(sensor_data *lsm330);
 int configure_lsm330tr(int test);
-int get_accel_scale();
      
 #ifdef	__cplusplus
 }

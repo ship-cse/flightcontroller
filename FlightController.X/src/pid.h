@@ -52,6 +52,23 @@ typedef struct
     float kd;
 } pid_data;
 
+/*
+ * location_data - contains a struct with two values, the user values and the actual values
+ * data - struct containing the pitch, roll, yaw, x, y, and z values for location
+ */
+typedef struct
+{
+    struct data
+    {
+        float pitch;
+        float roll;
+        float yaw;
+        int x:32;
+        int y:32;
+        int z:32;        
+    } user, actual;
+} location_data;
+
 void pid_control_function(location_data *location, engine_data *constant);
 
 #ifdef	__cplusplus
