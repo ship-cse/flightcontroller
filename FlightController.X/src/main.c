@@ -75,7 +75,7 @@ enum timer_state
 //#define TEST_SENSOR
 //#define CALIBRATE
 
-PRIVATE int calibrate, u_enable = FALSE;
+PRIVATE int calibrate;
 PRIVATE engine_data engine = {{0,0,2500,2500,0.0,1,1,-1},{0,0,2500,2500,0.0,1,-1,1},{0,0,2500,2500,0.0,-1,-1,-1},{0,0,2500,2500,0.0,-1,1,1}};
         static int  E1ON = FALSE, E2ON = FALSE, E3ON = FALSE, E4ON = FALSE, timer = 0;
 /*
@@ -129,9 +129,9 @@ int init_hardware()
     rc = configure_lsm330tr(0);
     if(rc < 0) return -1;
 
-//    OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_256, T1_TICK);
-//    ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_7);
-//    OpenTimer2(T2_ON | T2_PS_1_32, T2_TICK);
+    OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_256, T1_TICK);
+    ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_7);
+    OpenTimer2(T2_ON | T2_PS_1_32, T2_TICK);
     
     PR1 = 5;            // timer 1 interrupt timing: will interrupt every 1ms
     
@@ -141,15 +141,9 @@ int init_hardware()
     calibrate = SET_LOW;
     DELAY(800000);
 #endif
-    DELAY(40000000);
-//    calibrate = 20;               // ramp up code for debugging
-//    while(calibrate < 130)
-//    {
-//        calibrate += 10;
-//        DELAY(8000000);
-//    }
     
-    u_enable = TRUE;           // enables reading the sensor, tracking location and PID controls
+
+    
     return 0;
 }
 
@@ -158,7 +152,14 @@ void get_attitude(struct data *actual, sensor_data *lsm330)
     actual->pitch = atan2f(lsm330->accel_x, lsm330->accel_z);
     actual->roll = atan2f(lsm330->accel_y, lsm330->accel_z);
 }
-        
+
+float pitch[100];
+float roll[100];
+int e1[100];
+int e2[100];
+int e3[100];
+int e4[100];
+
 /*
  * MAIN -initializes the hardware and then loops to keep the program running.
  *      all functionality is interrupt driven.
@@ -185,16 +186,34 @@ int main(int argc, char** argv)
     if(init_hardware() < 0) return(EXIT_SUCCESS);
     static sensor_data lsm330;
     location_data location = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
-    
+    DELAY(40000000);
+    engine.e1.speed = 2500; // ramp up code for debugging
+    while(engine.e1.speed < 3611)
+    {
+        engine.e1.speed += 100;
+        engine.e2.speed += 100;
+        engine.e3.speed += 100;
+        engine.e4.speed += 100;
+        DELAY(80000);
+    }
+    int i = 0;
     while(1)
     {
         WriteCoreTimer(0);
 
         read_accel(&lsm330);
         get_attitude(&location.actual, &lsm330);
+        pitch[i] = location.actual.pitch;
+        roll[i] = location.actual.roll;
         pid_control_function(&location, &engine);
+        e1[i] = engine.e1.speed;
+        e2[i] = engine.e2.speed;
+        e3[i] = engine.e3.speed;
+        e4[i] = engine.e4.speed;
         while(ReadCoreTimer() < 400000){}
+        i = (i<100) ? ++i : 0;
     }
+    _nop();
 #endif
     return (EXIT_SUCCESS);
 }
