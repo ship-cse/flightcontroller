@@ -10,7 +10,7 @@
 #define MAX (4650)       // max output value for functions
 #define MIN (2650)        // min output value for functions
 #define HOVER (3611)      // speed at which craft will hover (approx.))
-#define PID_DT (1.0/100.0) // the frequency at which the pid loops are executed
+#define PID_DT (.01) // the frequency at which the pid loops are executed
 #define MAX_STEP (200)   // the maximum allowable increase in speed
 #define X_POSITIVE (10.0/1.0)
 #define X_NEGATIVE (10.0/1.0)
@@ -64,14 +64,14 @@ void translation(struct e_data *engine)
  */
 void pid_control_function(location_data *location, engine_data *engine)
 {
-    pid_data p_data = {5.0, 3, 3.0};
+    pid_data p_data = {5.0, .3, 3.0};
 
     pid(location, &engine->e1, &p_data);
     pid(location, &engine->e2, &p_data);
     pid(location, &engine->e3, &p_data);
     pid(location, &engine->e4, &p_data);
-    translation(&engine->e1);
-    translation(&engine->e2);
-    translation(&engine->e3);
-    translation(&engine->e4);
+//    translation(&engine->e1);
+//    translation(&engine->e2);
+//    translation(&engine->e3);
+//    translation(&engine->e4);
 }
