@@ -95,7 +95,6 @@ void __ISR(_TIMER_1_VECTOR, IPL7SRS) Timer1Handler(void)
     
     if(counter < 5000)
     {
-        counter += 5;
         if(E1ON && engine.e1.speed < counter)
             PULSEE1OFF();
         if(E2ON && engine.e2.speed < counter)
@@ -129,11 +128,11 @@ int init_hardware()
     rc = configure_lsm330tr(0);
     if(rc < 0) return -1;
 
-    OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_256, T1_TICK);
+    OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_8, T1_TICK);
     ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_7);
     OpenTimer2(T2_ON | T2_PS_1_32, T2_TICK);
     
-    PR1 = 5;            // timer 1 interrupt timing: will interrupt every 1ms
+    PR1 = 40;            // timer 1 interrupt timing: will interrupt every 1ms
     
 #ifdef CALIBRATE            // if defined will calibrate the speed controllers to 
     calibrate = SET_HIGH;   // desired range of operation
@@ -229,15 +228,15 @@ int main(int argc, char** argv)
     static sensor_data lsm330;
     location_data location = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
     DELAY(40000000);
-    engine.e1.speed = 2500; // ramp up code for debugging
-    while(engine.e1.speed < 3611)
-    {
-        engine.e1.speed += 100;
-        engine.e2.speed += 100;
-        engine.e3.speed += 100;
-        engine.e4.speed += 100;
-        DELAY(80000);
-    }
+
+    //    while(engine.e1.speed < 3611)
+//    {
+//        engine.e1.speed += 100;
+//        engine.e2.speed += 100;
+//        engine.e3.speed += 100;
+//        engine.e4.speed += 100;
+//        DELAY(80000);
+//    }
 
 //    while(1)
 //    {
@@ -256,21 +255,21 @@ int main(int argc, char** argv)
 //        i = (i<100) ? ++i : 0;
 //    }
 //    _nop();
-while(count < 37)
+while(1)
     {
 
 //        read_accel(&lsm330);
 //        location.actual.pitch = atan2f(lsm330.accel_x, lsm330.accel_z);
 //        location.actual.roll = atan2f(lsm330.accel_y, lsm330.accel_z);
-        location.actual.pitch = pitch[count];//*OFFSET;
-        location.actual.roll = roll[count];//*OFFSET;
-        pid_control_function(&location, &engine);
-        output[0][count] = (engine.e1.pid_out<.00000001 && engine.e1.pid_out > -.00000001) ? 0.0 : engine.e1.pid_out;
-        output[1][count] = (engine.e2.pid_out<.00000001 && engine.e2.pid_out > -.00000001) ? 0.0 : engine.e2.pid_out;
-        output[2][count] = (engine.e3.pid_out<.00000001 && engine.e3.pid_out > -.00000001) ? 0.0 : engine.e3.pid_out;
-        output[3][count] = (engine.e4.pid_out<.00000001 && engine.e4.pid_out > -.00000001) ? 0.0 : engine.e4.pid_out;
-//        while(ReadCoreTimer() < 400000){}
-        count++;
+//        location.actual.pitch = pitch[count];//*OFFSET;
+//        location.actual.roll = roll[count];//*OFFSET;
+//        pid_control_function(&location, &engine);
+//        output[0][count] = (engine.e1.pid_out<.00000001 && engine.e1.pid_out > -.00000001) ? 0.0 : engine.e1.pid_out;
+//        output[1][count] = (engine.e2.pid_out<.00000001 && engine.e2.pid_out > -.00000001) ? 0.0 : engine.e2.pid_out;
+//        output[2][count] = (engine.e3.pid_out<.00000001 && engine.e3.pid_out > -.00000001) ? 0.0 : engine.e3.pid_out;
+//        output[3][count] = (engine.e4.pid_out<.00000001 && engine.e4.pid_out > -.00000001) ? 0.0 : engine.e4.pid_out;
+////        while(ReadCoreTimer() < 400000){}
+//        count++;
     }
     count = ReadCoreTimer();
 //    
