@@ -50,11 +50,8 @@ void translation(struct e_data *engine)
     {
         engine->speed = engine->pid_out * X_NEGATIVE + HOVER;
     }
-//    int temp = engine->last_speed + MAX_STEP;
-//    engine->speed = (engine->speed > temp) ? temp : engine->speed;
     engine->speed = (engine->speed > MAX) ? MAX : engine->speed;
     engine->speed = (engine->speed < MIN) ? MIN : engine->speed;
-    engine->last_speed = engine->speed;
 }
 
 /*

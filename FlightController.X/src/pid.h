@@ -30,7 +30,6 @@ typedef struct
         float total;
         float last;
         int speed;
-        int last_speed;
         float pid_out;
         int pitch_sign;
         int roll_sign;
@@ -63,9 +62,6 @@ typedef struct
         float pitch;
         float roll;
         float yaw;
-        int x:32;
-        int y:32;
-        int z:32;        
     } user, actual;
 } location_data;
 

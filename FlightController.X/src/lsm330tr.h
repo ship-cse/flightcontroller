@@ -24,12 +24,15 @@ extern "C" {
 typedef struct
 {
     float accel_x;
+    float accel_x_zero;
     float accel_y;
+    float accel_y_zero;
     float accel_z;
+    float accel_z_zero;
 } sensor_data;
     
 int read_accel(sensor_data *lsm330);
-int configure_lsm330tr(int test);
+int configure_lsm330tr(sensor_data *lsm330);
      
 #ifdef	__cplusplus
 }
