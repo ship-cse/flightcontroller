@@ -152,13 +152,49 @@ void get_attitude(struct data *actual, sensor_data *lsm330)
     actual->roll = atan2f(lsm330->accel_y, lsm330->accel_z);
 }
 
+float filter(float input, float array[11])
+{
+    int i;
+    float sum = 0;
+    const int BL = 51;
+    const float B[51] = {
+  0.0004505121978624,  0.00153912705778, 0.003484973853022, 0.005993557189185,
+   0.008153435576056, 0.008592952740711,  0.00606548279898,0.0002846755213859,
+  -0.007422979046305,  -0.0141538572038, -0.01642740882862, -0.01192407685345,
+  -0.001193164875279,  0.01168481560342,  0.02021320609519,  0.01829842335945,
+   0.003718245377588, -0.01945112740089, -0.04099016948947, -0.04779531970777,
+   -0.02927442676121,  0.01733488350917,  0.08424518003038,   0.1546060172782,
+     0.2080043895553,   0.2279136247956,   0.2080043895553,   0.1546060172782,
+    0.08424518003038,  0.01733488350917, -0.02927442676121, -0.04779531970777,
+   -0.04099016948947, -0.01945112740089, 0.003718245377588,  0.01829842335945,
+    0.02021320609519,  0.01168481560342,-0.001193164875279, -0.01192407685345,
+   -0.01642740882862,  -0.0141538572038,-0.007422979046305,0.0002846755213859,
+    0.00606548279898, 0.008592952740711, 0.008153435576056, 0.005993557189185,
+   0.003484973853022,  0.00153912705778,0.0004505121978624
+};
+    
+    for(i = 0; i < BL; i++)
+    {
+        if(i == BL-1)
+        {
+            array[0] = input;
+        }
+        else
+        {
+            array[BL-(i+1)] = array[BL-(i+2)];
+        }
+        sum += array[BL-(i+1)] * B[i];
+    }
+    return sum;
+}
+
 //float pitch[100];
 //float roll[100];
 //int e1[100];
 //int e2[100];
 //int e3[100];
 //int e4[100];
-float accel_x[2][500], accel_y[2][500],accel_z[2][500];
+float accel_x[2][100], accel_y[2][100],accel_z[2][100];
 float output[4][37];
         // matlab results for pid with values in pitch and roll
 //        float matlab[4][37] = {{0,-239.548796030712,-243.480499236680,231.683033424286,
@@ -198,6 +234,8 @@ float output[4][37];
 //                0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0};
         int count = 0;
         float e1_difference = 0, e2_difference=0, e3_difference=0, e4_difference=0;
+        float diff_x[2], diff_y[2], diff_z[2];
+        float filtdiff[3], nofiltdiff[3];
         int i;
 
 
@@ -227,15 +265,17 @@ int main(int argc, char** argv)
     if(init_hardware(&lsm330) < 0) return(EXIT_SUCCESS);
     location_data location = {{0,0,0},{0,0,0}};
     DELAY(40000000);
+    float filter_x[51], filter_y[51], filter_z[51];
 
-    //    while(engine.e1.speed < 3611)
-//    {
-//        engine.e1.speed += 100;
-//        engine.e2.speed += 100;
-//        engine.e3.speed += 100;
-//        engine.e4.speed += 100;
-//        DELAY(80000);
-//    }
+        while(engine.e1.speed < 4000)
+    {
+        engine.e1.speed += 100;
+        engine.e2.speed += 100;
+        engine.e3.speed += 100;
+        engine.e4.speed += 100;
+        DELAY(80000);
+    }
+    DELAY(100000);
 
 //    while(1)
 //    {
@@ -254,16 +294,29 @@ int main(int argc, char** argv)
 //        i = (i<100) ? ++i : 0;
 //    }
 //    _nop();
-while(i<500)
+    while(i<51)
     {
-
+        WriteCoreTimer(0);
         read_accel(&lsm330);
-        accel_x[0][i] = lsm330.accel_x;
-        accel_x[1][i] = lsm330.accel_x + lsm330.accel_x_zero;
-        accel_y[0][i] = lsm330.accel_y;
-        accel_y[1][i] = lsm330.accel_y + lsm330.accel_y_zero;
-        accel_z[0][i] = lsm330.accel_z;
-        accel_z[1][i] = lsm330.accel_z + lsm330.accel_z_zero;
+        accel_x[0][i] = lsm330.accel_x + lsm330.accel_x_zero;
+        accel_x[1][i] = filter(lsm330.accel_x, filter_x) + lsm330.accel_x_zero;
+        accel_y[0][i] = lsm330.accel_y + lsm330.accel_y_zero;
+        accel_y[1][i] = filter(lsm330.accel_y, filter_y) + lsm330.accel_y_zero;
+        accel_z[0][i] = lsm330.accel_z + lsm330.accel_z_zero;
+        accel_z[1][i] = filter(lsm330.accel_z, filter_z) + lsm330.accel_z_zero;
+        i++;
+    }
+    i = 0;
+    while(i<100)
+    {
+        WriteCoreTimer(0);
+        read_accel(&lsm330);
+        accel_x[0][i] = lsm330.accel_x + lsm330.accel_x_zero;
+        accel_x[1][i] = filter(lsm330.accel_x, filter_x) + lsm330.accel_x_zero;
+        accel_y[0][i] = lsm330.accel_y + lsm330.accel_y_zero;
+        accel_y[1][i] = filter(lsm330.accel_y, filter_y) + lsm330.accel_y_zero;
+        accel_z[0][i] = lsm330.accel_z + lsm330.accel_z_zero;
+        accel_z[1][i] = filter(lsm330.accel_z, filter_z) + lsm330.accel_z_zero;
 
 //        location.actual.pitch = atan2f(lsm330.accel_x, lsm330.accel_z);
 //        location.actual.roll = atan2f(lsm330.accel_y, lsm330.accel_z);
@@ -277,8 +330,25 @@ while(i<500)
 ////        while(ReadCoreTimer() < 400000){}
 //        count++;
         i++;
+        while(ReadCoreTimer() < 400000){}
     }
     count = ReadCoreTimer();
+    
+    for(i = 0; i < 100; i++)
+    {
+        diff_x[0] += accel_x[0][i];
+        diff_x[1] += accel_x[1][i];
+        diff_y[0] += accel_y[0][i];
+        diff_y[1] += accel_y[1][i];
+        diff_z[0] += 1.0 - accel_z[0][i];
+        diff_z[1] += 1.0 - accel_z[1][i];
+    }
+    nofiltdiff[0] = diff_x[0] / 100.0;
+    nofiltdiff[1] = diff_y[0] / 100.0;
+    nofiltdiff[2] = diff_z[0] / 100.0;
+    filtdiff[0] = diff_x[1] / 100.0;
+    filtdiff[1] = diff_y[1] / 100.0;
+    filtdiff[2] = diff_z[1] / 100.0;
 //    
 //    for(i = 0;i<37;i++)
 //    {
