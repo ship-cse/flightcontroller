@@ -9,11 +9,8 @@
 
 #define MAX (4650)       // max output value for functions
 #define MIN (2650)        // min output value for functions
-#define HOVER (3611)      // speed at which craft will hover (approx.))
+#define HOVER (3600)      // speed at which craft will hover (approx.))
 #define PID_DT (.01) // the frequency at which the pid loops are executed
-#define MAX_STEP (200)   // the maximum allowable increase in speed
-#define X_POSITIVE (10.0/1.0)
-#define X_NEGATIVE (10.0/1.0)
 
 /*
  * PID - controls the engine speed for the front left engine.
@@ -42,16 +39,10 @@ void pid(location_data *location, struct e_data *engine, pid_data *p_data)
  */
 void translation(struct e_data *engine)
 {
-    if(engine->pid_out > 0)
-    {
-        engine->speed = engine->pid_out * X_POSITIVE + HOVER;
-    }
-    else
-    {
-        engine->speed = engine->pid_out * X_NEGATIVE + HOVER;
-    }
-    engine->speed = (engine->speed > MAX) ? MAX : engine->speed;
-    engine->speed = (engine->speed < MIN) ? MIN : engine->speed;
+    float temp = atan2f(engine->pid_out, 200.0) * 2000.0 + HOVER;
+    temp = (temp > MAX) ? MAX : temp;
+    temp = (temp < MIN) ? MIN : temp;
+    engine->speed = temp;
 }
 
 /*
@@ -61,14 +52,14 @@ void translation(struct e_data *engine)
  */
 void pid_control_function(location_data *location, engine_data *engine)
 {
-    pid_data p_data = {5.0, .3, 3.0};
+    pid_data p_data = {100.0, 50.0, 2.0};
 
     pid(location, &engine->e1, &p_data);
     pid(location, &engine->e2, &p_data);
     pid(location, &engine->e3, &p_data);
     pid(location, &engine->e4, &p_data);
-//    translation(&engine->e1);
-//    translation(&engine->e2);
-//    translation(&engine->e3);
-//    translation(&engine->e4);
+    translation(&engine->e1);
+    translation(&engine->e2);
+    translation(&engine->e3);
+    translation(&engine->e4);
 }

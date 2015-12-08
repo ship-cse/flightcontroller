@@ -68,16 +68,14 @@ enum timer_state
 #define SET_500HZ (630)
 #define SET_400HZ (788)
 #define SET_100HZ (315)
-#define SET_HIGH (292)
-#define SET_LOW (0)
-#define DEG (180.0 / M_PI)  // conversion from radians to degrees
+#define SET_HIGH (4800)
+#define SET_LOW (2500)
 
 //#define TEST_SENSOR
 //#define CALIBRATE
 
-PRIVATE int calibrate;
 PRIVATE engine_data engine = {{0,0,2500,0.0,1,1,-1},{0,0,2500,0.0,1,-1,1},{0,0,2500,0.0,-1,-1,-1},{0,0,2500,0.0,-1,1,1}};
-        static int  E1ON = FALSE, E2ON = FALSE, E3ON = FALSE, E4ON = FALSE, timer = 0;
+        static int  E1ON = FALSE, E2ON = FALSE, E3ON = FALSE, E4ON = FALSE;
 /*
  * __ISR() Timer1Handler() - performs the pulse width modulation functionality for
  *                      the four motors
@@ -91,7 +89,7 @@ void __ISR(_TIMER_1_VECTOR, IPL7SRS) Timer1Handler(void)
 {
     mT1ClearIntFlag();
 
-    int counter = ReadTimer2();
+    int counter = ReadTimer2() + 5;
     
     if(counter < 5000)
     {
@@ -135,9 +133,15 @@ int init_hardware(sensor_data *lsm330)
     PR1 = 40;            // timer 1 interrupt timing: will interrupt every 1ms
     
 #ifdef CALIBRATE            // if defined will calibrate the speed controllers to 
-    calibrate = SET_HIGH;   // desired range of operation
+    engine.e1.speed = SET_HIGH;   // desired range of operation
+    engine.e2.speed = SET_HIGH;
+    engine.e3.speed = SET_HIGH;
+    engine.e4.speed = SET_HIGH;
     DELAY(40000000);
-    calibrate = SET_LOW;
+    engine.e1.speed = SET_LOW;
+    engine.e2.speed = SET_LOW;
+    engine.e3.speed = SET_LOW;
+    engine.e4.speed = SET_LOW;
     DELAY(800000);
 #endif
     
@@ -152,7 +156,7 @@ void get_attitude(struct data *actual, sensor_data *lsm330)
     actual->roll = atan2f(lsm330->accel_y, lsm330->accel_z);
 }
 
-float filter(float input, float array[11])
+float filter(float input, float array[51])
 {
     int i;
     float sum = 0;
@@ -195,7 +199,7 @@ float filter(float input, float array[11])
 //int e3[100];
 //int e4[100];
 float accel_x[2][100], accel_y[2][100],accel_z[2][100];
-float output[4][37];
+float output[4][100];
         // matlab results for pid with values in pitch and roll
 //        float matlab[4][37] = {{0,-239.548796030712,-243.480499236680,231.683033424286,
 //                -243.487567820150,-7.87283118989602,-486.975135640300,303.652732327824,
@@ -228,17 +232,17 @@ float output[4][37];
 //                -243.442800124836,231.720732536130,-243.449868708307,-7.83513207805294,
 //                -486.937436528457,303.690431439667,308.923277602996,314.159265358979}};
    
-//        float pitch[37] = {0,M_PI/4,M_PI/2,0,0,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,-M_PI/4,-M_PI/2,0,0,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,
-//                M_PI/4,M_PI/2,0,0,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,-M_PI/4,-M_PI/2,0,0,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0};
-//        float roll[37] = {0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,0,0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,
-//                0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0};
+        float pitch[37] = {0,M_PI/4,M_PI/2,0,0,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,-M_PI/4,-M_PI/2,0,0,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,
+                M_PI/4,M_PI/2,0,0,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,-M_PI/4,-M_PI/2,0,0,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0};
+        float roll[37] = {0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,0,0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,
+                0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0};
         int count = 0;
         float e1_difference = 0, e2_difference=0, e3_difference=0, e4_difference=0;
         float diff_x[2], diff_y[2], diff_z[2];
         float filtdiff[3], nofiltdiff[3];
         int i;
 
-
+    float min=10000,max=0;
 /*
  * MAIN -initializes the hardware and then loops to keep the program running.
  *      all functionality is interrupt driven.
@@ -267,13 +271,13 @@ int main(int argc, char** argv)
     DELAY(40000000);
     float filter_x[51], filter_y[51], filter_z[51];
 
-        while(engine.e1.speed < 4000)
+    while(engine.e1.speed < 2700)
     {
-        engine.e1.speed += 100;
-        engine.e2.speed += 100;
-        engine.e3.speed += 100;
-        engine.e4.speed += 100;
-        DELAY(80000);
+        engine.e1.speed += 50;
+        engine.e2.speed += 50;
+        engine.e3.speed += 50;
+        engine.e4.speed += 50;
+        DELAY(8000000);
     }
     DELAY(100000);
 
@@ -298,57 +302,68 @@ int main(int argc, char** argv)
     {
         WriteCoreTimer(0);
         read_accel(&lsm330);
-        accel_x[0][i] = lsm330.accel_x + lsm330.accel_x_zero;
-        accel_x[1][i] = filter(lsm330.accel_x, filter_x) + lsm330.accel_x_zero;
-        accel_y[0][i] = lsm330.accel_y + lsm330.accel_y_zero;
-        accel_y[1][i] = filter(lsm330.accel_y, filter_y) + lsm330.accel_y_zero;
-        accel_z[0][i] = lsm330.accel_z + lsm330.accel_z_zero;
-        accel_z[1][i] = filter(lsm330.accel_z, filter_z) + lsm330.accel_z_zero;
+        filter(lsm330.accel_x, filter_x);
+        filter(lsm330.accel_y, filter_y);
+        filter(lsm330.accel_z, filter_z);
         i++;
     }
     i = 0;
-    while(i<100)
+    while(1)
     {
         WriteCoreTimer(0);
         read_accel(&lsm330);
-        accel_x[0][i] = lsm330.accel_x + lsm330.accel_x_zero;
-        accel_x[1][i] = filter(lsm330.accel_x, filter_x) + lsm330.accel_x_zero;
-        accel_y[0][i] = lsm330.accel_y + lsm330.accel_y_zero;
-        accel_y[1][i] = filter(lsm330.accel_y, filter_y) + lsm330.accel_y_zero;
-        accel_z[0][i] = lsm330.accel_z + lsm330.accel_z_zero;
-        accel_z[1][i] = filter(lsm330.accel_z, filter_z) + lsm330.accel_z_zero;
-
-//        location.actual.pitch = atan2f(lsm330.accel_x, lsm330.accel_z);
-//        location.actual.roll = atan2f(lsm330.accel_y, lsm330.accel_z);
-//        location.actual.pitch = pitch[count];//*OFFSET;
-//        location.actual.roll = roll[count];//*OFFSET;
-//        pid_control_function(&location, &engine);
-//        output[0][count] = (engine.e1.pid_out<.00000001 && engine.e1.pid_out > -.00000001) ? 0.0 : engine.e1.pid_out;
-//        output[1][count] = (engine.e2.pid_out<.00000001 && engine.e2.pid_out > -.00000001) ? 0.0 : engine.e2.pid_out;
-//        output[2][count] = (engine.e3.pid_out<.00000001 && engine.e3.pid_out > -.00000001) ? 0.0 : engine.e3.pid_out;
-//        output[3][count] = (engine.e4.pid_out<.00000001 && engine.e4.pid_out > -.00000001) ? 0.0 : engine.e4.pid_out;
-////        while(ReadCoreTimer() < 400000){}
-//        count++;
+        lsm330.accel_x = filter(lsm330.accel_x, filter_x) + lsm330.accel_x_zero;
+        lsm330.accel_y = filter(lsm330.accel_y, filter_y) + lsm330.accel_y_zero;
+        lsm330.accel_z = filter(lsm330.accel_z, filter_z) + lsm330.accel_z_zero;
+        location.actual.pitch = atan2f(lsm330.accel_x, lsm330.accel_z);
+        location.actual.roll = atan2f(lsm330.accel_y, lsm330.accel_z);
+//        location.actual.pitch = -1.414172;//*OFFSET;
+//        location.actual.roll = -1.415259;//*OFFSET;
+        pid_control_function(&location, &engine);
+        output[0][i] = engine.e1.pid_out;
+        output[1][i] = engine.e2.pid_out;
+        output[2][i] = engine.e3.pid_out;
+        output[3][i] = engine.e4.pid_out;
         i++;
+        if(i == 100)
+        {
+//            for(i = 0; i < 100; i++)
+//            {
+//                float temp = min(output[0][i],output[1][i]);
+//                float temp2 = min(output[3][i],output[2][i]);
+//                temp = min(temp,temp2);
+//                min = min(temp,min);
+//                temp = max(output[0][i],output[1][i]);
+//                temp2 = max(output[3][i],output[2][i]);
+//                temp = max(temp,temp2);
+//                max = max(temp,max);        
+//            }
+            i = 0;
+            _nop();
+        }
         while(ReadCoreTimer() < 400000){}
     }
     count = ReadCoreTimer();
     
-    for(i = 0; i < 100; i++)
-    {
-        diff_x[0] += accel_x[0][i];
-        diff_x[1] += accel_x[1][i];
-        diff_y[0] += accel_y[0][i];
-        diff_y[1] += accel_y[1][i];
-        diff_z[0] += 1.0 - accel_z[0][i];
-        diff_z[1] += 1.0 - accel_z[1][i];
-    }
-    nofiltdiff[0] = diff_x[0] / 100.0;
-    nofiltdiff[1] = diff_y[0] / 100.0;
-    nofiltdiff[2] = diff_z[0] / 100.0;
-    filtdiff[0] = diff_x[1] / 100.0;
-    filtdiff[1] = diff_y[1] / 100.0;
-    filtdiff[2] = diff_z[1] / 100.0;
+
+    
+
+    
+//    for(i = 0; i < 100; i++)
+//    {
+//        diff_x[0] += accel_x[0][i];
+//        diff_x[1] += accel_x[1][i];
+//        diff_y[0] += accel_y[0][i];
+//        diff_y[1] += accel_y[1][i];
+//        diff_z[0] += 1.0 - accel_z[0][i];
+//        diff_z[1] += 1.0 - accel_z[1][i];
+//    }
+//    nofiltdiff[0] = diff_x[0] / 100.0;
+//    nofiltdiff[1] = diff_y[0] / 100.0;
+//    nofiltdiff[2] = diff_z[0] / 100.0;
+//    filtdiff[0] = diff_x[1] / 100.0;
+//    filtdiff[1] = diff_y[1] / 100.0;
+//    filtdiff[2] = diff_z[1] / 100.0;
 //    
 //    for(i = 0;i<37;i++)
 //    {
