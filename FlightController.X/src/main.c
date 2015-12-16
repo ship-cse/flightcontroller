@@ -51,31 +51,35 @@
 #define PULSEE4OFF() \
 {   PORTE = PORTE & 0b0111 << 1; E4ON = FALSE; }\
 
-#define PULSEE2ON() \
-{   PORTE = PORTE | 0b0001 << 1; E2ON = TRUE; }\
-
-#define PULSEE1ON() \
-{   PORTE = PORTE | 0b0100 << 1; E1ON = TRUE; }\
-
 #define DELAY(x) \
 {   int t; for(t = 0;t<x;t++) _nop();} \
+
+typedef struct
+{
+    float filter_x[51];
+    float out_x;
+    float filter_y[51];
+    float out_y;
+    float filter_z[51];
+    float out_z;
+} filter_table;
 
 enum timer_state
 {
     on, off, update
 };
 
-#define SET_500HZ (630)
-#define SET_400HZ (788)
-#define SET_100HZ (315)
+#define BASE (0xbd03D000)
+volatile int *flash = (int *) BASE;
 #define SET_HIGH (4800)
-#define SET_LOW (2500)
+#define SET_LOW (2450)
 
 //#define TEST_SENSOR
 //#define CALIBRATE
 
-PRIVATE engine_data engine = {{0,0,2500,0.0,1,1,-1},{0,0,2500,0.0,1,-1,1},{0,0,2500,0.0,-1,-1,-1},{0,0,2500,0.0,-1,1,1}};
-        static int  E1ON = FALSE, E2ON = FALSE, E3ON = FALSE, E4ON = FALSE;
+PRIVATE engine_data engine = {{0,0,2500,0.0,1,1},{0,0,2500,0.0,1,-1},
+                    {0,0,2500,0.0,-1,-1},{0,0,2500,0.0,-1,1}};
+        
 /*
  * __ISR() Timer1Handler() - performs the pulse width modulation functionality for
  *                      the four motors
@@ -88,11 +92,15 @@ PRIVATE engine_data engine = {{0,0,2500,0.0,1,1,-1},{0,0,2500,0.0,1,-1,1},{0,0,2
 void __ISR(_TIMER_1_VECTOR, IPL7SRS) Timer1Handler(void)
 {
     mT1ClearIntFlag();
-
+    static int  E1ON = FALSE, E2ON = FALSE, E3ON = FALSE, E4ON = FALSE;
     int counter = ReadTimer2() + 5;
     
     if(counter < 5000)
     {
+#ifdef CALIBRATE
+        if(engine.e1.speed < counter)
+            PULSEOFF();
+#else
         if(E1ON && engine.e1.speed < counter)
             PULSEE1OFF();
         if(E2ON && engine.e2.speed < counter)
@@ -101,6 +109,7 @@ void __ISR(_TIMER_1_VECTOR, IPL7SRS) Timer1Handler(void)
             PULSEE3OFF();
         if(E4ON && engine.e4.speed < counter)
             PULSEE4OFF();
+#endif
     }
     else
     {
@@ -114,8 +123,6 @@ void __ISR(_TIMER_1_VECTOR, IPL7SRS) Timer1Handler(void)
  */
 int init_hardware(sensor_data *lsm330)
 {
-    int rc;
-
     uint32_t pb_clk = SYSTEMConfig( GetSystemClock(), SYS_CFG_ALL);    
     SYSTEMConfig(SYS_FREQ, SYS_CFG_WAIT_STATES | SYS_CFG_PCACHE);
     INTEnableSystemMultiVectoredInt();
@@ -123,14 +130,13 @@ int init_hardware(sensor_data *lsm330)
     PORTSetPinsDigitalOut(IOPORT_E, BIT_1 | BIT_2 | BIT_3 | BIT_4);
     PORTE = 0;
 
-    rc = configure_lsm330tr(lsm330);
-    if(rc < 0) return -1;
+    if(configure_lsm330tr(lsm330) < 0) return -1;
 
     OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_8, T1_TICK);
     ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_7);
     OpenTimer2(T2_ON | T2_PS_1_32, T2_TICK);
     
-    PR1 = 40;            // timer 1 interrupt timing: will interrupt every 1ms
+    PR1 = 40;            // timer 1 interrupt timing    
     
 #ifdef CALIBRATE            // if defined will calibrate the speed controllers to 
     engine.e1.speed = SET_HIGH;   // desired range of operation
@@ -143,38 +149,48 @@ int init_hardware(sensor_data *lsm330)
     engine.e3.speed = SET_LOW;
     engine.e4.speed = SET_LOW;
     DELAY(800000);
+    #undef CALIBRATE
 #endif
-    
 
-    
     return 0;
 }
 
+/*
+ * GET ATTITUDE - calculates the pitch and roll of the drone
+ * @param *actual - struct containing the actual orientation of the drone
+ * @param *lsm330 - struct containing the sensor read outs
+ */
 void get_attitude(struct data *actual, sensor_data *lsm330)
 {
     actual->pitch = atan2f(lsm330->accel_x, lsm330->accel_z);
     actual->roll = atan2f(lsm330->accel_y, lsm330->accel_z);
 }
 
+/*
+ * filter - passes the sensor data through to eliminate noise from the engines
+ * @param input - the sensor reading
+ * @param array - the previous readings from the desired axis
+ * @return the filtered value for the given axis.
+ */
 float filter(float input, float array[51])
 {
     int i;
     float sum = 0;
-    const int BL = 51;
-    const float B[51] = {
-  0.0004505121978624,  0.00153912705778, 0.003484973853022, 0.005993557189185,
-   0.008153435576056, 0.008592952740711,  0.00606548279898,0.0002846755213859,
-  -0.007422979046305,  -0.0141538572038, -0.01642740882862, -0.01192407685345,
-  -0.001193164875279,  0.01168481560342,  0.02021320609519,  0.01829842335945,
-   0.003718245377588, -0.01945112740089, -0.04099016948947, -0.04779531970777,
-   -0.02927442676121,  0.01733488350917,  0.08424518003038,   0.1546060172782,
-     0.2080043895553,   0.2279136247956,   0.2080043895553,   0.1546060172782,
-    0.08424518003038,  0.01733488350917, -0.02927442676121, -0.04779531970777,
-   -0.04099016948947, -0.01945112740089, 0.003718245377588,  0.01829842335945,
-    0.02021320609519,  0.01168481560342,-0.001193164875279, -0.01192407685345,
-   -0.01642740882862,  -0.0141538572038,-0.007422979046305,0.0002846755213859,
-    0.00606548279898, 0.008592952740711, 0.008153435576056, 0.005993557189185,
-   0.003484973853022,  0.00153912705778,0.0004505121978624
+    const int BL = 52;
+    const float B[52] = {
+  -5.259049844545e-06,-7.003930036877e-05,-0.0002192722383055,-0.0005355247742648,
+  -0.001106251801568,-0.002029005291553, -0.00338859076657,-0.005229924529025,
+  -0.007526104921771, -0.01014756651919,  -0.0128394666295, -0.01521479586034,
+   -0.01676963522277, -0.01692404043199, -0.01508771661046, -0.01074440475192,
+  -0.003544265753318, 0.006610225397195,  0.01950065554854,  0.03456535328037,
+     0.0509181437564,  0.06741588729194,  0.08276960160501,  0.09568589113223,
+     0.1050195933373,   0.1099150922913,   0.1099150922913,   0.1050195933373,
+    0.09568589113223,  0.08276960160501,  0.06741588729194,   0.0509181437564,
+    0.03456535328037,  0.01950065554854, 0.006610225397195,-0.003544265753318,
+   -0.01074440475192, -0.01508771661046, -0.01692404043199, -0.01676963522277,
+   -0.01521479586034,  -0.0128394666295, -0.01014756651919,-0.007526104921771,
+  -0.005229924529025, -0.00338859076657,-0.002029005291553,-0.001106251801568,
+  -0.0005355247742648,-0.0002192722383055,-7.003930036877e-05,-5.259049844545e-06
 };
     
     for(i = 0; i < BL; i++)
@@ -192,60 +208,10 @@ float filter(float input, float array[51])
     return sum;
 }
 
-//float pitch[100];
-//float roll[100];
-//int e1[100];
-//int e2[100];
-//int e3[100];
-//int e4[100];
-float accel_x[2][100], accel_y[2][100],accel_z[2][100];
-float output[4][100];
-        // matlab results for pid with values in pitch and roll
-//        float matlab[4][37] = {{0,-239.548796030712,-243.480499236680,231.683033424286,
-//                -243.487567820150,-7.87283118989602,-486.975135640300,303.652732327824,
-//                308.885578491153,314.121566247136,239.511096918869,243.442800124836,
-//                -231.720732536130,243.449868708307,7.83513207805294,486.937436528457,
-//                -303.690431439667,-308.923277602996,-314.159265358979,-239.548796030712,
-//                -243.480499236680,710.780625485710,243.473430653209,-471.238898038469,
-//                0.0,0.0,0.0,0.0,239.548796030712,243.480499236680,-710.780625485710,
-//                -243.473430653209,471.238898038469,0.0,0.0,0.0,0.0},
-//                {0,-239.548796030712,-243.480499236680,710.780625485710,243.473430653209,
-//                -471.238898038469,0,0,0,0,239.548796030712,243.480499236680,-710.780625485710,
-//                -243.473430653209,471.238898038469,0,0,0,0,-239.548796030712,-243.480499236680,
-//                231.683033424286,-243.487567820150,-7.87283118989602,-486.975135640300,
-//                303.652732327824,308.885578491153,314.121566247136,239.511096918869,
-//                243.442800124836,-231.720732536130,243.449868708307,7.83513207805294,
-//                486.937436528457,-303.690431439667,-308.923277602996,-314.159265358979},                
-//                {0,239.548796030712,243.480499236680,-231.683033424286,243.487567820150,
-//                7.87283118989602,486.975135640300,-303.652732327824,-308.885578491153,
-//                -314.121566247136,-239.511096918869,-243.442800124836,231.720732536130,
-//                -243.449868708307,-7.83513207805294,-486.937436528457,303.690431439667,
-//                308.923277602996,314.159265358979,239.548796030712,243.480499236680,
-//                -710.780625485710,-243.473430653209,471.238898038469,0.0,0.0,0.0,0.0,
-//                -239.548796030712,-243.480499236680,710.780625485710,243.473430653209,
-//                -471.238898038469,0.0,0.0,0.0,0.0},
-//                {0,239.548796030712,243.480499236680,-710.780625485710,-243.473430653209,
-//                471.238898038469,0,0,0,0,-239.548796030712,-243.480499236680,710.780625485710,
-//                243.473430653209,-471.238898038469,0,0,0,0,239.548796030712,243.480499236680,
-//                -231.683033424286,243.487567820150,7.87283118989602,486.975135640300,
-//                -303.652732327824,-308.885578491153,-314.121566247136,-239.511096918869,
-//                -243.442800124836,231.720732536130,-243.449868708307,-7.83513207805294,
-//                -486.937436528457,303.690431439667,308.923277602996,314.159265358979}};
-   
-        float pitch[37] = {0,M_PI/4,M_PI/2,0,0,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,-M_PI/4,-M_PI/2,0,0,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,
-                M_PI/4,M_PI/2,0,0,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,-M_PI/4,-M_PI/2,0,0,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0};
-        float roll[37] = {0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0,0,0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,
-                0,-M_PI/4,-M_PI/2,-M_PI/4,-M_PI/2,-M_PI/3,-M_PI/6,0,0,0,M_PI/4,M_PI/2,M_PI/4,M_PI/2,M_PI/3,M_PI/6,0};
-        int count = 0;
-        float e1_difference = 0, e2_difference=0, e3_difference=0, e4_difference=0;
-        float diff_x[2], diff_y[2], diff_z[2];
-        float filtdiff[3], nofiltdiff[3];
-        int i;
-
-    float min=10000,max=0;
 /*
- * MAIN -initializes the hardware and then loops to keep the program running.
- *      all functionality is interrupt driven.
+ * MAIN -initializes the hardware, configures the software and then loops at 100hz
+ *      to read the sensor, determine orientation and call the pid function.
+ *      
  */
 int main(int argc, char** argv)
 {   
@@ -266,144 +232,43 @@ int main(int argc, char** argv)
         _nop();
 #else
     static sensor_data lsm330;
-    if(init_hardware(&lsm330) < 0) return(EXIT_SUCCESS);
     location_data location = {{0,0,0},{0,0,0}};
-    DELAY(40000000);
-    float filter_x[51], filter_y[51], filter_z[51];
+    float filter_x[52], filter_y[52], filter_z[52];
 
-    while(engine.e1.speed < 2700)
+    if(init_hardware(&lsm330) < 0) return(EXIT_SUCCESS);
+
+    
+    DELAY(40000000);    // delay to allow all escs to turn on 
+    location.user.accel_z = 1.0;
+    
+    int i;
+    for(i = 0; i < 52; i++) // fill fir filter values
+    {
+        read_accel(&lsm330);
+        filter(lsm330.accel_x + lsm330.accel_x_zero, filter_x);
+        filter(lsm330.accel_y + lsm330.accel_y_zero, filter_y);
+        filter(lsm330.accel_z + lsm330.accel_z_zero, filter_z);        
+    }
+#define CALIBRATE
+    while(engine.e1.speed < 2800)  // engine ramp up
     {
         engine.e1.speed += 50;
-        engine.e2.speed += 50;
-        engine.e3.speed += 50;
-        engine.e4.speed += 50;
-        DELAY(8000000);
+        DELAY(800000);
     }
-    DELAY(100000);
-
-//    while(1)
-//    {
-//        WriteCoreTimer(0);
-//
-//        read_accel(&lsm330);
-//        get_attitude(&location.actual, &lsm330);
-//        pitch[i] = location.actual.pitch;
-//        roll[i] = location.actual.roll;
-//        pid_control_function(&location, &engine);
-//        e1[i] = engine.e1.speed;
-//        e2[i] = engine.e2.speed;
-//        e3[i] = engine.e3.speed;
-//        e4[i] = engine.e4.speed;
-//        while(ReadCoreTimer() < 400000){}
-//        i = (i<100) ? ++i : 0;
-//    }
-//    _nop();
-    while(i<51)
-    {
-        WriteCoreTimer(0);
-        read_accel(&lsm330);
-        filter(lsm330.accel_x, filter_x);
-        filter(lsm330.accel_y, filter_y);
-        filter(lsm330.accel_z, filter_z);
-        i++;
-    }
-    i = 0;
+#undef CALIBRATE
+    
     while(1)
     {
         WriteCoreTimer(0);
         read_accel(&lsm330);
-        lsm330.accel_x = filter(lsm330.accel_x, filter_x) + lsm330.accel_x_zero;
-        lsm330.accel_y = filter(lsm330.accel_y, filter_y) + lsm330.accel_y_zero;
-        lsm330.accel_z = filter(lsm330.accel_z, filter_z) + lsm330.accel_z_zero;
-        location.actual.pitch = atan2f(lsm330.accel_x, lsm330.accel_z);
-        location.actual.roll = atan2f(lsm330.accel_y, lsm330.accel_z);
-//        location.actual.pitch = -1.414172;//*OFFSET;
-//        location.actual.roll = -1.415259;//*OFFSET;
+        lsm330.accel_x = filter(lsm330.accel_x,filter_x) + lsm330.accel_x_zero;
+        lsm330.accel_y = filter(lsm330.accel_y,filter_y) + lsm330.accel_y_zero;
+        lsm330.accel_z = filter(lsm330.accel_z,filter_z) + lsm330.accel_z_zero;
+        location.actual.accel_z = lsm330.accel_z;
+        get_attitude(&location.actual,&lsm330);
         pid_control_function(&location, &engine);
-        output[0][i] = engine.e1.pid_out;
-        output[1][i] = engine.e2.pid_out;
-        output[2][i] = engine.e3.pid_out;
-        output[3][i] = engine.e4.pid_out;
-        i++;
-        if(i == 100)
-        {
-//            for(i = 0; i < 100; i++)
-//            {
-//                float temp = min(output[0][i],output[1][i]);
-//                float temp2 = min(output[3][i],output[2][i]);
-//                temp = min(temp,temp2);
-//                min = min(temp,min);
-//                temp = max(output[0][i],output[1][i]);
-//                temp2 = max(output[3][i],output[2][i]);
-//                temp = max(temp,temp2);
-//                max = max(temp,max);        
-//            }
-            i = 0;
-            _nop();
-        }
         while(ReadCoreTimer() < 400000){}
     }
-    count = ReadCoreTimer();
-    
-
-    
-
-    
-//    for(i = 0; i < 100; i++)
-//    {
-//        diff_x[0] += accel_x[0][i];
-//        diff_x[1] += accel_x[1][i];
-//        diff_y[0] += accel_y[0][i];
-//        diff_y[1] += accel_y[1][i];
-//        diff_z[0] += 1.0 - accel_z[0][i];
-//        diff_z[1] += 1.0 - accel_z[1][i];
-//    }
-//    nofiltdiff[0] = diff_x[0] / 100.0;
-//    nofiltdiff[1] = diff_y[0] / 100.0;
-//    nofiltdiff[2] = diff_z[0] / 100.0;
-//    filtdiff[0] = diff_x[1] / 100.0;
-//    filtdiff[1] = diff_y[1] / 100.0;
-//    filtdiff[2] = diff_z[1] / 100.0;
-//    
-//    for(i = 0;i<37;i++)
-//    {
-//        float temp;
-//        temp = fabs(matlab[0][i] - output[0][i]);///fabs(matlab[0][i]) * 100.0;
-//        if(temp != 0)
-//        {
-//            temp /= fabs(matlab[0][i]);
-//            temp *= 100.0;
-//        }
-//        e1_difference += temp;
-//        temp = fabs(matlab[1][i] - output[1][i]);///fabs(matlab[0][i]) * 100.0;
-//        if(temp != 0)
-//        {
-//            temp /= fabs(matlab[1][i]);
-//            temp *= 100.0;
-//        }
-//        e2_difference += temp;
-//        temp = fabs(matlab[2][i] - output[2][i]);///fabs(matlab[0][i]) * 100.0;
-//        if(temp != 0)
-//        {
-//            temp /= fabs(matlab[2][i]);
-//            temp *= 100.0;
-//        }
-//        e3_difference += temp;
-//        temp = fabs(matlab[3][i] - output[3][i]);///fabs(matlab[0][i]) * 100.0;
-//        if(temp != 0)
-//        {
-//            temp /= fabs(matlab[3][i]);
-//            temp *= 100.0;
-//        }
-//        e4_difference += temp;
-//    }
-//    e1_difference /= 37.0;
-//    e2_difference /= 37.0;
-//    e3_difference /= 37.0;
-//    e4_difference /= 37.0;
-    _nop();
-
-
 #endif
     return (EXIT_SUCCESS);
 }

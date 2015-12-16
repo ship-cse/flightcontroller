@@ -207,7 +207,6 @@ typedef union {
     };
 } lsm_reg_status_t;
 
-// converted to float.
 PRIVATE float accel_sensitivity, gyro_sensitivity;
 PRIVATE uint8_t accel_scale;
 
@@ -386,7 +385,7 @@ int configure_lsm330tr(sensor_data *lsm330)
         accel_ctrl5.yen = 1;    // enable y accelerometer readings
         accel_ctrl5.zen = 1;    // enable z accelerometer readings
         accel_ctrl5.bdu = 1;    // wait to update until low and high registers are read
-        accel_ctrl5.odr = LSM330_ACC_ODR_800HZ;  // closest output data rate to 500hz
+        accel_ctrl5.odr = LSM330_ACC_ODR_100HZ;  // closest output data rate to 500hz
         
         // @see lsm_reg_ctrl6_a_t for details
         accel_ctrl6.byte = 0;
@@ -400,8 +399,6 @@ int configure_lsm330tr(sensor_data *lsm330)
         
         // @see lsm_reg_fifo_ctrl_t for details
         accel_fifo_ctrl.byte = 0;
-        accel_fifo_ctrl.fmode = LSM330_FIFO_STREAM; // sets fifo mode if enabled
-        accel_fifo_ctrl.wtmp = 0b11111;             // sets watermark level if enabled
 
         if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL4A, accel_ctrl4.byte) < 0) return -1;
         if(lsm330_write_reg(LSM330_DEV_ACCEL, LSM330_REG_CTRL5A, accel_ctrl5.byte) < 0) return -1;

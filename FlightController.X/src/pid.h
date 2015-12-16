@@ -18,10 +18,9 @@ extern "C" {
  * @param total - the accumulated difference for each engine from the pid loop
  * @param last - the last difference for each engine from the pid loop
  * @param speed - the current speed setting for each engine as determined by the pid loop
- * @param last_speed - the previous speed setting
+ * @param pid_out - the output value from the pid function to be used in the translation function
  * @param pitch_sign - the sign value for the difference in pitch
  * @param roll_sign - the sign value for the difference in roll
- * @param yaw_sign - the sign value for the difference in yaw
  */
 typedef struct
 {
@@ -33,7 +32,6 @@ typedef struct
         float pid_out;
         int pitch_sign;
         int roll_sign;
-        int yaw_sign;
     } e1, e2, e3, e4;
 } engine_data;
 
@@ -42,7 +40,6 @@ typedef struct
  * @param kp - the peripheral gain constant.
  * @param ki - the integral gain constant.
  * @param kd - the derivative gain constant.
- * @param offset - the offset variable which is based off of the yaw
  */
 typedef struct
 {
@@ -53,7 +50,7 @@ typedef struct
 
 /*
  * location_data - contains a struct with two values, the user values and the actual values
- * data - struct containing the pitch, roll, yaw, x, y, and z values for location
+ * @param data - struct containing the pitch, roll and z acceleration to stabilize and maintain height
  */
 typedef struct
 {
@@ -61,7 +58,7 @@ typedef struct
     {
         float pitch;
         float roll;
-        float yaw;
+        float accel_z;
     } user, actual;
 } location_data;
 

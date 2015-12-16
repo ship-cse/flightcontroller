@@ -9,9 +9,9 @@
 
 #define MAX (4650)       // max output value for functions
 #define MIN (2650)        // min output value for functions
-#define HOVER (3600)      // speed at which craft will hover (approx.))
+#define HOVER (3400)      // speed at which craft will hover (approx.))
 #define PID_DT (.01) // the frequency at which the pid loops are executed
-
+#define PID_FACTOR (12)
 /*
  * PID - controls the engine speed for the front left engine.
  * @param location - struct with all of the location data. (user and actual)
@@ -24,7 +24,7 @@ void pid(location_data *location, struct e_data *engine, pid_data *p_data)
     
     pitch_error = (location->user.pitch - location->actual.pitch) * engine->pitch_sign;
     roll_error = (location->user.roll - location->actual.roll) * engine->roll_sign;
-    yaw_error = (location->actual.yaw - location->user.yaw) * engine->yaw_sign;
+    yaw_error = (location->user.accel_z - location->actual.accel_z);
     error = (pitch_error + roll_error + yaw_error);
     p = p_data->kp * error;
     engine->total += error * PID_DT;
@@ -39,7 +39,8 @@ void pid(location_data *location, struct e_data *engine, pid_data *p_data)
  */
 void translation(struct e_data *engine)
 {
-    float temp = atan2f(engine->pid_out, 200.0) * 2000.0 + HOVER;
+    float sgn = (engine->pid_out < 0) ? -1 : 1;
+    float temp = sgn * pow(abs(engine->pid_out),2.4) * PID_FACTOR + HOVER;
     temp = (temp > MAX) ? MAX : temp;
     temp = (temp < MIN) ? MIN : temp;
     engine->speed = temp;
@@ -52,7 +53,7 @@ void translation(struct e_data *engine)
  */
 void pid_control_function(location_data *location, engine_data *engine)
 {
-    pid_data p_data = {100.0, 50.0, 2.0};
+    pid_data p_data = {3.15, 1.85, 0.90};
 
     pid(location, &engine->e1, &p_data);
     pid(location, &engine->e2, &p_data);
