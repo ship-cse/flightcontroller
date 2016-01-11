@@ -1,0 +1,20 @@
+Date and Time : 01/11/16 14:37:44
+
+--------------------------------------------------
+Checking Schematic: SCHEMATIC1
+--------------------------------------------------
+Checking Electrical Rules 
+WARNING(ORCAP-1829): Possible pin type conflict SDA  Output Port Connected to Bidirectional
+                    SCHEMATIC1, Sensor Test Board  (6.30, 4.10) 
+WARNING(ORCAP-1829): Possible pin type conflict SDA  Output Port Connected to Bidirectional
+                    SCHEMATIC1, Sensor Test Board  (6.10, 1.50) 
+WARNING(ORCAP-1829): Possible pin type conflict SDA  Output Port Connected to Bidirectional
+                    SCHEMATIC1, Sensor Test Board  (2.30, 1.40) 
+WARNING(ORCAP-1829): Possible pin type conflict SDA  Output Port Connected to Bidirectional
+                    SCHEMATIC1, Sensor Test Board  (7.90, 2.30) 
+WARNING(ORCAP-1829): Possible pin type conflict U2,SDA  Bidirectional Connected to Output Port
+                    SCHEMATIC1, Sensor Test Board  (6.30, 4.10) 
+
+Checking For Single Node Nets
+
+Checking For Unconnected Bus Nets

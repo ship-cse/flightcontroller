@@ -1,0 +1,120 @@
+FILE_TYPE = EXPANDEDPARTLIST;
+{ Using PSTWRITER 16.6.0 d001Jan-11-2016 at 11:41:18 }
+DIRECTIVES
+ PST_VERSION='PST_HDL_CENTRIC_VERSION_0';
+ ROOT_DRAWING='SENSOR_TEST_BOARD';
+ POST_TIME='Sep 10 2012 04:46:09';
+ SOURCE_TOOL='CAPTURE_WRITER';
+END_DIRECTIVES;
+
+PART_NAME
+ C1 'C_SMD_CAP_0603_0.1UF':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS172@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins172@analog.\c.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins172@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C2 'C_SMD_CAP_0603_0.1UF':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS188@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins188@analog.\c.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins188@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C3 'C_SMD_CAP_0603_10NF':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS204@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins204@analog.\c.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins204@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C4 'C_SMD_CAP_0603_0.1UF':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS5304@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins5304@analog.\c.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins5304@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J1 'CON6_6PINHEADER_CON6':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS1539@CONNECTOR.CON6.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins1539@connector.\con6.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins1539@connector.\con6.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R1 'R_SMD_CAP_0603_10K':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS524@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins524@analog.\r.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins524@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R2 'R_SMD_CAP_0603_10K':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS864@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins864@analog.\r.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins864@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R5 'R_SMD_CAP_0603_10K':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS4203@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins4203@analog.\r.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins4203@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R6 'R_SMD_CAP_0603_10K':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS4301@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins4301@analog.\r.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins4301@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U1 'MPU-9250_12_MPU_9250_MPU-9250':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS3760@SENSOR_TEST_BOARD.MPU-9250_12.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins3760@sensor_test_board.\mpu-9250_12.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins3760@sensor_test_board.\mpu-9250_12.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U2 'MS5805_MS5805ALTIMETER_MS5805':;
+
+SECTION_NUMBER 1
+ '@SENSOR_TEST_BOARD.SCHEMATIC1(SCH_1):INS5193@BRIGGS.MS5805.NORMAL(CHIPS)':
+ C_PATH='@sensor_test_board.schematic1(sch_1):ins5193@briggs.\ms5805.normal\(chips)',
+ P_PATH='@sensor_test_board.schematic1(sch_1):page1_ins5193@briggs.\ms5805.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+END.
