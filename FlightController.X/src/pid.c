@@ -7,11 +7,10 @@
 
 #include "config.h"
 
-#define MAX (290)       // max output value for functions
-#define MIN (22)        // min output value for functions
-#define HOVER (140)      // speed at which craft will hover (approx.))
-#define PID_DT (2.0/1000.0) // the frequency at which the pid loops are executed
-#define MAX_STEP (20)   // the maximum allowable increase in speed
+#define MAX (4650)       // max output value for functions
+#define MIN (2650)        // min output value for functions
+#define HOVER (3600)      // speed at which craft will hover (approx.))
+#define PID_DT (.01) // the frequency at which the pid loops are executed
 
 /*
  * PID - controls the engine speed for the front left engine.
@@ -19,7 +18,7 @@
  * @param engine - pointer to struct with all of the pid necessary engine values
  * @param p_data - struct containing the pid parameters.
  */
-void pid(location_data *location, volatile struct e_data *engine, pid_data *p_data)
+void pid(location_data *location, struct e_data *engine, pid_data *p_data)
 {
     float error, pitch_error, roll_error, yaw_error, p, i, d;
     
@@ -32,7 +31,7 @@ void pid(location_data *location, volatile struct e_data *engine, pid_data *p_da
     i = engine->total * p_data->ki;
     d = p_data->kd * (error - engine->last) / PID_DT;
     engine->last = error;
-    engine->speed = (p + i + d);
+    engine->pid_out = (p + i + d);
 }
 
 /* translation - manipulates the engine speed data to be within the desired range
@@ -40,11 +39,10 @@ void pid(location_data *location, volatile struct e_data *engine, pid_data *p_da
  */
 void translation(struct e_data *engine)
 {
-    int temp = engine->last_speed + MAX_STEP;
-    engine->speed /= OFFSET;
-    engine->speed = (engine->speed > temp) ? temp : engine->speed;
-    engine->speed = (engine->speed > MAX) ? MAX : engine->speed;
-    engine->speed = (engine->speed < MIN) ? MIN : engine->speed;
+    float temp = atan2f(engine->pid_out, 200.0) * 2000.0 + HOVER;
+    temp = (temp > MAX) ? MAX : temp;
+    temp = (temp < MIN) ? MIN : temp;
+    engine->speed = temp;
 }
 
 /*
@@ -52,12 +50,16 @@ void translation(struct e_data *engine)
  * @param location - struct with all of the location data. (user and actual)
  * @param engine - struct with all of the pid necessary engine values
  */
-void pid_control_function(location_data *location, volatile engine_data *engine)
+void pid_control_function(location_data *location, engine_data *engine)
 {
-    pid_data p_data = {5.0, 0.3, 3.0};
+    pid_data p_data = {100.0, 50.0, 2.0};
 
     pid(location, &engine->e1, &p_data);
     pid(location, &engine->e2, &p_data);
     pid(location, &engine->e3, &p_data);
     pid(location, &engine->e4, &p_data);
+    translation(&engine->e1);
+    translation(&engine->e2);
+    translation(&engine->e3);
+    translation(&engine->e4);
 }

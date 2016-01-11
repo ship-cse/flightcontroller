@@ -23,7 +23,6 @@ extern "C" {
 #include <math.h>
 #include "i2c.h"
 #include "lsm330tr.h"  
-#include "location_tracking.h"
 #include "pid.h"
 
 #define SYS_FREQ (80000000L)

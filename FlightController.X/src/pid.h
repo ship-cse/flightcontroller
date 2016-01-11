@@ -27,10 +27,10 @@ typedef struct
 {
     struct e_data
     {
-        int total;
-        int last;
+        float total;
+        float last;
         int speed;
-        int last_speed;
+        float pid_out;
         int pitch_sign;
         int roll_sign;
         int yaw_sign;
@@ -51,7 +51,21 @@ typedef struct
     float kd;
 } pid_data;
 
-void pid_control_function(location_data *location, volatile engine_data *constant);
+/*
+ * location_data - contains a struct with two values, the user values and the actual values
+ * data - struct containing the pitch, roll, yaw, x, y, and z values for location
+ */
+typedef struct
+{
+    struct data
+    {
+        float pitch;
+        float roll;
+        float yaw;
+    } user, actual;
+} location_data;
+
+void pid_control_function(location_data *location, engine_data *constant);
 
 #ifdef	__cplusplus
 }
