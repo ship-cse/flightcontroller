@@ -1,0 +1,123 @@
+(ExpressProject "sensor_test_board"
+  (ProjectVersion "19981106")
+  (ProjectType "Analog or A/D Mixed Mode")
+  (Folder "Design Resources"
+    (Folder "Library"
+      (File "c:\users\kd9609\orcad\capture_libs\briggs.olb"
+        (Type "Schematic Library"))
+      (File "c:\cadence\spb_16.6\tools\capture\library\capsym.olb"
+        (Type "Schematic Library")))
+    (NoModify)
+    (File ".\sensor_test_board.dsn"
+      (Type "Schematic Design"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x")
+    ("Create Allegro Netlist" "TRUE")
+    ("Allegro Netlist Directory" "allegro")
+    ("View Allegro Netlist Files" "FALSE")
+    ("Allegro Netlist Create DCF File" "FALSE")
+    ("Update Allegro Board" "TRUE")
+    ("Allegro Netlist Output Board File" "allegro\SENSOR_TEST_BOARD.brd")
+    ("Allegro Netlist Remove Etch" "FALSE")
+    ("Allegro Netlist Place Changed Component" "ALWAYS_REPLACE")
+    ("Allegro Netlist Open Board in Allegro" "ALLEGRO")
+    ("Allegro Setup Backup Versions" "3")
+    ("Allegro Setup Output Warnings" "TRUE")
+    ("Allegro Setup Ignore Constraints" "FALSE")
+    ("Allegro Setup Part Type Length" "31")
+    ("Allegro Netlist Combine Property String" "PCB Footprint")
+    ("Allegro Netlist Ignore Fixed Property" "FALSE")
+    ("Allegro Netlist User Defined Property" "FALSE")
+    (Netlist_TAB "0")
+    ("Allegro Netlist Input Board File" "allegro\SENSOR_TEST_BOARD.brd"))
+  (Folder "Outputs"
+    (File ".\allegro\pstxnet.dat"
+      (Type "Report")
+      (DisplayName "pstxnet.dat"))
+    (File ".\allegro\pstxprt.dat"
+      (Type "Report")
+      (DisplayName "pstxprt.dat"))
+    (File ".\allegro\pstchip.dat"
+      (Type "Report")
+      (DisplayName "pstchip.dat")))
+  (Folder "PSpice Resources"
+    (Folder "Simulation Profiles")
+    (Folder "Model Libraries"
+      (Sort User))
+    (Folder "Stimulus Files"
+      (Sort User))
+    (Folder "Include Files"
+      (Sort User)))
+  (DefaultLibraryBrowseDirectory "library\PSpice")
+  (PartMRUSelector
+    (MS5805
+      (FullPartName "MS5805.Normal")
+      (LibraryName "C:\USERS\KD9609\ORCAD\CAPTURE_LIBS\BRIGGS.OLB")
+      (DeviceIndex "0"))
+    (MPU-9250
+      (FullPartName "MPU-9250.Normal")
+      (LibraryName "C:\USERS\KD9609\ORCAD\CAPTURE_LIBS\BRIGGS.OLB")
+      (DeviceIndex "0"))
+    (CON6
+      (FullPartName "CON6.Normal")
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
+      (DeviceIndex "0"))
+    ("A31411-ND RJ24 6-Pos Conn"
+      (FullPartName "A31411-ND RJ24 6-Pos Conn.Normal")
+      (LibraryName "C:\USERS\KD9609\ORCAD\CAPTURE_LIBS\BRIGGS.OLB")
+      (DeviceIndex "0"))
+    ("CONN PCB 6"
+      (FullPartName "CONN PCB 6.Normal")
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\CONNECTOR.OLB")
+      (DeviceIndex "0"))
+    (R
+      (FullPartName "R.Normal")
+      (LibraryName
+         "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
+      (DeviceIndex "0"))
+    (NPA-201
+      (FullPartName "NPA-201.Normal")
+      (LibraryName "C:\USERS\KD9609\ORCAD\CAPTURE_LIBS\BRIGGS.OLB")
+      (DeviceIndex "0"))
+    (PORTLEFT-L
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (C
+      (FullPartName "C.Normal")
+      (LibraryName
+         "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
+      (DeviceIndex "0"))
+    (0
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (VCC_BAR
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0")))
+  (LastUsedLibraryBrowseDirectory "C:\Cadence\SPB_16.6\tools\capture\library")
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources" "Z:\SrDev\quadcopter2_0\sensor_test_board.dsn")
+      (Path "Design Resources" "Z:\SrDev\quadcopter2_0\sensor_test_board.dsn"
+         "SCHEMATIC1")
+      (Path "Outputs")
+      (Select "Design Resources" "Z:\SrDev\quadcopter2_0\sensor_test_board.dsn"
+         "SCHEMATIC1" "Sensor Test Board"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -8 -30 0 200 0 431"))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -30 50 1758 50 519")
+        (Scroll "90 140")
+        (Zoom "200")
+        (Occurrence "/"))
+      (Path "Z:\SRDEV\QUADCOPTER2_0\SENSOR_TEST_BOARD.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "Sensor Test Board")))
+  (ISPCBBASICLICENSE "false")
+  (MPSSessionName "kd9609"))
