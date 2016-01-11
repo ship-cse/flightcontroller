@@ -1,0 +1,400 @@
+FILE_TYPE = EXPANDEDPARTLIST;
+{ Using PSTWRITER 16.6.0 d001Sep-14-2015 at 11:41:33 }
+DIRECTIVES
+ PST_VERSION='PST_HDL_CENTRIC_VERSION_0';
+ ROOT_DRAWING='QUADCOPTER1';
+ POST_TIME='Sep 10 2012 04:46:09';
+ SOURCE_TOOL='CAPTURE_WRITER';
+END_DIRECTIVES;
+
+PART_NAME
+ C1 'CAP_CAP250_100UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS171697@DISCRETE.CAP.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins171697@discrete.\cap.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins171697@discrete.\cap.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C10 'C_SMD_CAP_1206_.1UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS174459@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins174459@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins174459@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C11 'C_SMD_CAP_1206_.1UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS174671@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins174671@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins174671@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C12 'C_SMD_CAP_1206_.1UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS174539@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins174539@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins174539@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C13 'C_SMD_CAP_1206_10UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS168062@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins168062@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins168062@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C14 'C_SMD_CAP_1206_100NF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS160568@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins160568@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins160568@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C15 'C_SMD_CAP_1206_10UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS160584@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins160584@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins160584@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C16 'C_SMD_CAP_1206_100NF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS161125@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins161125@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins161125@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C2 'CAP_CAP250_100UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS171721@DISCRETE.CAP.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins171721@discrete.\cap.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins171721@discrete.\cap.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C3 'CAP_CAP250_100UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS171805@DISCRETE.CAP.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins171805@discrete.\cap.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins171805@discrete.\cap.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C4 'C_SMD_CAP_1206_10UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS171155@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins171155@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins171155@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C5 'C_SMD_CAP_1206_10UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS171171@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins171171@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins171171@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C7 'C_SMD_CAP_1206_10UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS174691@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins174691@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins174691@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C8 'C_SMD_CAP_1206_10UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS174359@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins174359@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins174359@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C9 'C_SMD_CAP_1206_.1UF':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS174479@ANALOG.C.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins174479@analog.\c.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins174479@analog.\c.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J1 'CON2_KDCONN2_CON2':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS159596@CONNECTOR.CON2.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins159596@connector.\con2.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins159596@connector.\con2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J10 'CONN SOCKET 3_CONN3FOOTPRINT_CO':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS197657@CONNECTOR.CONN SOCKET 3.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins197657@connector.\conn socket 3.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins197657@connector.\conn socket 3.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J11 'CONN SOCKET 3_CONN3FOOTPRINT_CO':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS197687@CONNECTOR.CONN SOCKET 3.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins197687@connector.\conn socket 3.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins197687@connector.\conn socket 3.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J12 'CONN SOCKET 3_CONN3FOOTPRINT_CO':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS197717@CONNECTOR.CONN SOCKET 3.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins197717@connector.\conn socket 3.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins197717@connector.\conn socket 3.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J13 'CONN SOCKET 3_CONN3FOOTPRINT_CO':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS197747@CONNECTOR.CONN SOCKET 3.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins197747@connector.\conn socket 3.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins197747@connector.\conn socket 3.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J16 'CONN SOCKET 5_CONN5FOOTPRINT_CO':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS200456@CONNECTOR.CONN SOCKET 5.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins200456@connector.\conn socket 5.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins200456@connector.\conn socket 5.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J2 'CON2_KDCONN2_CON2':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS170543@CONNECTOR.CON2.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins170543@connector.\con2.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins170543@connector.\con2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J3 'CON2_KDCONN2_CON2':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS170569@CONNECTOR.CON2.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins170569@connector.\con2.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins170569@connector.\con2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J4 'CON2_KDCONN2_CON2':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS170595@CONNECTOR.CON2.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins170595@connector.\con2.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins170595@connector.\con2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J5 'CON2_KDCONN2_CON2':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS170621@CONNECTOR.CON2.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins170621@connector.\con2.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins170621@connector.\con2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J6 'CON2_KDCONN2_2_CON2':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS175649@CONNECTOR.CON2.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins175649@connector.\con2.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins175649@connector.\con2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J7 'CON2_KDCONN2_2_CON2':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS175665@CONNECTOR.CON2.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins175665@connector.\con2.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins175665@connector.\con2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J8 'CON2_KDCONN2_2_CON2':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS175681@CONNECTOR.CON2.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins175681@connector.\con2.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins175681@connector.\con2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J9 'CON2_KDCONN2_2_CON2':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS175697@CONNECTOR.CON2.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins175697@connector.\con2.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins175697@connector.\con2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R1 'R_SMD_CAP_1206_470':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS174339@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins174339@analog.\r.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins174339@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R2 'R_SMD_CAP_1206_10K':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS174519@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins174519@analog.\r.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins174519@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R3 'R_SMD_CAP_1206_10':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS174499@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins174499@analog.\r.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins174499@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R4 'R_SMD_CAP_1206_10K':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS180104@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins180104@analog.\r.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins180104@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R5 'R_SMD_CAP_1206_10K':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS180130@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins180130@analog.\r.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins180130@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R6 'R_SMD_CAP_1206_10K':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS180156@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins180156@analog.\r.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins180156@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R7 'R_SMD_CAP_1206_10K':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS180182@ANALOG.R.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins180182@analog.\r.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins180182@analog.\r.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U1 'PIC32MX440F256H_10_PIC32MX440_P':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS174379@QUADCOPTER1.PIC32MX440F256H_10.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins174379@quadcopter1.\pic32mx440f256h_10.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins174379@quadcopter1.\pic32mx440f256h_10.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U5 'LSM330_SENSOR_0_SENSOR_LSM330_S':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS170069@QUADCOPTER1.LSM330_SENSOR_0.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins170069@quadcopter1.\lsm330_sensor_0.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins170069@quadcopter1.\lsm330_sensor_0.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U6 'LP38690-TO252_SOT23_LP38690-TO2':;
+
+SECTION_NUMBER 1
+ '@QUADCOPTER1.MOTHER BOARD(SCH_1):INS170232@BRIGGS.LP38690-TO252.NORMAL(CHIPS)':
+ C_PATH='@quadcopter1.\mother board\(sch_1):ins170232@briggs.\lp38690-to252.normal\(chips)',
+ P_PATH='@quadcopter1.\mother board\(sch_1):page1_ins170232@briggs.\lp38690-to252.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+END.

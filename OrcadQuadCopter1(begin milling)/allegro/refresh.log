@@ -1,0 +1,127 @@
+Thu Sep 24 16:13:05 2015				Page     1
+
+
+ 
+Update Symbols/Modules Logfile
+	Thu Sep 24 16:13:05 2015
+
+------ Module Refresh Messages ------
+
+SUMMARY:    Updated 0 out of 0 modules
+
+------ End Module Messages     ------
+
+
+
+(---------------------------------------------------------------------)
+(                                                                     )
+(    Refresh Symbol                                                   )
+(                                                                     )
+(    Drawing          : QUADCOPTER1mthrbrd1_2.brd                     )
+(    Software Version : 16.6P004                                      )
+(    Date/Time        : Thu Sep 24 16:13:06 2015                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+Thu Sep 24 16:13:06 2015				Page     1
+
+
+------ Symbol Refresh Directives ------
+
+Input design = 'Z:/SRDEV/ORCADQUADCOPTER1(BEGIN MILLING)/ALLEGRO/QUADCOPTER1mthrbrd1_2.brd'
+Output design = ''
+Update mechanical symbols = 'YES'
+Update format symbols = 'NO'
+Update package symbols = 'YES'
+Update shape/flash symbols = 'YES'
+Update symbol padstacks = 'YES'
+Reset symbol text and size locations = 'NO'
+Reset Pin Escapes (fanouts) = 'NO'
+Ripup Etch = 'NO'
+Reset custom drill data = 'NO'
+
+
+------ Library Paths ------
+PSMPATH =  . 
+           symbols 
+           .. 
+           ../symbols 
+           C:/Cadence/SPB_16.6/share/local/pcb/symbols 
+           C:/Cadence/SPB_16.6/share/pcb/pcb_lib/symbols 
+           C:/Cadence/SPB_16.6/share/pcb/allegrolib/symbols 
+           C:/USERS/KD9609/DOWNLOADS/ORCAD/PCB_CONSTRAINTS/ 
+           Z:/SrDev/OrcadQuadCopter1/ 
+           Z:/SRDEV/ORCADQUADCOPTER1(BEGIN MILLING)/ 
+
+PADPATH =  . 
+           symbols 
+           .. 
+           ../symbols 
+           C:/Cadence/SPB_16.6/share/local/pcb/padstacks 
+           C:/Cadence/SPB_16.6/share/pcb/pcb_lib/symbols 
+           C:/Cadence/SPB_16.6/share/pcb/allegrolib/symbols 
+           C:/USERS/KD9609/DOWNLOADS/ORCAD/PCB_CONSTRAINTS/ 
+           Z:/SrDev/OrcadQuadCopter1/ 
+           C:/Users/kd9609/orcad/pcb_symbols/ 
+
+
+------ Symbol Refresh Messages ------
+
+'SOT23'  symbol refreshed successfully.
+'POWERSWITCH'  symbol refreshed successfully.
+'TO220-3'  symbol refreshed successfully.
+'RESETSWITCH'  symbol refreshed successfully.
+'CONN3FOOTPRINT'  symbol refreshed successfully.
+'CONN5FOOTPRINT'  symbol refreshed successfully.
+
+'PIC32MX440'  symbol starting to refresh:
+     WARNING(SPMHNI-252): 'PIC32MX440' symbol unable to find in directory search path.
+
+'MOUNTSCREWHOLE'  symbol starting to refresh:
+     ERROR(SPMHNI-254): Unable to load symbol, 'MOUNTSCREWHOLE': 'ERROR(SPMHDB-243): Cannot modify element; the object or a parent~
+      has the FIXED property. [help]'.
+     
+
+'KDCONN2_2'  symbol starting to refresh:
+     WARNING(SPMHNI-252): 'KDCONN2_2' symbol unable to find in directory search path.
+
+'CAP250'  symbol starting to refresh:
+     WARNING(SPMHNI-252): 'CAP250' symbol unable to find in directory search path.
+
+'KDCONN2'  symbol starting to refresh:
+     WARNING(SPMHNI-252): 'KDCONN2' symbol unable to find in directory search path.
+
+'SMD_CAP_1206'  symbol starting to refresh:
+     WARNING(SPMHNI-252): 'SMD_CAP_1206' symbol unable to find in directory search path.
+
+'SENSOR'  symbol starting to refresh:
+     WARNING(SPMHNI-252): 'SENSOR' symbol unable to find in directory search path.
+'TR30_20'  symbol refreshed successfully.
+'AB00'  symbol refreshed successfully.
+'PIC32MX440TQFPPIN1'  symbol refreshed successfully.
+'PIC32MX440TQFPPIN1MASK'  symbol refreshed successfully.
+
+'SENSORPAD1'  symbol starting to refresh:
+     WARNING(SPMHNI-252): 'SENSORPAD1' symbol unable to find in directory search path.
+
+'SENSORPAD1MASK'  symbol starting to refresh:
+     WARNING(SPMHNI-252): 'SENSORPAD1MASK' symbol unable to find in directory search path.
+
+
+------ Pad Stack Refresh Messages ------
+
+'SCREWHOLE'  pad stack refreshed successfully.
+'PAD80CIR55D'  pad stack refreshed successfully.
+'SMD20_17'  pad stack refreshed successfully.
+'RESETSWITCH'  pad stack refreshed successfully.
+'A1117MOUNT'  pad stack refreshed successfully.
+'CONN3PAD'  pad stack refreshed successfully.
+'POWERSWITCH'  pad stack refreshed successfully.
+
+
+----- Symbol Update Summary ----
+
+Errors detected; due to these errors, this design was NOT updated.
+       1  errors detected.
+       8  warnings detected.

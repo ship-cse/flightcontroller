@@ -1,0 +1,23 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    CREATE SYMBOL                                                    )
+(                                                                     )
+(    Drawing          : smd_cap_0603.dra                              )
+(    Software Version : 16.6S012                                      )
+(    Date/Time        : Tue Sep 17 13:58:52 2013                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+Create Symbol of type: PACKAGE
+    Directory = C:/ORCAD/pcb_symbols
+    Name      = smd_cap_0603.psm
+    User      = tbriggs
+    Machine   = TOMBRIGGS-PC
+
+
+Create symbol started.
+ 
+
+Create symbol completed.
+

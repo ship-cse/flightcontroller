@@ -1,0 +1,82 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    QUICKPLACE LOG                                                   )
+(                                                                     )
+(    Drawing          : temp.brd                                      )
+(    Software Version : 16.6P004                                      )
+(    Date/Time        : Wed Nov 04 12:09:22 2015                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+State: Placing on layer TOP
+
+ERROR:   Could not find symbol:  U1 / PIC32MX440F256H_10_PIC32MX440_P / PIC32MX440
+ERROR:   Could not find symbol:  U5 / LSM330_SENSOR_0_SENSOR_LSM330_S / SENSOR
+         Placed symbol:  J16 / CONN SOCKET 5_CONN5FOOTPRINT_CO / CONN5FOOTPRINT at (-64.9952 73.6846)
+         Placed symbol:  SW1 / CKN9363 SWITCH_0_RESETSWITCH_CK / RESETSWITCH at (-52.4756 77.0096)
+         Placed symbol:  J12 / CONN SOCKET 3_CONN3FOOTPRINT_CO / CONN3FOOTPRINT at (-42.2096 75.3096)
+         Placed symbol:  J11 / CONN SOCKET 3_CONN3FOOTPRINT_CO / CONN3FOOTPRINT at (-33.6552 75.3096)
+         Placed symbol:  Q2 / DIODES_AP1117T50L-U_TO220-3_DIO / TO220-3 at (-11.1894 75.4766)
+         Placed symbol:  J14 / CONN SOCKET 3_CONN3FOOTPRINT_CO / CONN3FOOTPRINT at (-4.3744 75.3096)
+         Placed symbol:  J13 / CONN SOCKET 3_CONN3FOOTPRINT_CO / CONN3FOOTPRINT at (4.1800 75.3096)
+         Placed symbol:  J6 / SWITCH_POWERSWITCH_SWITCH / POWERSWITCH at (11.9880 79.1596)
+         Placed symbol:  Q1 / MCP1700_SOT23_MCP1700 / SOT23 at (17.5994 74.4248)
+         Placed symbol:  C16 / C_SMD_CAP_0603_100NF / SMD_CAP_0603 at (21.0884 73.2846)
+         Placed symbol:  R21 / R_SMD_CAP_0603_22K / SMD_CAP_0603 at (24.0024 73.2846)
+         Placed symbol:  R17 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (26.9164 73.2846)
+         Placed symbol:  R15 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (29.8304 73.2846)
+         Placed symbol:  C14 / C_SMD_CAP_0603_100NF / SMD_CAP_0603 at (32.7444 73.2846)
+         Placed symbol:  C8 / C_SMD_CAP_0603_10UF / SMD_CAP_0603 at (35.6584 73.2846)
+         Placed symbol:  R14 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (38.5724 73.2846)
+         Placed symbol:  R3 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (41.4864 73.2846)
+         Placed symbol:  R16 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (44.4004 73.2846)
+         Placed symbol:  R6 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (47.3144 73.2846)
+         Placed symbol:  R5 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (50.2284 73.2846)
+         Placed symbol:  R7 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (53.1424 73.2846)
+         Placed symbol:  C7 / C_SMD_CAP_0603_10UF / SMD_CAP_0603 at (56.0564 73.2846)
+         Placed symbol:  R19 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (58.9704 73.2846)
+         Placed symbol:  R18 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (61.8844 73.2846)
+ERROR:   Could not find symbol:  C4 / CAPACITOR NON-POL_SMD_CAP_1206_ / SMD_CAP_1206
+         Placed symbol:  C15 / C_SMD_CAP_0603_10UF / SMD_CAP_0603 at (64.7984 73.2846)
+         Placed symbol:  R20 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (67.7124 73.2846)
+ERROR:   Could not find symbol:  L5 / R_SMD_CAP_1206_200 / SMD_CAP_1206
+ERROR:   Could not find symbol:  L2 / R_SMD_CAP_1206_200 / SMD_CAP_1206
+         Placed symbol:  C12 / C_SMD_CAP_0603_.1UF / SMD_CAP_0603 at (70.6264 73.2846)
+ERROR:   Could not find symbol:  L4 / R_SMD_CAP_1206_200 / SMD_CAP_1206
+         Placed symbol:  R8 / R_SMD_CAP_0603_10K / SMD_CAP_0603 at (-70.5886 86.4926)
+ERROR:   Could not find symbol:  R11 / R_SMD_CAP_1206_200 / SMD_CAP_1206
+ERROR:   Could not find symbol:  R13 / R_SMD_CAP_1206_200 / SMD_CAP_1206
+ERROR:   Could not find symbol:  R12 / R_SMD_CAP_1206_200 / SMD_CAP_1206
+ERROR:   Could not find symbol:  R9 / R_SMD_CAP_1206_200 / SMD_CAP_1206
+ERROR:   Could not find symbol:  L1 / R_SMD_CAP_1206_2.5K / SMD_CAP_1206
+ERROR:   Could not find symbol:  L6 / R_SMD_CAP_1206_2.5K / SMD_CAP_1206
+ERROR:   Could not find symbol:  R1 / R_SMD_CAP_1206_2.5K / SMD_CAP_1206
+ERROR:   Could not find symbol:  C5 / CAP POL_SMD_CAP_1206_4.7UF / SMD_CAP_1206
+         Placed symbol:  C11 / C_SMD_CAP_0603_.1UF / SMD_CAP_0603 at (-67.6746 86.4926)
+         Placed symbol:  C13 / C_SMD_CAP_0603_10UF / SMD_CAP_0603 at (-64.7606 86.4926)
+ERROR:   Could not find symbol:  C6 / CAP POL_SMD_CAP_1206_4.7UF / SMD_CAP_1206
+         Placed symbol:  C9 / C_SMD_CAP_0603_.1UF / SMD_CAP_0603 at (-61.8466 86.4926)
+ERROR:   Could not find symbol:  R10 / R_SMD_CAP_1206_200 / SMD_CAP_1206
+         Placed symbol:  C10 / C_SMD_CAP_0603_.1UF / SMD_CAP_0603 at (-58.9326 86.4926)
+ERROR:   Could not find symbol:  C1 / CAP_CAP250_100UF / CAP250
+ERROR:   Could not find symbol:  C2 / CAP_CAP250_100UF / CAP250
+ERROR:   Could not find symbol:  C3 / CAP_CAP250_100UF / CAP250
+ERROR:   Could not find symbol:  J1 / CON2_KDCONN2_CON2 / KDCONN2
+ERROR:   Could not find symbol:  J2 / CON2_KDCONN2_CON2 / KDCONN2
+ERROR:   Could not find symbol:  J3 / CON2_KDCONN2_CON2 / KDCONN2
+ERROR:   Could not find symbol:  J4 / CON2_KDCONN2_CON2 / KDCONN2
+ERROR:   Could not find symbol:  J5 / CON2_KDCONN2_CON2 / KDCONN2
+ERROR:   Could not find symbol:  J10 / CON2_KDCONN2_2_CON2 / KDCONN2_2
+ERROR:   Could not find symbol:  J7 / CON2_KDCONN2_2_CON2 / KDCONN2_2
+ERROR:   Could not find symbol:  J8 / CON2_KDCONN2_2_CON2 / KDCONN2_2
+ERROR:   Could not find symbol:  J9 / CON2_KDCONN2_2_CON2 / KDCONN2_2
+ERROR:   Could not find symbol:  R2 / R_SMD_CAP_1206_470 / SMD_CAP_1206
+ERROR:   Could not find symbol:  R4 / R_SMD_CAP_1206_10 / SMD_CAP_1206
+ERROR:   Could not find symbol:  L3 / R_SMD_CAP_1206_200 / SMD_CAP_1206
+
+
+Placed 32 of 63 applicable (63 total) symbols.
+
+-----------------------------------------------------------------------
+

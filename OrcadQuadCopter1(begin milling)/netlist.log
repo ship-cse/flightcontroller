@@ -1,0 +1,30 @@
+{ Using PSTWRITER 16.6.0 d001Sep-14-2015 at 11:41:32 }
+
+#1 WARNING(ORCAP-36006): Part Name "CONN SOCKET 3_CONN3FOOTPRINT_CONN SOCKET 3" is renamed to "CONN SOCKET 3_CONN3FOOTPRINT_CO".
+#2 WARNING(ORCAP-36006): Part Name "CONN SOCKET 5_CONN5FOOTPRINT_CONN SOCKET 5" is renamed to "CONN SOCKET 5_CONN5FOOTPRINT_CO".
+#3 WARNING(ORCAP-36006): Part Name "PIC32MX440F256H_10_PIC32MX440_PIC32MX440F256H" is renamed to "PIC32MX440F256H_10_PIC32MX440_P".
+#4 WARNING(ORCAP-36042): Pin "Vss" is renamed to "VSS#9" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#5 WARNING(ORCAP-36042): Pin "Vss" is renamed to "VSS#25" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#6 WARNING(ORCAP-36042): Pin "Vss" is renamed to "VSS#41" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#7 WARNING(ORCAP-36042): Pin "Vdd" is renamed to "VDD#10" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#8 WARNING(ORCAP-36042): Pin "Vdd" is renamed to "VDD#26" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#9 WARNING(ORCAP-36042): Pin "Vdd" is renamed to "VDD#38" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#10 WARNING(ORCAP-36006): Part Name "LSM330_SENSOR_0_SENSOR_LSM330_SENSOR" is renamed to "LSM330_SENSOR_0_SENSOR_LSM330_S".
+#11 WARNING(ORCAP-36042): Pin "VDD_IO" is renamed to "VDD_IO#1" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#12 WARNING(ORCAP-36042): Pin "VDD_IO" is renamed to "VDD_IO#3" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#13 WARNING(ORCAP-36042): Pin "GND" is renamed to "GND#19" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#14 WARNING(ORCAP-36042): Pin "GND" is renamed to "GND#20" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#15 WARNING(ORCAP-36042): Pin "VDD" is renamed to "VDD#22" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#16 WARNING(ORCAP-36042): Pin "VDD" is renamed to "VDD#23" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#17 WARNING(ORCAP-36042): Pin "VDD" is renamed to "VDD#24" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#18 WARNING(ORCAP-36006): Part Name "LP38690-TO252_SOT23_LP38690-TO252" is renamed to "LP38690-TO252_SOT23_LP38690-TO2".
+INFO(ORCAP-36080): Scanning netlist files ...
+
+Loading... C:\USERS\KD9609\SRDEV\ORCADQUADCOPTER1/pstchip.dat
+
+Loading... C:\USERS\KD9609\SRDEV\ORCADQUADCOPTER1/pstchip.dat
+
+Loading... C:\USERS\KD9609\SRDEV\ORCADQUADCOPTER1/pstxprt.dat
+
+Loading... C:\USERS\KD9609\SRDEV\ORCADQUADCOPTER1/pstxnet.dat
+packaging the design view...

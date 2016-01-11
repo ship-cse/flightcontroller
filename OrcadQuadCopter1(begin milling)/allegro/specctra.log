@@ -1,0 +1,276 @@
+# 
+# ===============================================================================
+#                               Allegro PCB Router                               
+# Copyright 1990-2010 Cadence Design Systems, Inc.  All Rights Reserved.
+# ===============================================================================
+# 
+# Software licensed for sale by Cadence Design Systems, Inc.
+# Current time = Fri May 29 15:05:31 2015
+# 
+# Allegro PCB Router v16-6-112 made 2012/09/12 at 23:00:45
+# Running on: mct163sce, OS Version: WindowsNT 6.1.7601, Architecture: Intel Pentium II, III, or 4
+# Licensing: The program will not obey any unlicensed rules
+# No graphics will be displayed.
+# Design Name C:/USERS/KEVIN/SRDEV/ORCADQUADCOPTER1/allegro\QUADCOPTER1brd3.dsn
+# Batch File Name: pasde.do
+# Did File Name: C:/USERS/KEVIN/SRDEV/ORCADQUADCOPTER1/allegro/specctra.did
+# Current time = Fri May 29 15:05:31 2015
+# PCB C:/USERS/KEVIN/SRDEV/ORCADQUADCOPTER1/allegro
+# Master Unit set up as: MM 100000
+# PCB Limits xlo= -1.2192 ylo= -1.2192 xhi=864.8192 yhi=560.0192
+# Total 15 Images Consolidated.
+# Via VIA z=1, 2 xlo= -0.3000 ylo= -0.3000 xhi=  0.3000 yhi=  0.3000
+# 
+#    VIA     TOP  BOTTOM
+# 
+#    TOP  ------   VIA  
+# BOTTOM   VIA    ------
+# 
+# Wires Processed 22, Vias Processed 0
+# Using colormap in design file.
+# Layers Processed: Signal Layers 2
+# Components Placed 27, Images Processed 38, Padstacks Processed 14
+# Nets Processed 20, Net Terminals 77
+# PCB Area=482579.680  EIC=6  Area/EIC=80429.947  SMDs=11
+# Total Pin Count: 91
+# Signal Connections Created 37
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0001 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.3810, Clearance= 0.3048
+# Layer BOTTOM Vert Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.3810, Clearance= 0.3048
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# 
+# Wiring Statistics ----------------- C:/USERS/KEVIN/SRDEV/ORCADQUADCOPTER1/allegro\QUADCOPTER1brd3.dsn
+# Nets 20 Connections 56 Unroutes 37
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 1, at vias 0 Total Vias 0
+# Percent Connected   30.36
+# Manhattan Length 757.4050 Horizontal 528.3192 Vertical 229.0858
+# Routed Length 182.5349 Horizontal 143.8740 Vertical  64.3740
+# Ratio Actual / Manhattan   0.2410
+# Unconnected Length 554.4150 Horizontal 319.5830 Vertical 234.8320
+# Total Conflicts: 2 (Cross: 0, Clear: 2, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:01
+# Loading Do File pasde.do ...
+# Loading Do File C:/USERS/KEVIN/SRDEV/ORCADQUADCOPTER1/allegro\QUADCOPTER1brd3_rules.do ...
+# Colormap Written to File _notify.std
+# Enter command <# Loading Do File C:/Users/kevin/AppData/Local/Temp/#Taaaaax09804.tmp ...
+# All Components Unselected.
+# All Nets Unselected.
+# Net BHIGH Selected.
+# Net BLOW Selected.
+# Net CHIGH Selected.
+# Net CLOW Selected.
+# Net AHIGH Selected.
+# Net ALOW Selected.
+set route_diagonal 0
+grid wire 0.000100 (direction x) (offset 0.000000)
+grid wire 0.000100 (direction y) (offset 0.000000)
+grid via 0.000100 (direction x) (offset 0.000000)
+grid via 0.000100 (direction y) (offset 0.000000)
+protect all wires
+# All Wires Protected.
+direction TOP horizontal
+select layer TOP
+unprotect layer_wires TOP
+# Wires on layer TOP were Unprotected.
+direction BOTTOM vertical
+select layer BOTTOM
+unprotect layer_wires BOTTOM
+# Wires on layer BOTTOM were Unprotected.
+cost via -1
+# System default cost will be used.
+set turbo_stagger off
+limit outside -1
+rule pcb (patterns_allowed  trombone accordion)
+set pattern_stacking on
+rule pcb (sawtooth_amplitude -1 -1)
+rule pcb (sawtooth_gap -1)
+rule pcb (accordion_amplitude -1 -1)
+rule pcb (accordion_gap -1)
+rule pcb (trombone_run_length -1)
+rule pcb (trombone_gap -1)
+unprotect selected
+# All Selected Wires Unprotected.
+route 25 1
+# Command route detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command route will ignore pcb layer rule(s), mcm via rule(s)
+# Current time = Fri May 29 15:05:45 2015
+# 
+#    VIA     TOP  BOTTOM
+# 
+#    TOP  ------   VIA  
+# BOTTOM   VIA    ------
+# 
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0001 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.3810, Clearance= 0.3048
+# Layer BOTTOM Vert Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.3810, Clearance= 0.3048
+# 
+# Wiring Statistics ----------------- C:/USERS/KEVIN/SRDEV/ORCADQUADCOPTER1/allegro\QUADCOPTER1brd3.dsn
+# Nets 20 Connections 56 Unroutes 37
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 1, at vias 0 Total Vias 0
+# Percent Connected   30.36
+# Manhattan Length 757.4050 Horizontal 528.3192 Vertical 229.0858
+# Routed Length 182.5349 Horizontal 143.8740 Vertical  64.3740
+# Ratio Actual / Manhattan   0.2410
+# Unconnected Length 554.4150 Horizontal 319.5830 Vertical 234.8320
+# Start Route Pass 1 of 25
+# Routing 6 wires.
+# Total Conflicts: 5 (Cross: 3, Clear: 2, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 31
+# Attempts 6 Successes 6 Failures 0 Vias 2
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 1 of 25
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Start Route Pass 2 of 25
+# Routing 7 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 31
+# Attempts 5 Successes 5 Failures 0 Vias 2
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 2 of 25
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0001 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.3810, Clearance= 0.3048
+# Layer BOTTOM Vert Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.3810, Clearance= 0.3048
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# ROUTING HISTORY ================================================================
+#     Pass     |   Conflicts |    |     |     |     |    |Red|      CPU Time     |
+#   Name   |No.| Cross| Clear|Fail|Unrte| Vias|XTalk|Len.| % |  Pass   |  Total  |
+#----------+---+------+------+----+-----+-----+-----+----+---+---------+---------|
+# Route    |  1|     3|     2|   0|   31|    2|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    |  2|     0|     0|   0|   31|    2|    0|   0|100|  0:00:00|  0:00:00|
+# Conflicts between polygon wires and fixed objects:   0
+# Stub Violations:   0
+# Net Order Violations:   0
+# Diffpair Uncoupled Length Violations:   0
+# Diffpair Phase Tolerance  Violations:   0
+# Total layerset violations:   0
+# Total layerset violations (exclude Fanout/Stagger/XNet Short side):   0
+# Overall Routing Time: 0:00:00
+# 
+# Wiring Statistics ----------------- C:/USERS/KEVIN/SRDEV/ORCADQUADCOPTER1/allegro\QUADCOPTER1brd3.dsn
+# Nets 20 Connections 56 Unroutes 31
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 1, at vias 0 Total Vias 2
+# Percent Connected   44.64
+# Manhattan Length 757.4050 Horizontal 528.3192 Vertical 229.0858
+# Routed Length 402.1119 Horizontal 305.7990 Vertical 121.8286
+# Ratio Actual / Manhattan   0.5309
+# Unconnected Length 352.4340 Horizontal 157.6580 Vertical 194.7760
+clean 2
+# Command clean detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command clean will ignore pcb layer rule(s), mcm via rule(s)
+# Current time = Fri May 29 15:05:45 2015
+# 
+#    VIA     TOP  BOTTOM
+# 
+#    TOP  ------   VIA  
+# BOTTOM   VIA    ------
+# 
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0001 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.3810, Clearance= 0.3048
+# Layer BOTTOM Vert Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.3810, Clearance= 0.3048
+# 
+# Wiring Statistics ----------------- C:/USERS/KEVIN/SRDEV/ORCADQUADCOPTER1/allegro\QUADCOPTER1brd3.dsn
+# Nets 20 Connections 56 Unroutes 31
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 1, at vias 0 Total Vias 2
+# Percent Connected   44.64
+# Manhattan Length 757.4050 Horizontal 528.3192 Vertical 229.0858
+# Routed Length 402.1119 Horizontal 305.7990 Vertical 121.8286
+# Ratio Actual / Manhattan   0.5309
+# Unconnected Length 352.4340 Horizontal 157.6580 Vertical 194.7760
+# Start Clean Pass 1 of 2
+# Routing 8 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 31
+# Attempts 6 Successes 6 Failures 0 Vias 1
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 1 of 2
+# Start Clean Pass 2 of 2
+# Routing 7 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 31
+# Attempts 6 Successes 6 Failures 0 Vias 1
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 2 of 2
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0001 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.3810, Clearance= 0.3048
+# Layer BOTTOM Vert Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.3810, Clearance= 0.3048
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# ROUTING HISTORY ================================================================
+#     Pass     |   Conflicts |    |     |     |     |    |Red|      CPU Time     |
+#   Name   |No.| Cross| Clear|Fail|Unrte| Vias|XTalk|Len.| % |  Pass   |  Total  |
+#----------+---+------+------+----+-----+-----+-----+----+---+---------+---------|
+# Route    |  1|     3|     2|   0|   31|    2|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    |  2|     0|     0|   0|   31|    2|    0|   0|100|  0:00:00|  0:00:00|
+# Clean    |  3|     0|     0|   0|   31|    1|    0|   0|   |  0:00:00|  0:00:00|
+# Clean    |  4|     0|     0|   0|   31|    1|    0|   0|   |  0:00:00|  0:00:00|
+# Conflicts between polygon wires and fixed objects:   0
+# Stub Violations:   0
+# Net Order Violations:   0
+# Diffpair Uncoupled Length Violations:   0
+# Diffpair Phase Tolerance  Violations:   0
+# Total layerset violations:   0
+# Total layerset violations (exclude Fanout/Stagger/XNet Short side):   0
+# Overall Routing Time: 0:00:00
+# 
+# Wiring Statistics ----------------- C:/USERS/KEVIN/SRDEV/ORCADQUADCOPTER1/allegro\QUADCOPTER1brd3.dsn
+# Nets 20 Connections 56 Unroutes 31
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 1, at vias 0 Total Vias 1
+# Percent Connected   44.64
+# Manhattan Length 757.4050 Horizontal 528.3192 Vertical 229.0858
+# Routed Length 402.1119 Horizontal 305.7990 Vertical 121.8286
+# Ratio Actual / Manhattan   0.5309
+# Unconnected Length 352.4340 Horizontal 157.6580 Vertical 194.7760
+write routes (changed_only) (reset_changed) C:/Users/kevin/AppData/Local/Temp/#Taaaaay09804.tmp
+# Routing Written to File C:/Users/kevin/AppData/Local/Temp/#Taaaaay09804.tmp
+quit

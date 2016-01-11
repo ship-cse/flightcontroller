@@ -1,0 +1,36 @@
+{ Using PSTWRITER 16.6.0 d001Nov-04-2015 at 12:06:13 }
+
+#1 WARNING(ORCAP-36006): Part Name "CAPACITOR NON-POL_SMD_CAP_1206_4.7UF" is renamed to "CAPACITOR NON-POL_SMD_CAP_1206_".
+#2 WARNING(ORCAP-36006): Part Name "CONN SOCKET 3_CONN3FOOTPRINT_CONN SOCKET 3" is renamed to "CONN SOCKET 3_CONN3FOOTPRINT_CO".
+#3 WARNING(ORCAP-36006): Part Name "CONN SOCKET 5_CONN5FOOTPRINT_CONN SOCKET 5" is renamed to "CONN SOCKET 5_CONN5FOOTPRINT_CO".
+#4 WARNING(ORCAP-36006): Part Name "DIODES_AP1117T50L-U_TO220-3_DIODES_AP1117T50L-U" is renamed to "DIODES_AP1117T50L-U_TO220-3_DIO".
+#5 WARNING(ORCAP-36006): Part Name "CKN9363 SWITCH_0_RESETSWITCH_CKN9363 SWITCH" is renamed to "CKN9363 SWITCH_0_RESETSWITCH_CK".
+#6 WARNING(ORCAP-36042): Pin "IN" is renamed to "IN#1" as visible power pin of same name already exists in Package CKN9363 Switch_0 , SW1: Mother Board, Micro (1.90, 4.80).
+#7 WARNING(ORCAP-36042): Pin "OUT" is renamed to "OUT#2" as visible power pin of same name already exists in Package CKN9363 Switch_0 , SW1: Mother Board, Micro (1.90, 4.80).
+#8 WARNING(ORCAP-36042): Pin "IN" is renamed to "IN#3" as visible power pin of same name already exists in Package CKN9363 Switch_0 , SW1: Mother Board, Micro (1.90, 4.80).
+#9 WARNING(ORCAP-36042): Pin "OUT" is renamed to "OUT#4" as visible power pin of same name already exists in Package CKN9363 Switch_0 , SW1: Mother Board, Micro (1.90, 4.80).
+#10 WARNING(ORCAP-36006): Part Name "PIC32MX440F256H_10_PIC32MX440_PIC32MX440F256H" is renamed to "PIC32MX440F256H_10_PIC32MX440_P".
+#11 WARNING(ORCAP-36042): Pin "Vss" is renamed to "VSS#9" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#12 WARNING(ORCAP-36042): Pin "Vss" is renamed to "VSS#25" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#13 WARNING(ORCAP-36042): Pin "Vss" is renamed to "VSS#41" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#14 WARNING(ORCAP-36042): Pin "Vdd" is renamed to "VDD#10" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#15 WARNING(ORCAP-36042): Pin "Vdd" is renamed to "VDD#26" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#16 WARNING(ORCAP-36042): Pin "Vdd" is renamed to "VDD#38" as visible power pin of same name already exists in Package PIC32MX440F256H_10 , U1: Mother Board, Micro (3.20, 0.90).
+#17 WARNING(ORCAP-36006): Part Name "LSM330_SENSOR_0_SENSOR_LSM330_SENSOR" is renamed to "LSM330_SENSOR_0_SENSOR_LSM330_S".
+#18 WARNING(ORCAP-36042): Pin "VDD_IO" is renamed to "VDD_IO#1" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#19 WARNING(ORCAP-36042): Pin "VDD_IO" is renamed to "VDD_IO#3" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#20 WARNING(ORCAP-36042): Pin "GND" is renamed to "GND#19" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#21 WARNING(ORCAP-36042): Pin "GND" is renamed to "GND#20" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#22 WARNING(ORCAP-36042): Pin "VDD" is renamed to "VDD#22" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#23 WARNING(ORCAP-36042): Pin "VDD" is renamed to "VDD#23" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+#24 WARNING(ORCAP-36042): Pin "VDD" is renamed to "VDD#24" as visible power pin of same name already exists in Package LSM330_SENSOR_0 , U5: Mother Board, Sensor (3.30, 2.50).
+INFO(ORCAP-36080): Scanning netlist files ...
+
+Loading... Z:\SRDEV\ORCADQUADCOPTER1(BEGIN MILLING)\ALLEGRO/pstchip.dat
+
+Loading... Z:\SRDEV\ORCADQUADCOPTER1(BEGIN MILLING)\ALLEGRO/pstchip.dat
+
+Loading... Z:\SRDEV\ORCADQUADCOPTER1(BEGIN MILLING)\ALLEGRO/pstxprt.dat
+
+Loading... Z:\SRDEV\ORCADQUADCOPTER1(BEGIN MILLING)\ALLEGRO/pstxnet.dat
+packaging the design view...

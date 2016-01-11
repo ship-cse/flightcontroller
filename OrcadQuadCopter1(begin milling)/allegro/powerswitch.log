@@ -1,0 +1,23 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    CREATE SYMBOL                                                    )
+(                                                                     )
+(    Drawing          : powerswitch.dra                               )
+(    Software Version : 16.6P004                                      )
+(    Date/Time        : Wed Sep 23 16:18:21 2015                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+Create Symbol of type: PACKAGE
+    Directory = Z:/SrDev/OrcadQuadCopter1(begin milling)/allegro
+    Name      = powerswitch.psm
+    User      = kd9609
+    Machine   = MCT163S02
+
+
+Create symbol started.
+ 
+
+Create symbol completed.
+

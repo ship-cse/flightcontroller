@@ -1,0 +1,14 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    Probe Drill Log File                                             )
+(                                                                     )
+(    Drawing          : QUADCOPTER1brd2.brd                           )
+(    Software Version : 16.6P004                                      )
+(    Date/Time        : Fri May 29 10:54:28 2015                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+WARNING(SPMHMF-34): Cannot read the file 'nc_param.txt' ... using defaults.
+
+   Hole grand total: 0

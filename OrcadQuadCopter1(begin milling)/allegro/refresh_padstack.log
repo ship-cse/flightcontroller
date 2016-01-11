@@ -1,0 +1,52 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    Refresh Padstack                                                 )
+(                                                                     )
+(    Drawing          : MPU_9250.dra                                  )
+(    Software Version : 16.6P004                                      )
+(    Date/Time        : Thu Dec 17 15:59:41 2015                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+Thu Dec 17 15:59:41 2015				Page     1
+
+
+------ Pad Stack Refresh Options ------
+
+Input design = 'MPU_9250.dra'
+Output design = ''
+Reset symbol text and size locations = 'NO'
+
+
+------ Library Paths ------
+PSMPATH =  . 
+           symbols 
+           .. 
+           ../symbols 
+           C:/Cadence/SPB_16.6/share/local/pcb/symbols 
+           C:/Cadence/SPB_16.6/share/pcb/pcb_lib/symbols 
+           C:/Cadence/SPB_16.6/share/pcb/allegrolib/symbols 
+           C:/USERS/KD9609/DOWNLOADS/ORCAD/PCB_CONSTRAINTS/ 
+           Z:/SrDev/OrcadQuadCopter1/ 
+           Z:/SRDEV/ORCADQUADCOPTER1(BEGIN MILLING)/ 
+
+PADPATH =  . 
+           symbols 
+           .. 
+           ../symbols 
+           C:/Cadence/SPB_16.6/share/local/pcb/padstacks 
+           C:/Cadence/SPB_16.6/share/pcb/pcb_lib/symbols 
+           C:/Cadence/SPB_16.6/share/pcb/allegrolib/symbols 
+           C:/USERS/KD9609/DOWNLOADS/ORCAD/PCB_CONSTRAINTS/ 
+           Z:/SrDev/OrcadQuadCopter1/ 
+           C:/Users/kd9609/orcad/pcb_symbols/ 
+
+
+------ Pad Stack Refresh Messages ------
+
+'MPU_9250'  pad stack refresh starting.
+
+     'MPU_9250'  pad stack refreshed successfully.
+     
+Completed refreshing all pad stacks successfully.
