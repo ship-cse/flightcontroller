@@ -66,14 +66,34 @@
     (DRC_Visible_Power_pins "FALSE")
     (DRC_Report_Unused_Part_Packages "TRUE")
     (DRC_Check_Name_Prop_For_HierBlocks "TRUE")
-    (DRC_Run_Physical_Custom_DRC "FALSE"))
+    (DRC_Run_Physical_Custom_DRC "FALSE")
+    ("Create Allegro Netlist" "TRUE")
+    ("Allegro Netlist Directory" "allegro")
+    ("View Allegro Netlist Files" "FALSE")
+    ("Allegro Netlist Create DCF File" "FALSE")
+    ("Update Allegro Board" "TRUE")
+    ("Allegro Netlist Input Board File" "allegro\SENSOR_TEST_BOARD.brd")
+    ("Allegro Netlist Output Board File" "allegro\SENSOR_TEST_BOARD.brd")
+    ("Allegro Netlist Remove Etch" "FALSE")
+    ("Allegro Netlist Place Changed Component" "ALWAYS_REPLACE")
+    ("Allegro Netlist Open Board in Allegro" "ALLEGRO")
+    ("Allegro Setup Backup Versions" "3")
+    ("Allegro Setup Output Warnings" "TRUE")
+    ("Allegro Setup Ignore Constraints" "FALSE")
+    ("Allegro Setup Part Type Length" "31")
+    ("Allegro Netlist Combine Property String" "PCB Footprint")
+    ("Allegro Netlist Ignore Fixed Property" "FALSE")
+    ("Allegro Netlist User Defined Property" "FALSE"))
   (Folder "Outputs"
     (File ".\allegro\pstxnet.dat"
-      (Type "Report"))
+      (Type "Report")
+      (DisplayName "pstxnet.dat"))
     (File ".\allegro\pstxprt.dat"
-      (Type "Report"))
+      (Type "Report")
+      (DisplayName "pstxprt.dat"))
     (File ".\allegro\pstchip.dat"
-      (Type "Report"))
+      (Type "Report")
+      (DisplayName "pstchip.dat"))
     (File ".\sensor_test_board.drc"
       (Type "Report")))
   (Folder "PSpice Resources"
@@ -139,21 +159,18 @@
          "C:\Users\tbriggs\workspaces\flightcontroller\sensor_test_board\1\sensor_test_board.dsn"
          "SCHEMATIC1")
       (Path "Design Resources" "Library")
-      (Path "Outputs")
-      (Select "Design Resources"
-         "C:\Users\tbriggs\workspaces\flightcontroller\sensor_test_board\1\sensor_test_board.dsn"
-         "SCHEMATIC1" "Sensor Test Board"))
+      (Path "Outputs"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -8 -31 0 200 0 431"))
+        (Placement "44 2 3 -1 -1 -8 -31 0 200 0 431"))
       (Tab 0))
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 2 3 -1 -1 -8 -31 52 1420 52 384")
-        (Scroll "155 480")
+        (Placement "44 0 1 -1 -1 -8 -31 52 1420 52 384")
+        (Scroll "155 100")
         (Zoom "200")
         (Occurrence "/"))
       (Path

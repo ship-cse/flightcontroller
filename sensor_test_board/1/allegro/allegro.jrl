@@ -1,0 +1,220 @@
+\t (00:00:02) allegro 16.6-2015 S057 (v16-6-112EM) Windows 32
+\t (00:00:02)     Journal start - Tue Jan 12 10:12:05 2016
+\t (00:00:02)         Host=TBRIGGS-PC User=tbriggs Pid=10716 CPUs=6
+\t (00:00:02) CmdLine= C:\Cadence\SPB_16.6\tools\pcb\bin\allegro.exe -mpssession tbriggs C:\USERS\TBRIGGS\WORKSPACES\FLIGHTCONTROLLER\SENSOR_TEST_BOARD\1\allegro\SENSOR_TEST_BOARD.brd
+\t (00:00:02) 
+\t (00:00:04) Opening existing design...
+\d (00:00:04) Design opened: C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro/SENSOR_TEST_BOARD.brd
+\t (00:00:04) Grids are drawn 0.2000, 0.2000 apart for enhanced viewability.
+\i (00:00:04) trapsize 1539
+\i (00:00:04) trapsize 1504
+\i (00:00:04) trapsize 1544
+\t (00:00:05) Grids are drawn 0.2000, 0.2000 apart for enhanced viewability.
+\i (00:00:05) trapsize 1544
+\i (00:00:05) etchedit 
+\i (00:00:11) setwindow form.vf_vis
+\i (00:00:11) FORM vf_vis 2 all_colorvisible YES 
+\i (00:00:29) setwindow pcb
+\i (00:00:29) pick grid 14.9042 6.1006
+\t (00:00:29) last pick:  14.9000 6.1000
+\i (00:00:36) show measure 
+\i (00:00:41) pick grid 1.9615 6.8729
+\t (00:00:41) last pick:  2.0000 6.9000
+\i (00:00:42) pick grid 5.6064 6.9656
+\t (00:00:42) last pick:  5.6000 7.0000
+\i (00:00:51) pick grid -0.0155 -6.2861
+\t (00:00:51) last pick:  0.0000 -6.3000
+\i (00:00:54) pick grid 0.1699 -1.4055
+\t (00:00:54) last pick:  0.2000 -1.4000
+\i (00:01:06) pick grid 7.8305 -4.2782
+\t (00:01:06) last pick:  7.8000 -4.3000
+\i (00:01:08) prepopup 12.3095 -1.8998
+\i (00:01:09) done 
+\i (00:01:09) etchedit 
+\i (00:01:15) testprep manual 
+\i (00:01:28) pick grid -10.5488 6.3169
+\t (00:01:28) last pick:  -10.5000 6.3000
+\i (00:01:32) pick grid -10.0855 3.7530
+\t (00:01:32) last pick:  -10.1000 3.8000
+\i (00:01:40) prepopup -10.0855 3.7530
+\i (00:01:42) next 
+\i (00:01:44) prepopup -10.3326 1.5599
+\i (00:01:46) pick grid -10.5179 2.2703
+\t (00:01:46) last pick:  -10.5000 2.3000
+\e (00:01:46) ERROR(SPMHMF-172): Pad is already a testpoint.
+\i (00:01:47) pick grid -9.9310 1.3745
+\t (00:01:47) last pick:  -9.9000 1.4000
+\i (00:01:47) prepopup -9.9310 1.3745
+\i (00:01:49) next 
+\i (00:01:56) testprep createfixture 
+\i (00:01:58) setwindow form.testprep_fixture
+\i (00:01:58) FORM testprep_fixture tpfixture  
+\i (00:01:58) setwindow pcb
+\i (00:01:58) etchedit 
+\i (00:02:09) testprep automatic 
+\i (00:02:17) setwindow form.testprep_automatic
+\i (00:02:17) FORM testprep_automatic allow_trace_test YES 
+\e (00:02:17) ERROR(SPMHMF-49): Testpoints on traces require a 'SMT Testpad' parameter setting.
+\i (00:02:19) FORM testprep_automatic allow_auto_insert YES 
+\i (00:02:20) FORM testprep_automatic tptestprep  
+\e (00:02:20) ERROR(SPMHMF-27): A test via must be specified for auto insertion.
+\e (00:02:20) ERROR(SPMHMF-27): A test via must be specified for auto insertion.
+\e (00:02:20) ERROR(SPMHMF-27): A test via must be specified for auto insertion.
+\e (00:02:20) ERROR(SPMHMF-27): A test via must be specified for auto insertion.
+\e (00:02:20) ERROR(SPMHMF-27): A test via must be specified for auto insertion.
+\e (00:02:20) ERROR(SPMHMF-27): A test via must be specified for auto insertion.
+\i (00:02:31) FORM testprep_automatic tpclose  
+\i (00:02:31) setwindow pcb
+\i (00:02:31) etchedit 
+\i (00:02:43) cmgr 
+\i (00:02:43) setwindow cmgr
+\i (00:02:43) cm newView ( worksheet 55:Physical "56:Physical Constraint Set" "57:All Layers" "58:All Layers" )
+\i (00:02:44) setwindow pcb
+\i (00:02:44) etchedit 
+\i (00:02:54) setwindow cmgr
+\i (00:02:54) cm select ( worksheet 55:Physical "56:Physical Constraint Set" "57:All Layers" "58:All Layers" )
+\i (00:02:54) cm select ( worksheet 55:Physical "56:Physical Constraint Set" "57:All Layers" "58:All Layers" )
+\i (00:02:56) cm newView ( worksheet 144:Properties 14:Net "36:General Properties" "37:General Properties" )
+\i (00:03:11) cm newView ( worksheet 144:Properties 38:Component "39:Component Properties" 40:General )
+\i (00:03:18) cm select ( frame ( workbook 144:Properties 38:Component "39:Component Properties" ) )
+\i (00:03:20) cm newView ( worksheet 144:Properties 38:Component "41:Pin Properties" 42:General )
+\i (00:03:21) cm select ( worksheet 144:Properties 38:Component "41:Pin Properties" 42:General )
+\i (00:03:27) cm select ( frame ( workbook 144:Properties 38:Component "41:Pin Properties" ) )
+\i (00:03:28) cm select tab 153:Shapes
+\i (00:03:30) cm select tab 42:General
+\i (00:03:31) cm select tab 153:Shapes
+\i (00:03:34) cm select tab 42:General
+\i (00:03:39) cm select ( worksheet 144:Properties 38:Component "41:Pin Properties" 42:General )
+\i (00:03:39) cm select ( worksheet 144:Properties 38:Component "41:Pin Properties" 42:General )
+\i (00:03:39) cm select ( worksheet 144:Properties 38:Component "41:Pin Properties" 42:General )
+\i (00:03:40) cm newView ( worksheet 55:Physical 61:Net "62:All Layers" "63:All Layers" )
+\i (00:03:50) cm select ( frame ( workbook 55:Physical "56:Physical Constraint Set" "57:All Layers" ) )
+\i (00:03:54) cm exit
+\i (00:04:16) setwindow pcb
+\i (00:04:16) testprep createfixture 
+\i (00:04:17) setwindow form.testprep_fixture
+\i (00:04:17) FORM testprep_fixture tpfixture  
+\e (00:04:17) ERROR(SPMHMF-67): FIXTURE subclasses already exist.
+\i (00:04:17) setwindow pcb
+\i (00:04:17) etchedit 
+\i (00:04:30) zoom in 1 
+\i (00:04:30) setwindow pcb
+\i (00:04:30) zoom in -6.7494 2.1468
+\i (00:04:30) trapsize 772
+\i (00:04:56) zoom out 1 
+\i (00:04:56) setwindow pcb
+\i (00:04:56) zoom out -1.6063 1.0656
+\i (00:04:56) trapsize 1544
+\i (00:05:15) artwork 
+\i (00:05:17) setwindow form.film_control
+\i (00:05:17) FORM film_control cancel  
+\i (00:05:17) setwindow pcb
+\i (00:05:17) etchedit 
+\i (00:05:19) ipc2581 out 
+\i (00:05:22) setwindow form.ipc2581_out
+\i (00:05:22) FORM ipc2581_out cancel  
+\i (00:05:22) setwindow pcb
+\i (00:05:22) etchedit 
+\i (00:05:25) ipc2581 out 
+\i (00:05:35) setwindow form.ipc2581_out
+\i (00:05:35) FORM ipc2581_out cancel  
+\i (00:05:35) setwindow pcb
+\i (00:05:35) etchedit 
+\i (00:05:38) artwork 
+\i (00:05:39) FORM film_control general_parameters 
+\i (00:05:39) setwindow form.film_control
+\i (00:05:39) FORM film_control general_parameters  
+\i (00:05:39) setwindow pcb
+\i (00:05:39) trapsize 1544
+\i (00:05:50) setwindow form.film_control
+\i (00:05:50) FORM film_control filename_prefix sensor- 
+\i (00:05:50) FORM film_control ok  
+\i (00:05:50) setwindow pcb
+\i (00:05:50) etchedit 
+\i (00:05:54) artwork 
+\i (00:05:54) FORM film_control general_parameters 
+\i (00:05:54) setwindow form.film_control
+\i (00:05:54) FORM film_control general_parameters  
+\i (00:05:54) setwindow pcb
+\i (00:05:54) trapsize 1544
+\i (00:05:55) setwindow form.film_control
+\i (00:05:55) FORM film_control film_control  
+\i (00:05:56) FORM film_control load  
+\i (00:06:08) fillin "C:\ORCAD\pcb_constraints\orcad-lpkf-film.txt"
+   (00:06:08) t
+\i (00:06:10) FORM film_control select_all  
+\i (00:06:11) FORM film_control create  
+\t (00:06:11) Checking db records
+\t (00:06:11)     checking for orphans...
+\t (00:06:11)     Checked 100 percent
+\w (00:06:11) Run batch DRC to correctly regenerate DRC errs.
+
+\t (00:06:11) Done dbdoctor.
+\t (00:06:11) Starting Create artwork films...
+\w (00:06:11) WARNING(SPMHGE-269): artwork had warnings, use Viewlog to review the log file.
+\w (00:06:12) Artwork generated with warnings.
+\i (00:06:14) setwindow text
+\i (00:06:14) close 
+\i (00:06:15) setwindow form.film_control
+\i (00:06:15) FORM film_control ok  
+\i (00:06:15) setwindow pcb
+\i (00:06:15) etchedit 
+\i (00:06:18) silkscreen param 
+\i (00:06:23) setwindow form.autosilk
+\i (00:06:23) FORM autosilk component_value None 
+\i (00:06:25) FORM autosilk device_type None 
+\i (00:06:28) FORM autosilk tolerance None 
+\i (00:06:29) FORM autosilk user_part None 
+\i (00:06:32) FORM autosilk done  
+\i (00:06:32) setwindow pcb
+\i (00:06:32) silkscreen execute 
+\i (00:06:32) etchedit 
+\i (00:06:40) silkscreen param 
+\i (00:06:42) setwindow form.autosilk
+\i (00:06:42) FORM autosilk done  
+\i (00:06:42) setwindow pcb
+\i (00:06:42) silkscreen execute 
+\i (00:06:42) etchedit 
+\i (00:06:52) artwork 
+\i (00:06:54) setwindow form.film_control
+\i (00:06:54) FORM film_control select_all  
+\i (00:06:56) FORM film_control create  
+\t (00:06:56) Checking db records
+\t (00:06:56)     checking for orphans...
+\t (00:06:56)     Checked 100 percent
+\w (00:06:56) Run batch DRC to correctly regenerate DRC errs.
+
+\t (00:06:56) Done dbdoctor.
+\t (00:06:56) Starting Create artwork films...
+\w (00:06:56) WARNING(SPMHGE-269): artwork had warnings, use Viewlog to review the log file.
+\w (00:06:57) Artwork generated with warnings.
+\i (00:07:00) setwindow text
+\i (00:07:00) close 
+\i (00:07:02) setwindow form.film_control
+\i (00:07:02) FORM film_control ok  
+\i (00:07:02) setwindow pcb
+\i (00:07:02) etchedit 
+\i (00:13:02) nctape_full 
+\w (00:13:02) WARNING(SPMHMF-272): NC Parameters file 'nc_param.txt' not found ... loading defaults.
+\i (00:13:04) setwindow form.nc_drill
+\i (00:13:04) FORM nc_drill auto_tool_select YES 
+\i (00:13:05) FORM nc_drill separate_tapes YES 
+\i (00:13:06) FORM nc_drill parameters  
+\i (00:13:08) setwindow form.nc_parameters
+\i (00:13:08) FORM nc_parameters enhanced_format YES 
+\i (00:13:09) FORM nc_parameters done  
+\i (00:13:11) setwindow form.nc_drill
+\i (00:13:11) FORM nc_drill execute  
+\t (00:13:11) Starting Generating NC Drill...
+\i (00:13:15) FORM nc_drill close  
+\i (00:13:15) setwindow pcb
+\i (00:13:15) etchedit 
+\i (00:26:20) xdehilite 
+\i (00:26:20) xNet Scl 
+\i (00:26:20) xname_flush 
+\i (00:26:20) done 
+\i (00:26:20) etchedit 
+\i (00:30:38) exit 
+\e (00:30:38) Do you want to save the changes you made to SENSOR_TEST_BOARD.brd?
+\i (00:30:40) fillin yes 
+\t (00:30:40)     Journal end - Tue Jan 12 10:42:43 2016

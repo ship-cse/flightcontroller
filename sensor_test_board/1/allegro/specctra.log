@@ -1,0 +1,640 @@
+# 
+# ===============================================================================
+#                               Allegro PCB Router                               
+# Copyright 1990-2010 Cadence Design Systems, Inc.  All Rights Reserved.
+# ===============================================================================
+# 
+# Software licensed for sale by Cadence Design Systems, Inc.
+# Current time = Mon Jan 11 15:13:55 2016
+# 
+# Allegro PCB Router v16-6-112 made 2015/06/07 at 22:54:31
+# Running on: tbriggs-pc, OS Version: WindowsNT 6.2.9200, Architecture: Intel Pentium II, III, or 4
+# Licensing: The program will not obey any unlicensed rules
+# No graphics will be displayed.
+# Design Name C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro\SENSOR_TEST_BOARD.dsn
+# Batch File Name: pasde.do
+# Did File Name: C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro/specctra.did
+# Current time = Mon Jan 11 15:13:55 2016
+# PCB C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro
+# Master Unit set up as: MM 100000
+# PCB Limits xlo=-14.3000 ylo=-10.4500 xhi= 14.3000 yhi= 10.4500
+# Total 8 Images Consolidated.
+# Via VIA_LPKF z=1, 2 xlo= -0.4100 ylo= -0.4100 xhi=  0.4100 yhi=  0.4100
+# 
+#    VIA      TOP    BOTTOM 
+# 
+#    TOP  --------  VIA_LPKF
+# BOTTOM  VIA_LPKF  --------
+# 
+# <<WARNING:>> Potential non fixed positive shape alignment with the host CAD system exists.
+#              Allegro PCB Router does not perform any operations to remove or identify slivers and isolations.
+#              If the host CAD system performs such an operation, the user may experience unrouted
+#              or DRC alignment issues.
+#              The user must perform final unrouted/DRC validation within the host CAD system.
+# Wires Processed 1, Vias Processed 0
+# Using colormap in design file.
+# Layers Processed: Signal Layers 2
+# Components Placed 12, Images Processed 16, Padstacks Processed 8
+# Nets Processed 9, Net Terminals 40
+# PCB Area=  494.000  EIC=3  Area/EIC=164.667  SMDs=11
+# Total Pin Count: 52
+# Signal Connections Created 31
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0001 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.2032, Clearance= 0.2032
+# Layer BOTTOM Vert Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.2032, Clearance= 0.2032
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# 
+# Wiring Statistics ----------------- C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro\SENSOR_TEST_BOARD.dsn
+# Nets 9 Connections 31 Unroutes 31
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 0, at vias 0 Total Vias 0
+# Percent Connected    0.00
+# Manhattan Length 148.0936 Horizontal  85.7682 Vertical  62.3254
+# Routed Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Ratio Actual / Manhattan   0.0000
+# Unconnected Length 148.0936 Horizontal  94.3166 Vertical  53.7770
+# Total Conflicts: 0 (Cross: 0, Clear: 0, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Loading Do File pasde.do ...
+# Loading Do File C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro\SENSOR_TEST_BOARD_rules.do ...
+# Colormap Written to File _notify.std
+# Enter command <# Loading Do File C:/Users/tbriggs/AppData/Local/Temp/#Taaaaaf08368.tmp ...
+# All Components Selected.
+# All Nets Selected.
+# Net 0 Unselected.
+# Net 3V3 Unselected.
+set route_diagonal 4
+grid wire 0.000100 (direction x) (offset 0.000000)
+grid wire 0.000100 (direction y) (offset 0.000000)
+grid via 0.000100 (direction x) (offset 0.000000)
+grid via 0.000100 (direction y) (offset 0.000000)
+protect all wires
+# All Wires Protected.
+direction TOP horizontal
+select layer TOP
+unprotect layer_wires TOP
+# Wires on layer TOP were Unprotected.
+direction BOTTOM vertical
+select layer BOTTOM
+unprotect layer_wires BOTTOM
+# Wires on layer BOTTOM were Unprotected.
+cost via -1
+# System default cost will be used.
+set turbo_stagger on
+limit outside -1
+rule pcb (patterns_allowed  trombone accordion)
+set pattern_stacking on
+rule pcb (sawtooth_amplitude -1 -1)
+rule pcb (sawtooth_gap -1)
+rule pcb (accordion_amplitude -1 -1)
+rule pcb (accordion_gap -1)
+rule pcb (trombone_run_length -1)
+rule pcb (trombone_gap -1)
+unprotect selected
+# All Selected Wires Unprotected.
+smart_route (auto_fanout on) (auto_fanout_via_share on) (auto_fanout_pin_share on) (auto_testpoint off) (auto_miter on)
+# Command smart_route detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command smart_route will ignore pcb layer rule(s), mcm via rule(s)
+# Smart Route: Only part of the wires are selected for routing. 
+# Using modified smart_route algorithm.
+# Smart Route: Executing 50 route passes.
+# Current time = Mon Jan 11 15:14:08 2016
+# 
+#    VIA      TOP    BOTTOM 
+# 
+#    TOP  --------  VIA_LPKF
+# BOTTOM  VIA_LPKF  --------
+# 
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0001 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.2032, Clearance= 0.2032
+# Layer BOTTOM Vert Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.2032, Clearance= 0.2032
+# 
+# Wiring Statistics ----------------- C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro\SENSOR_TEST_BOARD.dsn
+# Nets 9 Connections 31 Unroutes 31
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 0, at vias 0 Total Vias 0
+# Percent Connected    0.00
+# Manhattan Length 148.0936 Horizontal  85.7682 Vertical  62.3254
+# Routed Length   0.0000 Horizontal   0.0000 Vertical   0.0000
+# Ratio Actual / Manhattan   0.0000
+# Unconnected Length 148.0936 Horizontal  94.3166 Vertical  53.7770
+# Start Route Pass 1 of 50
+# Routing 11 wires.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 6 (Cross: 0, Clear: 6, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 23
+# Attempts 11 Successes 8 Failures 3 Vias 2
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 1 of 50
+# <<WARNING:>> Non positive shape width (0) near the point 80000/80000.
+# Wiring Written to File C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro\bestsave.w
+# <<WARNING:>> Smart Route: Unroute count 31 is very high after 1 passes. 
+# Design may not reach 100%. 
+# Check placement, components outside boundary, design rules, keepout positions
+# Start Route Pass 2 of 50
+# Routing 8 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 1 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 10 (Cross: 0, Clear: 10, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 22
+# Attempts 8 Successes 6 Failures 2 Vias 5
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 2 of 50
+# <<WARNING:>> Smart Route: Conflict reduction rate 0 is very low 
+# after 2 passes. 
+# Design may not reach 100%. 
+# Check number of layers, grids and design rules.
+# Start Route Pass 3 of 50
+# Routing 8 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 1 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 15 (Cross: 1, Clear: 14, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 21
+# Attempts 7 Successes 5 Failures 2 Vias 5
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 3 of 50
+# <<WARNING:>> Smart Route: Average reduction ratio only 0 after 3 passes. 
+# Design may converge very slowly. 
+# Monitor status file carefully.
+# Start Route Pass 4 of 50
+# Routing 7 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 20 (Cross: 0, Clear: 20, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 6 Failures 0 Vias 3
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 4 of 50
+# <<WARNING:>> Smart Route: Average reduction ratio only 0 after 4 passes. 
+# Design may converge very slowly. 
+# Monitor status file carefully.
+# Start Route Pass 5 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 19 (Cross: 0, Clear: 19, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 4 Failures 2 Vias 3
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 5 of 50
+# <<WARNING:>> Smart Route: Average reduction ratio only 1 after 5 passes. 
+# Design may converge very slowly. 
+# Monitor status file carefully.
+# Start Route Pass 6 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 22 (Cross: 1, Clear: 21, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 5 Failures 1 Vias 4
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 6 of 50
+# Smart Route: Smart_route progressing normally after 6 passes.
+# Start Route Pass 7 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 21 (Cross: 1, Clear: 20, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 5 Failures 1 Vias 4
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 7 of 50
+# Smart Route: Smart_route progressing normally after 7 passes.
+# Start Route Pass 8 of 50
+# Routing 7 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 20 (Cross: 0, Clear: 20, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 6 Failures 0 Vias 2
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 8 of 50
+# Smart Route: Smart_route progressing normally after 8 passes.
+# Start Route Pass 9 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 21 (Cross: 1, Clear: 20, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 6 Failures 0 Vias 4
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 9 of 50
+# Smart Route: Smart_route progressing normally after 9 passes.
+# Start Route Pass 10 of 50
+# Routing 7 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 12 (Cross: 0, Clear: 12, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 21
+# Attempts 6 Successes 5 Failures 1 Vias 2
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 10 of 50
+# Smart Route: Smart_route progressing normally after 10 passes.
+# Start Route Pass 11 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 18 (Cross: 1, Clear: 17, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 6 Failures 0 Vias 4
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:01
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 11 of 50
+# Smart Route: Smart_route progressing normally after 11 passes.
+# Start Route Pass 12 of 50
+# Routing 7 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 21 (Cross: 1, Clear: 20, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 5 Failures 1 Vias 4
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 12 of 50
+# Smart Route: Smart_route progressing normally after 12 passes.
+# Start Route Pass 13 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 12 (Cross: 0, Clear: 12, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 21
+# Attempts 6 Successes 5 Failures 1 Vias 2
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 13 of 50
+# Smart Route: Smart_route progressing normally after 13 passes.
+# Start Route Pass 14 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 18 (Cross: 1, Clear: 17, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 5 Failures 1 Vias 4
+# Cpu Time = 0:00:01  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 14 of 50
+# Smart Route: Smart_route progressing normally after 14 passes.
+# Start Route Pass 15 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 23 (Cross: 1, Clear: 22, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 4 Failures 2 Vias 4
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 15 of 50
+# Smart Route: Smart_route progressing normally after 15 passes.
+# Start Route Pass 16 of 50
+# Routing 7 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 22 (Cross: 1, Clear: 21, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 5 Failures 1 Vias 4
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 16 of 50
+# Smart Route: Smart_route progressing normally after 16 passes.
+# Start Route Pass 17 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 22 (Cross: 1, Clear: 21, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 5 Failures 1 Vias 4
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 17 of 50
+# Smart Route: Smart_route progressing normally after 17 passes.
+# Start Route Pass 18 of 50
+# Routing 9 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 22 (Cross: 1, Clear: 21, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 8 Successes 7 Failures 1 Vias 4
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 18 of 50
+# Smart Route: Smart_route progressing normally after 18 passes.
+# Start Route Pass 19 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 20 (Cross: 1, Clear: 19, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 5 Failures 1 Vias 4
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 19 of 50
+# Smart Route: Smart_route progressing normally after 19 passes.
+# Start Route Pass 20 of 50
+# Routing 9 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 23 (Cross: 1, Clear: 22, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 8 Successes 8 Failures 0 Vias 5
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 20 of 50
+# Smart Route: Smart_route progressing normally after 20 passes.
+# Start Route Pass 21 of 50
+# Routing 7 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 12 (Cross: 0, Clear: 12, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 21
+# Attempts 6 Successes 5 Failures 1 Vias 3
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 21 of 50
+# Smart Route: Smart_route progressing normally after 21 passes.
+# Start Route Pass 22 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 18 (Cross: 1, Clear: 17, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 6 Failures 0 Vias 5
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 22 of 50
+# Smart Route: Smart_route progressing normally after 22 passes.
+# Start Route Pass 23 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 26 (Cross: 1, Clear: 25, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 5 Failures 1 Vias 5
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 23 of 50
+# Smart Route: Smart_route progressing normally after 23 passes.
+# Start Route Pass 24 of 50
+# Routing 7 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 2 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 22 (Cross: 1, Clear: 21, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 6 Failures 0 Vias 3
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 24 of 50
+# Smart Route: Smart_route progressing normally after 24 passes.
+# Start Route Pass 25 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 12 (Cross: 0, Clear: 12, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 21
+# Attempts 6 Successes 5 Failures 1 Vias 3
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 25 of 50
+# Smart Route: Smart_route progressing normally after 25 passes.
+# Start Route Pass 26 of 50
+# Routing 6 wires.
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# 0 bend points have been removed.
+# Total Conflicts: 18 (Cross: 1, Clear: 17, Xtalk: 0, Length: 0, Polygon Clear: 0 )
+# Total Unroutes: 20
+# Attempts 6 Successes 6 Failures 0 Vias 3
+# Cpu Time = 0:00:00  Elapsed Time = 0:00:00
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# End Pass 26 of 50
+# <<ERROR:>> Smart Route: Design is unroutable, not enough resources. 
+# Many unroutes will exist if you use the filter command. 
+# Check number of layers, grids, design rules and placement.
+# Cpu Time = 0:00:01  Elapsed Time = 0:00:01
+# 
+# Design Rules --------------------------------------------
+# Via Grid 0.0001 with offset 0.0000
+# Layer TOP Horz Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.2032, Clearance= 0.2032
+# Layer BOTTOM Vert Signal Wire Grid 0.0001 with offset 0.0000, Width= 0.2032, Clearance= 0.2032
+# Command check detected pcb layer rule(s), mcm via rule(s), which require the RouteADV license feature.
+# All unlicensed rules are being ignored.
+# Command check will ignore pcb layer rule(s), mcm via rule(s)
+# ROUTING HISTORY ================================================================
+#     Pass     |   Conflicts |    |     |     |     |    |Red|      CPU Time     |
+#   Name   |No.| Cross| Clear|Fail|Unrte| Vias|XTalk|Len.| % |  Pass   |  Total  |
+#----------+---+------+------+----+-----+-----+-----+----+---+---------+---------|
+# Route    |  1|     0|     6|   3|   23|    2|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    |  2|     0|    10|   2|   22|    5|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    |  3|     1|    14|   2|   21|    5|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    |  4|     0|    20|   0|   20|    3|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    |  5|     0|    19|   2|   20|    3|    0|   0|  5|  0:00:00|  0:00:00|
+# Route    |  6|     1|    21|   1|   20|    4|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    |  7|     1|    20|   1|   20|    4|    0|   0|  4|  0:00:00|  0:00:00|
+# Route    |  8|     0|    20|   0|   20|    2|    0|   0|  4|  0:00:00|  0:00:00|
+# Route    |  9|     1|    20|   0|   20|    4|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    | 10|     0|    12|   1|   21|    2|    0|   0| 42|  0:00:00|  0:00:00|
+# Route    | 11|     1|    17|   0|   20|    4|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    | 12|     1|    20|   1|   20|    4|    0|   0|  0|  0:00:00|  0:00:00|
+# Route    | 13|     0|    12|   1|   21|    2|    0|   0| 42|  0:00:00|  0:00:00|
+# Route    | 14|     1|    17|   1|   20|    4|    0|   0|  0|  0:00:01|  0:00:01|
+# Route    | 15|     1|    22|   2|   20|    4|    0|   0|  0|  0:00:00|  0:00:01|
+# Route    | 16|     1|    21|   1|   20|    4|    0|   0|  4|  0:00:00|  0:00:01|
+# Route    | 17|     1|    21|   1|   20|    4|    0|   0|  0|  0:00:00|  0:00:01|
+# Route    | 18|     1|    21|   1|   20|    4|    0|   0|  0|  0:00:00|  0:00:01|
+# Route    | 19|     1|    19|   1|   20|    4|    0|   0|  9|  0:00:00|  0:00:01|
+# Route    | 20|     1|    22|   0|   20|    5|    0|   0|  0|  0:00:00|  0:00:01|
+# Route    | 21|     0|    12|   1|   21|    3|    0|   0| 47|  0:00:00|  0:00:01|
+# Route    | 22|     1|    17|   0|   20|    5|    0|   0|  0|  0:00:00|  0:00:01|
+# Route    | 23|     1|    25|   1|   20|    5|    0|   0|  0|  0:00:00|  0:00:01|
+# Route    | 24|     1|    21|   0|   20|    3|    0|   0| 15|  0:00:00|  0:00:01|
+# Route    | 25|     0|    12|   1|   21|    3|    0|   0| 45|  0:00:00|  0:00:01|
+# Route    | 26|     1|    17|   0|   20|    3|    0|   0|  0|  0:00:00|  0:00:01|
+# Conflicts between polygon wires and fixed objects:   0
+# Stub Violations:   0
+# Net Order Violations:   0
+# Diffpair Uncoupled Length Violations:   0
+# Diffpair Phase Tolerance  Violations:   0
+# Total layerset violations:   0
+# Total layerset violations (exclude Fanout/Stagger/XNet Short side):   0
+# Overall Routing Time: 0:00:01
+# 
+# Wiring Statistics ----------------- C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro\SENSOR_TEST_BOARD.dsn
+# Nets 9 Connections 31 Unroutes 20
+# Signal Layers 2 Power Layers 0
+# Wire Junctions 2, at vias 1 Total Vias 3
+# Percent Connected   16.13
+# Manhattan Length 150.5713 Horizontal  87.0586 Vertical  63.5127
+# Routed Length  83.3324 Horizontal  57.0827 Vertical  34.3253
+# Ratio Actual / Manhattan   0.5534
+# Unconnected Length  79.8111 Horizontal  46.1971 Vertical  33.6140
+# <<ERROR:>> Smart Route: Smart_route command aborting due to failures.
+write routes (changed_only) (reset_changed) C:/Users/tbriggs/AppData/Local/Temp/#Taaaaag08368.tmp
+# Routing Written to File C:/Users/tbriggs/AppData/Local/Temp/#Taaaaag08368.tmp
+quit

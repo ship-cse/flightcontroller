@@ -1,0 +1,79 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    Testprep Automatic Log File                                      )
+(                                                                     )
+(    Drawing          : SENSOR_TEST_BOARD.brd                         )
+(    Software Version : 16.6-2015S057                                 )
+(    Date/Time        : Tue Jan 12 10:14:23 2016                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+ Probes accessing bottom of the board.
+ Pad type restricted to 'THRU'.
+ Pin type restricted to 'ANY POINT'.
+ Minimum pad dimension is : 0.0000
+ Test pad grid: X: 0.0000 Y: 0.0000
+ Minimum test point spacing is : 0.0000
+ No test points allowed under components.
+ Component representation is ASSEMBLY data.
+ Bare board switch off, no test points allowed on
+   component pins on tested side.
+ Tested one pin per net.
+ No unused pins tested.
+ Testing allowed directly on pin.
+ No direct trace testing allowed.
+ Automatic test point insertion enabled.
+ Test pad displacement: Min: 0.0000, Max: 0.0000
+ Via replacement NOT allowed.
+ Cline bubbling  allowed.
+ Test SMT/blind pad: 
+ Test thru via     : 
+ Executed in INCREMENTAL mode.
+ *** WARNING *** Pre-existing test points may not fit parameters.
+ Probe text angle: 0 degrees.
+ Probe text offset: X: 0.0000 Y: 0.0000
+
+
+  NET        PIN                                        PROBE TEXT
+==================================================================
+
+Processing net N00816 (1 out of 8),(c=0, f=0, i=0).
+ Net N00816 NOT ACCESSIBLE from bottom side.
+    (non-thru=2, no pin-escape=2, non-routable=2)
+
+Processing net N00540 (2 out of 8),(c=0, f=1, i=0).
+ Net N00540 NOT ACCESSIBLE from bottom side.
+    (non-thru=2, no pin-escape=2, non-routable=2)
+
+Processing net N00220 (3 out of 8),(c=0, f=2, i=0).
+ Net N00220 NOT ACCESSIBLE from bottom side.
+    (non-thru=2, no pin-escape=2, non-routable=2)
+
+Processing net 3V3 (4 out of 8),(c=0, f=3, i=0).
+  3V3        J1.1            @(   -10.0000,    -6.3500) 3V3         
+
+Processing net SCL (5 out of 8),(c=1, f=3, i=0).
+  SCL        J1.6            @(   -10.0000,     6.3500) SCL          (bottom)(pre-existing)
+  Net already probed as required ... ignored.
+
+Processing net INT (6 out of 8),(c=1, f=3, i=1).
+  INT        J1.4            @(   -10.0000,     1.2700) INT          (bottom)(pre-existing)
+  Net already probed as required ... ignored.
+
+Processing net SDA (7 out of 8),(c=1, f=3, i=2).
+  SDA        J1.5            @(   -10.0000,     3.8100) SDA          (bottom)(pre-existing)
+  Net already probed as required ... ignored.
+
+Processing net 0 (8 out of 8),(c=1, f=3, i=3).
+  0          J1.2            @(   -10.0000,    -3.8100) 0           
+
+  Total nets processed:	8
+
+  Total nets failed:	3
+  Total nets ignored: 3
+  Total warnings: 0
+
+  Total test points on bottom:	5
+
+  Test Point Total:	5

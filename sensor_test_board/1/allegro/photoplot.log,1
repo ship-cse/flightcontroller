@@ -1,0 +1,248 @@
+(---------------------------------------------------------------------)
+(                                                                     )
+(    ARTWORK LOG                                                      )
+(                                                                     )
+(    Drawing          : SENSOR_TEST_BOARD.brd                         )
+(    Software Version : 16.6-2015S057                                 )
+(    Date/Time        : Tue Jan 12 10:18:14 2016                      )
+(                                                                     )
+(---------------------------------------------------------------------)
+
+
+
+ ******************************************
+ WARNING: DRC OUT OF DATE on this layout.
+ ******************************************
+
+ ---- Photoplot outline rectangle not found; using drawing extents.
+
+
+
+Results from parameter file ...
+    DEVICE-TYPE           GERBER_RS274X
+    OUTPUT-UNITS          MM
+    FILM-SIZE             2400000 1600000
+    FORMAT                2.5
+    ABORT-ON-ERROR        NO
+    SCALE                 1
+    SUPPRESS-LEAD-ZEROES  YES
+    SUPPRESS-TRAIL-ZEROES NO
+    SUPPRESS-EQUAL        YES
+    UNDEF-APT-CONT        NO
+
+
+
+================================================================
+     PROCESSING FILM < OUTLINE >
+     TO FILE < C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro/sensor-OUTLINE.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.0000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+    WARNING: rectangle or unfilled shape composed 0 width line found at (13.0000 9.5000)
+           ... ignored.
+
+    WARNING: rectangle or unfilled shape having Multiple 0 width lines; all will be treated the same as the first.
+           ... ignored.
+
+
+
+  APERTURES USED:  NONE
+     sensor-OUTLINE created with warnings
+
+
+================================================================
+     PROCESSING FILM < PASTE >
+     TO FILE < C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro/sensor-PASTE.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.1000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  RECTANGLE  0.30000     x 0.40000       0.000 NO     DARK 
+  RECTANGLE  0.30000     x 0.40000      90.000 NO     DARK 
+  RECTANGLE  1.10000     x 1.90000      90.000 NO     DARK 
+
+     sensor-PASTE created with warnings
+
+
+================================================================
+     PROCESSING FILM < PROMASK >
+     TO FILE < C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro/sensor-PROMASK.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.2000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.95000                                  DARK 
+  CIRCLE     1.10010                                  DARK 
+  RECTANGLE  0.30000     x 0.40000       0.000 NO     DARK 
+  RECTANGLE  0.30000     x 0.40000      90.000 NO     DARK 
+  RECTANGLE  1.10000     x 1.90000      90.000 NO     DARK 
+
+     sensor-PROMASK created with warnings
+
+
+================================================================
+     PROCESSING FILM < SILK >
+     TO FILE < C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro/sensor-SILK.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.3000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:  NONE
+     sensor-SILK created with warnings
+
+
+================================================================
+     PROCESSING FILM < BOTTOM >
+     TO FILE < C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro/sensor-BOTTOM.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.2000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.20320                                  DARK 
+  CIRCLE     0.82000                                  DARK 
+  CIRCLE     1.00000                                  DARK 
+
+     sensor-BOTTOM created with warnings
+
+
+================================================================
+     PROCESSING FILM < TOP >
+     TO FILE < C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro/sensor-TOP.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.2000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  YES
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.12700                                  DARK 
+  CIRCLE     0.15000                                  DARK 
+  CIRCLE     0.20320                                  DARK 
+  CIRCLE     0.82000                                  DARK 
+  CIRCLE     1.00000                                  DARK 
+  RECTANGLE  0.25000     x 0.35000       0.000 NO     DARK 
+  RECTANGLE  0.25000     x 0.35000      90.000 NO     DARK 
+  RECTANGLE  0.90000     x 1.70000      90.000 NO     DARK 
+  RECTANGLE  0.95000     x 0.95000       0.000 NO     DARK 
+  RECTANGLE  0.95000     x 0.95000      90.000 NO     DARK 
+
+     sensor-TOP created with warnings
+
+
+================================================================
+     PROCESSING FILM < PROMASK_BOTTOM >
+     TO FILE < C:/USERS/TBRIGGS/WORKSPACES/FLIGHTCONTROLLER/SENSOR_TEST_BOARD/1/allegro/sensor-PROMASK_BOTTOM.art > ...
+================================================================
+
+  FILM PARAMETERS :
+  ---------------------------------------------------------
+  Undefined line width                0.2000
+  Mirror code                         NONE
+  Rotate angle                        NONE
+  Offset x:                           0.0000
+  Offset y:                           0.0000
+  Plot negative                       NO
+  Suppress unconnected internal pads  NO
+  Draw holes only                     NO
+
+
+
+  APERTURES USED:
+  ---------------------------------------------------------
+  TYPE       SIZE/NAME                   ROT   MIRROR MODE 
+  ---------------------------------------------------------
+  CIRCLE     0.95000                                  DARK 
+  CIRCLE     1.10010                                  DARK 
+
+     sensor-PROMASK_BOTTOM created with warnings
+
+
+------------------------------------------------------
+ SUMMARY:
+        sensor-OUTLINE created with warnings
+        sensor-PASTE created with warnings
+        sensor-PROMASK created with warnings
+        sensor-SILK created with warnings
+        sensor-BOTTOM created with warnings
+        sensor-TOP created with warnings
+        sensor-PROMASK_BOTTOM created with warnings
+
+ ARTWORK had warnings

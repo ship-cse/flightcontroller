@@ -97,27 +97,13 @@
   (GlobalState
     (FileView
       (Path "Design Resources")
-      (Path "Design Resources" "Z:\SrDev\quadcopter2_0\sensor_test_board.dsn")
-      (Path "Design Resources" "Z:\SrDev\quadcopter2_0\sensor_test_board.dsn"
-         "SCHEMATIC1")
       (Path "Outputs")
-      (Select "Design Resources" "Z:\SrDev\quadcopter2_0\sensor_test_board.dsn"
-         "SCHEMATIC1" "Sensor Test Board"))
+      (Select "Design Resources"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
-        (Placement "44 2 3 -1 -1 -8 -30 0 200 0 431"))
-      (Tab 0))
-    (Doc
-      (Type "COrSchematicDoc")
-      (Frame
-        (Placement "44 0 1 -1 -1 -8 -30 50 1758 50 519")
-        (Scroll "90 140")
-        (Zoom "200")
-        (Occurrence "/"))
-      (Path "Z:\SRDEV\QUADCOPTER2_0\SENSOR_TEST_BOARD.DSN")
-      (Schematic "SCHEMATIC1")
-      (Page "Sensor Test Board")))
+        (Placement "44 2 3 -1 -1 -8 -31 0 200 0 431"))
+      (Tab 0)))
   (ISPCBBASICLICENSE "false")
-  (MPSSessionName "kd9609"))
+  (MPSSessionName "tbriggs"))
